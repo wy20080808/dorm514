@@ -986,22 +986,36 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
 /* ============ 用户登录 / 注册 ============ */
 .user-wrap{position:relative}
 .user-btn.on{border-color:var(--accent); color:var(--accent); font-weight:700}
+.user-btn{overflow:hidden; padding:0}
+.user-btn img{width:100%; height:100%; object-fit:cover; display:block}
+.user-ava{width:44px; height:44px; border-radius:50%; overflow:hidden; display:grid; place-items:center; background:var(--surface-2); color:var(--accent); font-weight:800; font-size:18px}
+.user-ava img{width:100%; height:100%; object-fit:cover; display:block}
+.user-name{font-size:13px; font-weight:600; color:var(--text); word-break:break-all; line-height:1.4}
 .user-pop{
-  position:absolute; top:calc(100% + 10px); right:0; z-index:65; width:220px; padding:12px;
+  position:absolute; top:calc(100% + 10px); right:0; z-index:65; width:220px; padding:14px;
   display:flex; flex-direction:column; gap:10px; border-radius:14px;
   background:var(--bg); border:1px solid var(--line); box-shadow:0 24px 60px rgba(0,0,0,.35);
 }
 .user-pop[hidden]{display:none}
-.user-mail{font-size:12.5px; line-height:1.5; color:var(--muted); word-break:break-all}
+.user-mail{font-size:12px; line-height:1.5; color:var(--muted); word-break:break-all}
 .user-logout{padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--text); font-size:12.5px; cursor:pointer; transition:.2s}
 .user-logout:hover{border-color:var(--accent); color:var(--accent)}
+.user-logout.danger:hover{border-color:#ff6b6b; color:#ff8080}
+.user-ava-btn{background:none; border:0; padding:0; cursor:pointer; align-self:center; position:relative}
+.user-ava-btn::after{content:"换"; position:absolute; right:-2px; bottom:-2px; width:20px; height:20px; border-radius:50%; background:var(--accent); color:#1a120c; font-size:10.5px; font-weight:700; display:grid; place-items:center}
 .login-pop{position:fixed; inset:0; z-index:140; display:grid; place-items:center; padding:20px; background:rgba(6,7,12,.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
 .login-pop[hidden]{display:none}
-.login-card{position:relative; width:min(400px,100%); padding:26px; border-radius:22px; background:var(--bg); border:1px solid var(--line); box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.login-card{position:relative; width:min(400px,100%); max-height:calc(100vh - 32px); overflow:auto; padding:26px; border-radius:22px; background:var(--bg); border:1px solid var(--line); box-shadow:0 30px 80px rgba(0,0,0,.5)}
 .login-x{position:absolute; top:12px; right:12px; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--faint); font-size:13px; cursor:pointer; transition:.2s}
 .login-x:hover{color:var(--text); border-color:var(--accent)}
 .login-title{font-size:20px; font-weight:800; letter-spacing:-.02em}
-.login-sub{margin:8px 0 18px; font-size:13px; line-height:1.7; color:var(--muted)}
+.login-sub{margin:8px 0 16px; font-size:13px; line-height:1.7; color:var(--muted)}
+.reg-progress{display:flex; gap:6px; margin-bottom:14px}
+.reg-progress i{flex:1; height:4px; border-radius:999px; background:var(--line); transition:background .2s}
+.reg-progress i.on{background:var(--accent)}
+.reg-kicker{font-size:11.5px; letter-spacing:.08em; color:var(--faint)}
+.reg-ok{font-size:13px; color:#4ade80}
+.login-tip{margin:4px 0 0; font-size:12px; line-height:1.6; color:var(--faint)}
 .login-step{display:flex; flex-direction:column; gap:8px}
 .login-step[hidden]{display:none}
 .login-label{font-size:12px; color:var(--faint)}
@@ -1011,7 +1025,7 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
   transition:border-color .2s;
 }
 .login-input:focus{border-color:var(--accent)}
-.login-code{letter-spacing:.35em; font-family:var(--mono); font-size:18px; text-align:center; text-indent:.35em}
+.login-code{letter-spacing:.2em; font-family:var(--mono); font-size:18px; text-align:center; text-indent:.2em}
 .login-main{width:100%; justify-content:center; margin-top:4px}
 .login-foot{display:flex; justify-content:space-between; gap:10px; margin-top:2px}
 .login-link{background:none; border:0; padding:0; color:var(--faint); font-size:12.5px; cursor:pointer; transition:.2s}
@@ -1271,8 +1285,14 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
     <div class="user-wrap">
       <button class="icon-btn user-btn" id="userBtn" type="button" aria-label="登录 / 注册" title="登录 / 注册">👤</button>
       <div class="user-pop" id="userPop" hidden role="dialog" aria-label="账号">
+        <button class="user-ava-btn" id="avatarBtn" type="button" aria-label="更换头像" title="更换头像">
+          <span class="user-ava" id="userAva">👤</span>
+        </button>
+        <div class="user-name" id="userName"></div>
         <div class="user-mail" id="userMail"></div>
-        <button class="user-logout" id="userLogout" type="button">退出登录</button>
+        <button class="user-logout" id="avatarPick" type="button">更换头像</button>
+        <button class="user-logout danger" id="userLogout" type="button">退出登录</button>
+        <input type="file" id="avatarFile" accept="image/*" hidden>
       </div>
     </div>
     <div class="settings-wrap">
@@ -1565,26 +1585,61 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
   </form>
 </div>
 
-<!-- 用户登录 / 注册（邮箱验证码） -->
+<!-- 用户登录 / 注册 -->
 <div class="login-pop" id="loginPop" hidden>
   <div class="login-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
     <button class="login-x" id="loginClose" type="button" aria-label="关闭">✕</button>
-    <div class="login-title" id="loginTitle">登录 / 注册</div>
-    <p class="login-sub">输入邮箱接收验证码，第一次登录会自动注册账号。</p>
+    <div class="login-title" id="loginTitle">登录</div>
+    <p class="login-sub" id="loginSub">用邮箱和密码登录。</p>
 
-    <div class="login-step" id="loginStep1">
+    <!-- 登录 -->
+    <div class="login-step" id="loginView">
       <label class="login-label" for="loginEmail">邮箱</label>
       <input class="login-input" id="loginEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
-      <button class="btn primary login-main" id="sendCodeBtn" type="button">发送验证码</button>
+      <label class="login-label" for="loginPass">密码</label>
+      <input class="login-input" id="loginPass" type="password" autocomplete="current-password" placeholder="你的密码">
+      <button class="btn primary login-main" id="passLoginBtn" type="button">登录</button>
+      <div class="login-foot">
+        <button class="login-link" id="toRegister" type="button">没有账号？用邮箱验证注册</button>
+      </div>
     </div>
 
-    <div class="login-step" id="loginStep2" hidden>
-      <label class="login-label" for="loginCode">验证码</label>
-      <input class="login-input login-code" id="loginCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="6 位数字">
-      <button class="btn primary login-main" id="verifyBtn" type="button">登录</button>
-      <div class="login-foot">
-        <button class="login-link" id="resendBtn" type="button" disabled>重新发送（60s）</button>
-        <button class="login-link" id="changeEmailBtn" type="button">换个邮箱</button>
+    <!-- 注册：邮箱 → 验证码 → 设置密码 -->
+    <div class="login-step" id="regView" hidden>
+      <div class="reg-progress" aria-hidden="true">
+        <i class="on" data-dot="1"></i><i data-dot="2"></i><i data-dot="3"></i>
+      </div>
+
+      <div class="login-step" id="regStep1">
+        <div class="reg-kicker">第 1 步 / 3 · 验证邮箱</div>
+        <label class="login-label" for="regEmail">邮箱</label>
+        <input class="login-input" id="regEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+        <button class="btn primary login-main" id="sendCodeBtn" type="button">发送验证码</button>
+        <p class="login-tip">已有账号也能用这种方式重设密码。</p>
+        <div class="login-foot">
+          <button class="login-link" id="toLogin" type="button">已经有账号？去登录</button>
+        </div>
+      </div>
+
+      <div class="login-step" id="regStep2" hidden>
+        <div class="reg-kicker">第 2 步 / 3 · 输入验证码</div>
+        <label class="login-label" for="regCode">验证码</label>
+        <input class="login-input login-code" id="regCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="6 位数字">
+        <button class="btn primary login-main" id="regNextBtn" type="button">下一步</button>
+        <div class="login-foot">
+          <button class="login-link" id="resendBtn" type="button" disabled>重新发送（60s）</button>
+          <button class="login-link" id="changeEmailBtn" type="button">换个邮箱</button>
+        </div>
+      </div>
+
+      <div class="login-step" id="regStep3" hidden>
+        <div class="reg-kicker">第 3 步 / 3 · 设置密码</div>
+        <div class="reg-ok" id="regOk">邮箱已验证 ✓</div>
+        <label class="login-label" for="regPass">设置密码</label>
+        <input class="login-input" id="regPass" type="password" autocomplete="new-password" placeholder="至少 6 位">
+        <label class="login-label" for="regPass2">再输一次</label>
+        <input class="login-input" id="regPass2" type="password" autocomplete="new-password" placeholder="确认密码">
+        <button class="btn primary login-main" id="finishRegBtn" type="button">完成注册</button>
       </div>
     </div>
 
@@ -3024,22 +3079,126 @@ const Auth = {
     if (!res.ok) throw new Error(await this.errText(res));
   },
   async verify(email, token) {
-    const res = await fetch(`${this.base()}/auth/v1/verify`, {
-      method: "POST",
-      headers: this.headers(),
-      body: JSON.stringify({ email, token, type: "email" })
-    });
-    if (!res.ok) throw new Error(await this.errText(res));
-    const d = await res.json();
-    const s = {
+    // 新用户会收到「确认注册」邮件，老用户收到「魔法链接」邮件，两种 token 类型不同，挨个试
+    const types = ["email", "signup", "magiclink"];
+    let lastMsg = "";
+    for (const type of types) {
+      const res = await fetch(`${this.base()}/auth/v1/verify`, {
+        method: "POST",
+        headers: this.headers(),
+        body: JSON.stringify({ email, token, type })
+      });
+      if (res.ok) {
+        const d = await res.json();
+        const s = this.sessionFrom(d, email);
+        this.save(s);
+        return s;
+      }
+      lastMsg = await this.errText(res);
+      // 只有「验证码不对/类型不匹配」才换下一种，其他错误直接返回
+      const retry = res.status === 401 || res.status === 403 || /token|otp|expired|invalid/i.test(lastMsg);
+      if (!retry) throw new Error(lastMsg);
+    }
+    throw new Error(lastMsg || "验证码不对或已过期，请重新获取");
+  },
+  sessionFrom(d, fallbackEmail) {
+    const u = (d && d.user) || {};
+    const meta = u.user_metadata || {};
+    return {
       access_token: d.access_token,
       refresh_token: d.refresh_token,
       expires_at: Date.now() + ((d.expires_in || 3600) * 1000),
-      email: (d.user && d.user.email) || email,
-      id: d.user && d.user.id
+      email: u.email || fallbackEmail || "",
+      id: u.id || "",
+      avatar_url: meta.avatar_url || "",
+      nickname: meta.nickname || ""
     };
+  },
+  async passwordLogin(email, password) {
+    const res = await fetch(`${this.base()}/auth/v1/token?grant_type=password`, {
+      method: "POST",
+      headers: this.headers(),
+      body: JSON.stringify({ email, password })
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const raw = d.error_description || d.msg || d.message || "";
+      if (/invalid login credentials/i.test(raw)) throw new Error("邮箱或密码不对");
+      if (/email not confirmed/i.test(raw)) throw new Error("邮箱还没验证：请先点开验证邮件里的链接");
+      if (/invalid.*email/i.test(raw)) throw new Error("邮箱格式不对，请检查一下");
+      throw new Error(raw || ("登录失败 " + res.status));
+    }
+    const s = this.sessionFrom(d, email);
     this.save(s);
     return s;
+  },
+  async signUp(email, password) {
+    const res = await fetch(`${this.base()}/auth/v1/signup`, {
+      method: "POST",
+      headers: this.headers(),
+      body: JSON.stringify({ email, password })
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const raw = d.error_description || d.msg || d.message || "";
+      if (/already registered/i.test(raw)) throw new Error("这个邮箱已经注册过了，直接登录就行");
+      if (/password/i.test(raw)) throw new Error("密码不符合要求（至少 6 位）");
+      throw new Error(raw || ("注册失败 " + res.status));
+    }
+    if (d.access_token) {
+      const s = this.sessionFrom(d, email);
+      this.save(s);
+      return { session: s };
+    }
+    return { needsConfirm: true };
+  },
+  async updateMeta(data) {
+    if (!authSession || !authSession.access_token) throw new Error("请先登录");
+    const res = await fetch(`${this.base()}/auth/v1/user`, {
+      method: "PUT",
+      headers: this.headers({ Authorization: "Bearer " + authSession.access_token }),
+      body: JSON.stringify({ data })
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok) throw new Error(d.msg || d.message || ("保存失败 " + res.status));
+    const u = d.user || d || {};
+    const meta = u.user_metadata || {};
+    authSession = Object.assign({}, authSession, {
+      email: u.email || authSession.email,
+      avatar_url: meta.avatar_url || "",
+      nickname: meta.nickname || ""
+    });
+    this.save(authSession);
+    return authSession;
+  },
+  async setPassword(password) {
+    if (!authSession || !authSession.access_token) throw new Error("验证已过期，请重新获取验证码");
+    const res = await fetch(`${this.base()}/auth/v1/user`, {
+      method: "PUT",
+      headers: this.headers({ Authorization: "Bearer " + authSession.access_token }),
+      body: JSON.stringify({ password })
+    });
+    const d = await res.json().catch(() => ({}));
+    if (!res.ok) {
+      const raw = d.msg || d.message || d.error_description || "";
+      if (/password/i.test(raw)) throw new Error("密码不符合要求（至少 6 位）");
+      throw new Error(raw || ("设置密码失败 " + res.status));
+    }
+    return d.user || d;
+  },
+  async uploadAvatar(dataUrl) {
+    if (!authSession || !authSession.id) throw new Error("请先登录");
+    const blob = await (await fetch(dataUrl)).blob();
+    const path = `avatars/${authSession.id}.jpg`;
+    const up = await fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
+      method: "POST",
+      headers: this.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+      body: blob
+    });
+    if (!up.ok) throw new Error("头像上传失败 " + up.status);
+    const url = `${this.base()}/storage/v1/object/public/${DAILY_REMOTE.bucket}/${path}?v=${Date.now()}`;
+    await this.updateMeta({ avatar_url: url });
+    return url;
   },
   async refresh(s) {
     if (!s || !s.refresh_token) return null;
@@ -3052,13 +3211,10 @@ const Auth = {
       });
       if (!res.ok) { this.clear(); return null; }
       const d = await res.json();
-      const next = {
-        access_token: d.access_token,
-        refresh_token: d.refresh_token || s.refresh_token,
-        expires_at: Date.now() + ((d.expires_in || 3600) * 1000),
-        email: (d.user && d.user.email) || s.email,
-        id: (d.user && d.user.id) || s.id
-      };
+      const next = this.sessionFrom(d, s.email);
+      next.refresh_token = next.refresh_token || s.refresh_token;
+      if (!next.avatar_url) next.avatar_url = s.avatar_url || "";
+      if (!next.nickname) next.nickname = s.nickname || "";
       this.save(next);
       return next;
     } catch (e) {
@@ -3905,10 +4061,10 @@ function setupPhotosRoute() {
   apply();
 }
 
-/* ============ 用户登录 / 注册（邮箱验证码） ============ */
+/* ============ 用户登录 / 注册 ============ */
 let resendTimer = null;
 let resendLeft = 0;
-let loginEmail = "";
+let loginEmail = "";       // 验证码登录用的邮箱
 
 function loginMsg(text, ok) {
   const m = $("#loginMsg");
@@ -3918,12 +4074,27 @@ function loginMsg(text, ok) {
   m.classList.toggle("ok", !!ok);
 }
 
+function userLabel(s) {
+  if (!s) return "";
+  if (s.nickname) return s.nickname;
+  return (s.email || "").split("@")[0];
+}
+
+function avatarInner(s) {
+  if (s && s.avatar_url) return `<img src="${esc(s.avatar_url)}" alt="">`;
+  const ch = (userLabel(s) || "U").charAt(0).toUpperCase();
+  return esc(ch);
+}
+
 function syncUserUI() {
   const btn = $("#userBtn");
   const mail = $("#userMail");
+  const name = $("#userName");
+  const ava = $("#userAva");
   if (btn) {
     if (authSession) {
-      btn.textContent = (authSession.email || "U").charAt(0).toUpperCase();
+      if (authSession.avatar_url) btn.innerHTML = `<img src="${esc(authSession.avatar_url)}" alt="头像">`;
+      else btn.textContent = (userLabel(authSession) || "U").charAt(0).toUpperCase();
       btn.classList.add("on");
       btn.title = authSession.email;
       btn.setAttribute("aria-label", "账号：" + authSession.email);
@@ -3935,6 +4106,45 @@ function syncUserUI() {
     }
   }
   if (mail) mail.textContent = authSession ? authSession.email : "";
+  if (name) name.textContent = authSession ? userLabel(authSession) : "";
+  if (ava) ava.innerHTML = avatarInner(authSession);
+}
+
+function showLoginView() {
+  const loginView = $("#loginView");
+  const regView = $("#regView");
+  if (loginView) loginView.hidden = false;
+  if (regView) regView.hidden = true;
+  const title = $("#loginTitle");
+  const sub = $("#loginSub");
+  if (title) title.textContent = "登录";
+  if (sub) sub.textContent = "用邮箱和密码登录。";
+  loginMsg("");
+  const em = $("#loginEmail");
+  if (em) setTimeout(() => em.focus(), 30);
+}
+
+function showRegStep(step) {
+  const loginView = $("#loginView");
+  const regView = $("#regView");
+  if (loginView) loginView.hidden = true;
+  if (regView) regView.hidden = false;
+  const title = $("#loginTitle");
+  const sub = $("#loginSub");
+  if (title) title.textContent = "注册";
+  if (sub) sub.textContent = "邮箱验证后设置密码，以后就能用密码登录。";
+  loginMsg("");
+
+  const n = Number(step) || 1;
+  ["1", "2", "3"].forEach(k => {
+    const el = $("#regStep" + k);
+    if (el) el.hidden = Number(k) !== n;
+    const dot = document.querySelector('.reg-progress i[data-dot="' + k + '"]');
+    if (dot) dot.classList.toggle("on", Number(k) <= n);
+  });
+
+  const target = n === 1 ? $("#regEmail") : n === 2 ? $("#regCode") : $("#regPass");
+  if (target) setTimeout(() => target.focus(), 30);
 }
 
 function openLogin() {
@@ -3944,14 +4154,8 @@ function openLogin() {
   }
   const pop = $("#loginPop");
   if (!pop) return;
-  loginMsg("");
-  const s1 = $("#loginStep1");
-  const s2 = $("#loginStep2");
-  if (s1) s1.hidden = false;
-  if (s2) s2.hidden = true;
   pop.hidden = false;
-  const em = $("#loginEmail");
-  if (em) setTimeout(() => em.focus(), 40);
+  showLoginView();
 }
 
 function closeLogin() {
@@ -3980,8 +4184,53 @@ function startResend() {
   }, 1000);
 }
 
-async function doSendCode() {
+async function doPasswordLogin() {
   const em = $("#loginEmail");
+  const pw = $("#loginPass");
+  const email = em ? em.value.trim() : "";
+  const password = pw ? pw.value : "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) { loginMsg("请输入正确的邮箱地址"); if (em) em.focus(); return; }
+  if (password.length < 6) { loginMsg("密码至少 6 位"); if (pw) pw.focus(); return; }
+  const b = $("#passLoginBtn");
+  if (b) { b.disabled = true; b.textContent = "登录中…"; }
+  loginMsg("");
+  try {
+    const s = await Auth.passwordLogin(email, password);
+    authSession = s;
+    syncUserUI();
+    closeLogin();
+  } catch (e) {
+    loginMsg(e && e.message ? e.message : String(e));
+  } finally {
+    if (b) { b.disabled = false; b.textContent = "登录"; }
+  }
+}
+
+async function doRegister() {
+  // 第 3 步：邮箱已经验证过（authSession 已存在），这里只负责设置密码
+  const pw = $("#regPass");
+  const pw2 = $("#regPass2");
+  const password = pw ? pw.value : "";
+  const password2 = pw2 ? pw2.value : "";
+  if (password.length < 6) { loginMsg("密码至少 6 位"); if (pw) pw.focus(); return; }
+  if (password !== password2) { loginMsg("两次输入的密码不一样"); if (pw2) pw2.focus(); return; }
+
+  const b = $("#finishRegBtn");
+  if (b) { b.disabled = true; b.textContent = "保存中…"; }
+  loginMsg("");
+  try {
+    await Auth.setPassword(password);
+    syncUserUI();
+    closeLogin();
+  } catch (e) {
+    loginMsg(e && e.message ? e.message : String(e));
+  } finally {
+    if (b) { b.disabled = false; b.textContent = "完成注册"; }
+  }
+}
+
+async function doSendCode() {
+  const em = $("#regEmail");
   const email = em ? em.value.trim() : "";
   if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
     loginMsg("请输入正确的邮箱地址");
@@ -3994,12 +4243,9 @@ async function doSendCode() {
   try {
     await Auth.sendCode(email);
     loginEmail = email;
-    const s1 = $("#loginStep1");
-    const s2 = $("#loginStep2");
-    if (s1) s1.hidden = true;
-    if (s2) s2.hidden = false;
-    const c = $("#loginCode");
-    if (c) { c.value = ""; c.focus(); }
+    const c = $("#regCode");
+    if (c) c.value = "";
+    showRegStep(2);
     loginMsg("验证码已发到 " + email + "，没收到可以看看垃圾箱", true);
     startResend();
   } catch (e) {
@@ -4010,25 +4256,47 @@ async function doSendCode() {
 }
 
 async function doVerify() {
-  const c = $("#loginCode");
+  const c = $("#regCode");
   const code = (c ? c.value : "").replace(/\D/g, "");
   if (code.length < 6) {
     loginMsg("验证码是 6 位数字");
     if (c) c.focus();
     return;
   }
-  const b = $("#verifyBtn");
-  if (b) { b.disabled = true; b.textContent = "登录中…"; }
+  const b = $("#regNextBtn");
+  if (b) { b.disabled = true; b.textContent = "验证中…"; }
   loginMsg("");
   try {
     const s = await Auth.verify(loginEmail, code);
     authSession = s;
     syncUserUI();
-    closeLogin();
+    showRegStep(3);
+    loginMsg("邮箱验证成功，设置一个密码就完成了", true);
   } catch (e) {
     loginMsg(e && e.message ? e.message : String(e));
   } finally {
-    if (b) { b.disabled = false; b.textContent = "登录"; }
+    if (b) { b.disabled = false; b.textContent = "下一步"; }
+  }
+}
+
+async function handleAvatarFile(file) {
+  if (!file) return;
+  if (!authSession) return;
+  const pick = $("#avatarPick");
+  if (pick) { pick.disabled = true; pick.textContent = "上传中…"; }
+  try {
+    const dataUrl = await compressImage(file, 320, 0.86);
+    await Auth.uploadAvatar(dataUrl);
+    syncUserUI();
+    if (pick) pick.textContent = "已更新 ✓";
+    setTimeout(() => { if (pick) pick.textContent = "更换头像"; }, 1800);
+  } catch (e) {
+    if (pick) pick.textContent = "更换头像";
+    alert("头像换失败：" + (e && e.message ? e.message : e));
+  } finally {
+    if (pick) pick.disabled = false;
+    const input = $("#avatarFile");
+    if (input) input.value = "";
   }
 }
 
@@ -4061,10 +4329,33 @@ function setupUser() {
     Auth.logout(s);
   });
 
+  /* 头像 */
+  const pick = $("#avatarPick");
+  const avaBtn = $("#avatarBtn");
+  const fileInput = $("#avatarFile");
+  const openPicker = () => { if (fileInput) fileInput.click(); };
+  if (pick) pick.addEventListener("click", openPicker);
+  if (avaBtn) avaBtn.addEventListener("click", openPicker);
+  if (fileInput) fileInput.addEventListener("change", () => {
+    const f = fileInput.files && fileInput.files[0];
+    if (f) handleAvatarFile(f);
+  });
+
+  /* 登录 / 注册切换 */
+  const toReg = $("#toRegister");
+  if (toReg) toReg.addEventListener("click", () => showRegStep(1));
+  const toLogin = $("#toLogin");
+  if (toLogin) toLogin.addEventListener("click", showLoginView);
+
+  const passBtn = $("#passLoginBtn");
+  if (passBtn) passBtn.addEventListener("click", doPasswordLogin);
+  const regBtn = $("#finishRegBtn");
+  if (regBtn) regBtn.addEventListener("click", doRegister);
+
   const send = $("#sendCodeBtn");
   if (send) send.addEventListener("click", doSendCode);
 
-  const verify = $("#verifyBtn");
+  const verify = $("#regNextBtn");
   if (verify) verify.addEventListener("click", doVerify);
 
   const again = $("#resendBtn");
@@ -4082,15 +4373,7 @@ function setupUser() {
   });
 
   const change = $("#changeEmailBtn");
-  if (change) change.addEventListener("click", () => {
-    const s1 = $("#loginStep1");
-    const s2 = $("#loginStep2");
-    if (s1) s1.hidden = false;
-    if (s2) s2.hidden = true;
-    loginMsg("");
-    const em = $("#loginEmail");
-    if (em) em.focus();
-  });
+  if (change) change.addEventListener("click", () => showRegStep(1));
 
   const close = $("#loginClose");
   if (close) close.addEventListener("click", closeLogin);
@@ -4100,14 +4383,18 @@ function setupUser() {
     if (e.target === loginPop) closeLogin();
   });
 
-  const code = $("#loginCode");
-  if (code) code.addEventListener("keydown", e => {
-    if (e.key === "Enter") { e.preventDefault(); doVerify(); }
-  });
-  const email = $("#loginEmail");
-  if (email) email.addEventListener("keydown", e => {
-    if (e.key === "Enter") { e.preventDefault(); doSendCode(); }
-  });
+  const enter = (sel, fn) => {
+    const el = $(sel);
+    if (el) el.addEventListener("keydown", e => {
+      if (e.key === "Enter") { e.preventDefault(); fn(); }
+    });
+  };
+  enter("#loginEmail", doPasswordLogin);
+  enter("#loginPass", doPasswordLogin);
+  enter("#regEmail", doSendCode);
+  enter("#regCode", doVerify);
+  enter("#regPass", doRegister);
+  enter("#regPass2", doRegister);
 
   document.addEventListener("click", e => {
     if (pop && !pop.hidden && !(e.target.closest && e.target.closest(".user-wrap"))) pop.hidden = true;
