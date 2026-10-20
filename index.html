@@ -3,8 +3,8 @@
 <head>
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
-<title>514 宿舍档案 · 五个人，一间家</title>
-<meta name="description" content="514 宿舍成员介绍：五个人，一间叫 514 的家。">
+<title>郑科宿舍社区 · 从一间 514 开始</title>
+<meta name="description" content="郑科宿舍社区：从 514 的五个人开始，记录宿舍日常、照片和故事。">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff9a5a'/%3E%3Ctext x='32' y='43' font-size='26' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23140d09'%3E514%3C/text%3E%3C/svg%3E">
 <style>
 /* ============ 主题变量 ============ */
@@ -160,7 +160,7 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
 }
 .nav .mini-cta:hover{background:var(--surface); transform:translateY(-1px)}
 /* 锚点跳转时给吸顶导航留位置 */
-#members, #life, #photos, #rules{scroll-margin-top:86px}
+#members{scroll-margin-top:86px}
 
 /* ============ 通用 ============ */
 .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
@@ -342,6 +342,34 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
 }
 .member-card:hover .card-foot .arrow{transform:rotate(45deg); background:var(--accent); color:#1b1008; border-color:transparent}
 .member-card:focus-visible{outline-offset:4px}
+
+/* 首页成员区：统一收成一行，缩小后置 */
+#members .member-grid{grid-template-columns:repeat(5,1fr); gap:12px}
+#members .member-card,
+#members .member-card:nth-child(4),
+#members .member-card:nth-child(5){grid-column:auto; max-width:none; justify-self:auto; width:auto; padding:14px; border-radius:16px}
+#members .card-top{margin-bottom:10px; align-items:center; gap:8px}
+#members .avatar{width:42px; height:42px; border-radius:13px; font-size:18px}
+#members .avatar .status{width:12px; height:12px; border-width:2px}
+#members .card-no{font-size:10px}
+#members .member-card h3{font-size:15px; line-height:1.35}
+#members .member-card h3 .nick{display:block; margin:2px 0 0; font-size:11px}
+#members .tagline{
+  margin:7px 0 0; font-size:12px; line-height:1.55; min-height:0;
+  display:-webkit-box; -webkit-line-clamp:2; -webkit-box-orient:vertical; overflow:hidden;
+}
+#members .tags, #members .card-foot{display:none}
+#members .member-card:hover{translate:0 -3px}
+@media (max-width:1024px){
+  #members .member-grid{grid-template-columns:repeat(3,1fr)}
+}
+@media (max-width:640px){
+  #members .member-grid{
+    display:flex; gap:10px; overflow-x:auto; padding:2px 2px 10px;
+    scroll-snap-type:x mandatory; -webkit-overflow-scrolling:touch;
+  }
+  #members .member-card{flex:0 0 62%; scroll-snap-align:start}
+}
 
 /* ============ 日常 ============ */
 .life-grid{display:grid; grid-template-columns:repeat(4,1fr); gap:16px}
@@ -820,7 +848,7 @@ html[data-theme="light"] .quote-inner.lg.lg{
     justify-content:center; flex-wrap:wrap; gap:2px;
   }
   .nav-links a{padding:7px 11px; font-size:13px; white-space:nowrap}
-  #members, #life, #photos, #rules{scroll-margin-top:118px}
+  #members{scroll-margin-top:118px}
 }
 @media (max-width:640px){
   .nav{padding:12px 16px; gap:10px}
@@ -871,8 +899,6 @@ body.view-photos .photos-page{display:block; padding:112px 0 96px; min-height:10
 body.view-photos main > .hero,
 body.view-photos main > .marquee,
 body.view-photos main > #members,
-body.view-photos main > #life,
-body.view-photos main > #rules,
 body.view-photos main > #quoteBand,
 body.view-photos .footer{display:none !important}
 body.view-photos .photos-page .reveal{opacity:1; transform:none}
@@ -892,6 +918,118 @@ body.view-photos .photos-page .reveal{opacity:1; transform:none}
   body.view-photos .photos-page{padding-top:96px}
   .photos-entry{flex-wrap:wrap}
   .photos-entry .pe-go{width:100%}
+}
+/* ============ 社区：动态 ============ */
+.community-tabs{display:flex; gap:6px; margin:0 0 22px; padding:5px; border-radius:999px; border:1px solid var(--line); background:var(--surface); width:max-content}
+.community-tab{padding:9px 22px; border-radius:999px; border:0; background:transparent; color:var(--muted); font-size:13.5px; font-weight:600; font-family:inherit; cursor:pointer; transition:background .2s,color .2s}
+.community-tab:hover{color:var(--text)}
+.community-tab.on{background:linear-gradient(135deg,var(--accent),#ff5f6d); color:#1b1008}
+.community-tab.on:hover{color:#1b1008}
+.post-composer{padding:18px; border-radius:20px; margin-bottom:22px}
+.post-composer textarea{width:100%; min-height:96px; resize:vertical; padding:14px; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:14px; line-height:1.7; outline:none; transition:border-color .2s}
+.post-composer textarea:focus{border-color:var(--accent)}
+.post-preview{margin-top:12px; border-radius:14px; overflow:hidden; background:var(--surface); position:relative}
+.post-preview img{width:100%; max-height:260px; object-fit:cover; display:block}
+.pp-remove{position:absolute; top:8px; right:8px; width:28px; height:28px; border-radius:50%; border:0; background:rgba(0,0,0,.55); color:#fff; font-size:13px; cursor:pointer; display:grid; place-items:center; transition:.2s}
+.pp-remove:hover{background:rgba(255,107,107,.9)}
+.post-preview[hidden]{display:none}
+.composer-foot{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; flex-wrap:wrap}
+.composer-as{font-size:12.5px; color:var(--faint); display:inline-flex; align-items:center; gap:7px}
+.post-name{width:104px; padding:5px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:12.5px; outline:none}
+.post-name:focus{border-color:var(--accent)}
+.post-name:disabled,.daily-name:disabled{background:var(--surface-2); color:var(--muted); cursor:not-allowed; border-style:dashed}
+.composer-acts{display:flex; align-items:center; gap:10px}
+.composer-acts .btn{cursor:pointer}
+.post-list{display:flex; flex-direction:column; gap:16px}
+.post-card{padding:18px 20px; border-radius:20px; position:relative}
+.post-head{display:flex; align-items:center; gap:11px; margin-bottom:12px}
+.post-ava{width:40px; height:40px; border-radius:13px; display:grid; place-items:center; overflow:hidden; flex:0 0 auto; background:linear-gradient(140deg,var(--accent),#8b7bff); color:#1b1008; font-weight:800; font-size:15px}
+.post-ava img{width:100%; height:100%; object-fit:cover}
+.post-meta{display:flex; flex-direction:column; gap:2px; min-width:0}
+.post-meta b{font-size:14px}
+.post-author{border:0; background:transparent; color:var(--text); font:inherit; font-weight:700; font-size:14px; padding:0; cursor:pointer; text-align:left; line-height:1.4}
+.post-author:hover{color:var(--accent)}
+.post-meta span{font-size:11.5px; color:var(--faint)}
+.post-del{margin-left:auto; border:0; background:transparent; color:var(--faint); cursor:pointer; font-size:13px; padding:5px 9px; border-radius:8px; transition:.2s}
+.post-del:hover{color:#ff6b6b; background:rgba(255,107,107,.1)}
+.post-text{margin:0 0 12px; font-size:14.5px; line-height:1.85; color:var(--text); word-break:break-word}
+.post-img{border-radius:14px; overflow:hidden; cursor:zoom-in; margin-bottom:12px; background:var(--surface)}
+.post-img img{width:100%; max-height:420px; object-fit:cover; display:block}
+.post-acts{display:flex; gap:8px}
+.post-comments{margin-top:12px; padding-top:12px; border-top:1px solid var(--line)}
+.post-comments[hidden]{display:none}
+.post-comments ul{list-style:none; margin:0 0 10px; padding:0; display:flex; flex-direction:column; gap:7px; max-height:240px; overflow:auto}
+.post-comments li{font-size:13px; line-height:1.7; color:var(--muted); word-break:break-word}
+.post-comments li b{color:var(--text); margin-right:7px}
+.post-cform{display:flex; gap:8px}
+.post-cform input{flex:1; min-width:0; padding:9px 12px; border-radius:10px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:13px; outline:none; transition:border-color .2s}
+.post-cform input:focus{border-color:var(--accent)}
+.post-cform button{padding:9px 16px; border-radius:10px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); font:inherit; font-size:13px; cursor:pointer; transition:.2s}
+.post-cform button:hover{border-color:var(--accent)}
+/* ============ 社区：概览 / 工具 / 话题 ============ */
+.comm-stats{display:grid; grid-template-columns:repeat(4,1fr); gap:10px; margin:0 0 20px}
+.comm-stat{padding:13px 16px; border-radius:16px; border:1px solid var(--line); background:var(--surface); display:flex; flex-direction:column; gap:2px}
+.comm-stat b{font-size:22px; line-height:1.2; letter-spacing:-.02em; font-variant-numeric:tabular-nums}
+.comm-stat span{font-size:11.5px; color:var(--faint)}
+.comm-notice{display:flex; gap:12px; padding:15px 17px; border-radius:18px; margin-bottom:18px; border:1px solid rgba(255,154,90,.28); background:linear-gradient(135deg,rgba(255,154,90,.12),rgba(139,123,255,.08))}
+.cn-ico{font-size:20px; line-height:1.3}
+.cn-body b{font-size:13px}
+.cn-body p{margin:4px 0 0; font-size:12.5px; line-height:1.7; color:var(--muted)}
+.comm-photos{margin-bottom:20px}
+.comm-photos[hidden]{display:none}
+.comm-sec-head{display:flex; align-items:center; justify-content:space-between; margin-bottom:10px}
+.comm-sec-head b{font-size:13px}
+.comm-sec-head a{font-size:12px; color:var(--accent)}
+.comm-photo-strip{display:flex; gap:9px; overflow-x:auto; padding:2px 2px 6px; scrollbar-width:thin}
+.comm-photo-strip button{flex:0 0 112px; aspect-ratio:1; border-radius:12px; overflow:hidden; border:1px solid var(--line); padding:0; background:var(--surface); cursor:zoom-in}
+.comm-photo-strip img{width:100%; height:100%; object-fit:cover; display:block; transition:transform .35s var(--ease)}
+.comm-photo-strip button:hover img{transform:scale(1.06)}
+.feed-tools{display:flex; gap:10px; align-items:center; margin:0 0 10px; flex-wrap:wrap}
+.feed-search{flex:1; min-width:190px; display:flex; align-items:center; gap:8px; padding:9px 13px; border-radius:12px; border:1px solid var(--line); background:var(--surface)}
+.feed-search span{font-size:13px; opacity:.7}
+.feed-search input{flex:1; min-width:0; border:0; background:transparent; color:var(--text); font:inherit; font-size:13px; outline:none}
+.feed-sorts{display:flex; gap:3px; padding:3px; border-radius:11px; border:1px solid var(--line); background:var(--surface)}
+.feed-sorts button{padding:6px 15px; border:0; border-radius:8px; background:transparent; color:var(--muted); font:inherit; font-size:12.5px; font-weight:600; cursor:pointer; transition:.2s}
+.feed-sorts button.on{background:var(--surface-2); color:var(--text); box-shadow:0 2px 8px rgba(0,0,0,.12)}
+.topic-bar{display:flex; gap:7px; overflow-x:auto; padding:0 0 14px; scrollbar-width:none}
+.topic-bar::-webkit-scrollbar{display:none}
+.topic-chip{flex:0 0 auto; padding:6px 13px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--muted); font:inherit; font-size:12px; cursor:pointer; transition:.2s; white-space:nowrap}
+.topic-chip:hover{border-color:var(--line-strong); color:var(--text)}
+.topic-chip.on{border-color:transparent; background:linear-gradient(135deg,var(--accent),#ff5f6d); color:#1b1008; font-weight:700}
+.topic-chip small{opacity:.65; margin-left:4px; font-size:10.5px}
+.composer-topics{display:flex; gap:7px; flex-wrap:wrap; margin-top:10px}
+.composer-topics .topic-chip{font-size:11.5px; padding:5px 11px}
+.post-count{font-size:11.5px; color:var(--faint); font-variant-numeric:tabular-nums}
+.post-count.warn{color:var(--accent)}
+.post-topic{display:inline-flex; align-items:center; padding:3px 10px; border-radius:999px; background:rgba(255,154,90,.14); color:var(--accent); font-size:11.5px; font-weight:600; margin-bottom:9px; cursor:pointer; border:0; font-family:inherit}
+.post-topic:hover{background:rgba(255,154,90,.24)}
+.post-edit{display:flex; flex-direction:column; gap:8px; margin-bottom:12px}
+.post-edit textarea{width:100%; min-height:90px; padding:11px 12px; border-radius:12px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:14px; line-height:1.7; resize:vertical; outline:none}
+.post-edit textarea:focus{border-color:var(--accent)}
+.post-edit-acts{display:flex; gap:8px; justify-content:flex-end}
+.post-edit-acts button{padding:7px 14px; border-radius:9px; border:1px solid var(--line); background:transparent; color:var(--text); font:inherit; font-size:12.5px; cursor:pointer}
+.post-edit-acts .save{border-color:transparent; background:var(--accent); color:#1b1008; font-weight:700}
+.post-head-act{margin-left:auto; display:flex; gap:2px}
+.post-ed{border:0; background:transparent; color:var(--faint); cursor:pointer; font-size:12.5px; padding:5px 8px; border-radius:8px}
+.post-ed:hover{color:var(--accent); background:rgba(255,154,90,.1)}
+.post-card.heart-burst::after{content:"♥"; position:absolute; left:50%; top:42%; transform:translate(-50%,-50%) scale(.4); font-size:74px; color:rgba(255,107,107,.9); pointer-events:none; animation:heartPop .75s var(--ease) forwards; z-index:5}
+@keyframes heartPop{0%{opacity:0; transform:translate(-50%,-50%) scale(.3)}25%{opacity:1; transform:translate(-50%,-50%) scale(1.15)}55%{transform:translate(-50%,-50%) scale(.98)}100%{opacity:0; transform:translate(-50%,-68%) scale(1.05)}}
+.comment-reply{margin-left:6px; border:0; background:transparent; color:var(--faint); font-size:11px; cursor:pointer; padding:0 2px}
+.comment-reply:hover{color:var(--accent)}
+.post-comments li .reply-to{color:var(--accent); margin-right:4px}
+.post-skeleton{padding:18px 20px; border-radius:20px; border:1px solid var(--line); background:var(--surface)}
+.sk-line{height:12px; border-radius:6px; background:linear-gradient(90deg,var(--surface-2),var(--line),var(--surface-2)); background-size:200% 100%; animation:sk 1.2s infinite; margin-bottom:9px}
+@keyframes sk{to{background-position:-200% 0}}
+@media(max-width:640px){
+  .comm-stats{grid-template-columns:repeat(2,1fr); gap:8px}
+  .comm-stat{padding:11px 13px}
+  .comm-stat b{font-size:19px}
+}
+@media(max-width:640px){
+  .post-composer{padding:14px}
+  .post-card{padding:15px 16px}
+  .community-tab{padding:8px 18px}
+  .composer-as{width:100%}
 }
 /* ============ 相册 ============ */
 .albums-toolbar{display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px}
@@ -1001,6 +1139,13 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
 .user-logout{padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--text); font-size:12.5px; cursor:pointer; transition:.2s}
 .user-logout:hover{border-color:var(--accent); color:var(--accent)}
 .user-logout.danger:hover{border-color:#ff6b6b; color:#ff8080}
+.nick-edit{display:flex; flex-direction:column; gap:6px}
+.nick-edit[hidden]{display:none}
+.nick-edit input{padding:8px 10px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:12.5px; outline:none; transition:border-color .2s}
+.nick-edit input:focus{border-color:var(--accent)}
+.nick-save{padding:8px 10px; border-radius:9px; border:0; background:linear-gradient(135deg,var(--accent),#ff5f6d); color:#1b1008; font:inherit; font-size:12.5px; font-weight:700; cursor:pointer; transition:transform .2s}
+.nick-save:hover{transform:translateY(-1px)}
+.nick-save:disabled{opacity:.6; transform:none; cursor:default}
 .user-ava-btn{background:none; border:0; padding:0; cursor:pointer; align-self:center; position:relative}
 .user-ava-btn::after{content:"换"; position:absolute; right:-2px; bottom:-2px; width:20px; height:20px; border-radius:50%; background:var(--accent); color:#1a120c; font-size:10.5px; font-weight:700; display:grid; place-items:center}
 .login-pop{position:fixed; inset:0; z-index:140; display:grid; place-items:center; padding:20px; background:rgba(6,7,12,.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
@@ -1219,7 +1364,7 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 <body>
 <div class="entry-screen" id="entryScreen" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
   <div class="entry-card">
-    <div class="entry-eyebrow">ROOM 514</div>
+    <div class="entry-eyebrow">郑科宿舍社区</div>
     <h2 id="entryTitle">进门前，先调一下</h2>
     <p class="entry-sub">选好显示模式和光效再进去，之后随时能在右上角 ⚙️ 里改。</p>
 
@@ -1269,18 +1414,15 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 <div class="cursor-glow" id="cursorGlow" aria-hidden="true"></div>
 
 <header class="nav" id="nav">
-  <a class="brand" href="#top" aria-label="514 宿舍档案首页">
-    <span class="brand-badge">514</span>
-    <span>宿舍档案</span>
+  <a class="brand" href="#top" aria-label="郑科宿舍社区首页">
+    <span class="brand-badge">郑</span>
+    <span>郑科宿舍社区</span>
   </a>
   <nav class="nav-links" aria-label="页面导航">
+    <a href="#community">社区</a>
     <a href="#members">成员</a>
-    <a href="#life">日常</a>
-    <a href="#photos">图片</a>
-    <a href="#rules">公约</a>
   </nav>
   <div class="nav-actions">
-    <button class="mini-cta" id="randomBtn" type="button">🎲 <span class="txt">随机点名</span></button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☀️</button>
     <div class="user-wrap">
       <button class="icon-btn user-btn" id="userBtn" type="button" aria-label="登录 / 注册" title="登录 / 注册">👤</button>
@@ -1290,6 +1432,11 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
         </button>
         <div class="user-name" id="userName"></div>
         <div class="user-mail" id="userMail"></div>
+        <button class="user-logout" id="nickEditBtn" type="button">修改昵称</button>
+        <div class="nick-edit" id="nickEdit" hidden>
+          <input id="nickInput" maxlength="12" placeholder="新昵称" aria-label="新昵称">
+          <button class="nick-save" id="nickSave" type="button">保存昵称</button>
+        </div>
         <button class="user-logout" id="avatarPick" type="button">更换头像</button>
         <button class="user-logout danger" id="userLogout" type="button">退出登录</button>
         <input type="file" id="avatarFile" accept="image/*" hidden>
@@ -1344,22 +1491,22 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
   <!-- HERO -->
   <section class="hero">
     <div class="hero-copy">
-      <div class="eyebrow reveal"><span class="pulse"></span>ROOM 514 · 正在营业</div>
+      <div class="eyebrow reveal"><span class="pulse"></span>ZHENGKE DORM COMMUNITY · 试营业中</div>
       <h1 class="reveal" data-delay="1">
-        五个人，
-        <span class="line2"><span class="grad">一间叫 514 的家。</span></span>
+        郑科宿舍社区
+        <span class="line2"><span class="grad">从一间 514 开始。</span></span>
       </h1>
       <p class="lede reveal" data-delay="2">
-        <strong>不同的作息，同一个屋檐。</strong> 欢迎推门进来，认识一下 514 的五位常驻居民。
+        <strong>五个人的日常，慢慢长成更多人的社区。</strong> 这里收着宿舍里的照片、故事和夜宵，也留给以后搬进来的每一间宿舍。
       </p>
       <div class="hero-actions reveal" data-delay="3">
-        <a class="btn primary" href="#members">认识我们 <span aria-hidden="true">↓</span></a>
-        <button class="btn ghost" id="randomBtn2" type="button">🎲 随机点名</button>
+        <a class="btn primary" href="#community">进入社区 <span aria-hidden="true">→</span></a>
+        <a class="btn ghost" href="#community/albums">看看照片</a>
       </div>
       <div class="stats reveal" data-delay="3">
         <div class="stat">
           <div class="num" data-count="5">0</div>
-          <div class="lab">位常驻成员</div>
+          <div class="lab">位创始成员</div>
         </div>
         <div class="stat">
           <div class="num" id="daysNum" data-count="40" role="button" tabindex="0"
@@ -1396,84 +1543,6 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
     <div class="marquee-track" id="marqueeTrack"></div>
   </div>
 
-  <!-- 成员 -->
-  <section class="section" id="members">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <div class="eyebrow"><span class="pulse"></span>THE RESIDENTS</div>
-          <h2>514 的五位<span class="grad">常驻居民</span></h2>
-        </div>
-        <p>每个人都有自己的频道，凑在一起刚好是一整天的背景音。点击卡片，翻开他们的宿舍档案。</p>
-      </div>
-      <div class="member-grid" id="memberGrid"></div>
-    </div>
-  </section>
-
-  <!-- 日常 -->
-  <section class="section" id="life">
-    <div class="wrap">
-      <div class="section-head reveal">
-        <div>
-          <div class="eyebrow"><span class="pulse"></span>DAILY ROUTINE</div>
-          <h2>我们的<span class="grad">一天</span></h2>
-        </div>
-        <p>没有剧本，但每天都在准时上演。从闹钟接力到卧谈会，514 的时钟有自己的走法。</p>
-      </div>
-      <div class="life-grid">
-        <article class="life-card reveal">
-          <div class="time">07:30</div>
-          <span class="emoji">⏰</span>
-          <h4>闹钟接力赛</h4>
-          <p>第一个响的永远叫不醒自己，但能精准叫醒全宿舍。第五个闹钟之后，大家终于起床。</p>
-        </article>
-        <article class="life-card reveal" data-delay="1">
-          <div class="time">12:10</div>
-          <span class="emoji">🏃</span>
-          <h4>食堂冲锋号</h4>
-          <p>下课铃一响，全员切换竞走模式。谁先到窗口，谁就负责帮全宿舍占座。</p>
-        </article>
-        <article class="life-card reveal" data-delay="2">
-          <div class="time">19:30</div>
-          <span class="emoji">🎧</span>
-          <h4>各自忙碌时</h4>
-          <p>有人在图书馆，有人在球场，有人对着屏幕改第三版方案。耳机一戴，互不打扰。</p>
-        </article>
-        <article class="life-card reveal" data-delay="3">
-          <div class="time">23:30</div>
-          <span class="emoji">🌙</span>
-          <h4>熄灯卧谈会</h4>
-          <p>灯灭了，话匣子开了。从明天吃什么聊到十年后在哪，最后总有人说：快睡吧。</p>
-        </article>
-      </div>
-
-      <a class="photos-entry lg reveal" href="#photos">
-        <span class="pe-ico" aria-hidden="true">📷</span>
-        <span class="pe-text">
-          <strong>我们的图片</strong>
-          <em>514 的日常瞬间都收在这里，可以点赞、评论，也能上传你自己的照片。</em>
-        </span>
-        <span class="pe-go">进去看看 →</span>
-      </a>
-    </div>
-  </section>
-
-  <!-- 公约 -->
-  <section class="section" id="rules">
-    <div class="wrap">
-      <div class="rules-wrap">
-        <div class="rules-intro reveal">
-          <div class="eyebrow"><span class="pulse"></span>ROOM RULES</div>
-          <h2 style="margin:16px 0 0; font-size:clamp(30px,4vw,44px); letter-spacing:-.03em;">514 <span class="grad">相处公约</span></h2>
-          <p>五个人住在一起，靠的不是运气，是彼此都愿意往后退半步。这几条不算严格，但我们都默认遵守。</p>
-          <div class="note">“宿舍不是谁的家，是大家的家。<br>所以灯谁关都行，垃圾谁倒都行，架也可以吵，但别过夜。”</div>
-          <p class="rules-hint">点击任意一条，展开看看我们具体怎么做 ↓</p>
-        </div>
-        <ol class="rules reveal" data-delay="1" id="rulesList"></ol>
-      </div>
-    </div>
-  </section>
-
   <!-- 引言 -->
   <section class="quote-band" id="quoteBand">
     <div class="quote-inner reveal" id="quoteInner" tabindex="0" role="group"
@@ -1484,21 +1553,101 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
       <div class="quote-dots" id="quoteDots"></div>
     </div>
   </section>
-  <!-- 我们的图片（独立页面） -->
-  <section class="photos-page" id="photos" aria-label="我们的图片">
+
+  <!-- 成员（社区创始成员，缩小后置） -->
+  <section class="section" id="members">
+    <div class="wrap">
+      <div class="section-head reveal">
+        <div>
+          <div class="eyebrow"><span class="pulse"></span>THE FOUNDERS</div>
+          <h2>514 的<span class="grad">五位创始成员</span></h2>
+        </div>
+        <p>社区从这五个人开始。点开卡片，看他们的完整档案。</p>
+      </div>
+      <div class="member-grid" id="memberGrid"></div>
+    </div>
+  </section>
+
+  <!-- 社区（动态 + 相册） -->
+  <section class="photos-page community-page" id="community" aria-label="社区">
     <div class="wrap">
       <div class="photos-head">
         <div class="photos-head-top">
           <a class="photos-back" href="#top">← 返回首页</a>
           <button class="admin-entry" id="adminEntry" type="button">🔒 管理</button>
         </div>
-        <div class="eyebrow"><span class="pulse"></span>OUR PHOTOS</div>
-        <h2>我们的<span class="grad">图片</span></h2>
-        <p>514 的日常瞬间都收在这里。建个相册，把同一段回忆放在一起。</p>
+        <div class="eyebrow"><span class="pulse"></span>COMMUNITY</div>
+        <h2>宿舍<span class="grad">社区</span></h2>
+        <p>发条动态，或者翻翻相册。这里不只有 514。</p>
       </div>
 
-      <!-- 相册列表 -->
-      <div id="albumsView">
+      <div class="comm-stats">
+        <div class="comm-stat"><b id="statPosts">0</b><span>条动态</span></div>
+        <div class="comm-stat"><b id="statMembers">0</b><span>位发言人</span></div>
+        <div class="comm-stat"><b id="statPhotos">0</b><span>张照片</span></div>
+        <div class="comm-stat"><b id="statToday">0</b><span>今日新增</span></div>
+      </div>
+
+      <div class="community-tabs" role="tablist" aria-label="社区内容">
+        <button class="community-tab on" id="ctabFeed" type="button" role="tab" aria-selected="true" data-ctab="feed">动态</button>
+        <button class="community-tab" id="ctabAlbums" type="button" role="tab" aria-selected="false" data-ctab="albums">相册</button>
+      </div>
+
+      <!-- 动态 -->
+      <div id="communityFeed">
+        <div class="comm-notice">
+          <span class="cn-ico" aria-hidden="true">📢</span>
+          <div class="cn-body">
+            <b>社区公告</b>
+            <p>这里记录 514 的日常，也欢迎其他宿舍来串门。发动态时选个话题，大家更容易找到你。</p>
+          </div>
+        </div>
+
+        <section class="comm-photos" id="commPhotosWrap" hidden>
+          <div class="comm-sec-head">
+            <b>最新照片</b>
+            <a href="#community/albums">全部相册 →</a>
+          </div>
+          <div class="comm-photo-strip" id="commPhotos"></div>
+        </section>
+
+        <div class="post-composer lg">
+          <textarea id="postText" maxlength="300" placeholder="分享点什么…（Ctrl + Enter 快速发布）"></textarea>
+          <div class="composer-topics" id="composerTopics" aria-label="选择话题"></div>
+          <div class="post-preview" id="postPreview" hidden></div>
+          <div class="composer-foot">
+            <span class="composer-as">以
+              <input id="postName" class="post-name" maxlength="12" placeholder="昵称" aria-label="你的昵称">
+              发布</span>
+            <div class="composer-acts">
+              <span class="post-count" id="postCount">0/300</span>
+              <label class="btn ghost btn-sm" for="postImage">＋ 图片</label>
+              <input type="file" id="postImage" accept="image/*" hidden>
+              <button class="btn primary btn-sm" id="postSend" type="button">发布</button>
+            </div>
+          </div>
+        </div>
+
+        <div class="feed-tools">
+          <div class="feed-search">
+            <span aria-hidden="true">🔍</span>
+            <input id="feedSearch" type="search" maxlength="30" placeholder="搜索动态、作者或话题" aria-label="搜索动态">
+          </div>
+          <div class="feed-sorts" role="group" aria-label="动态排序">
+            <button type="button" class="on" data-sort="new">最新</button>
+            <button type="button" data-sort="hot">最热</button>
+          </div>
+        </div>
+        <div class="topic-bar" id="topicBar" aria-label="话题筛选"></div>
+
+        <div class="post-list" id="postList"></div>
+        <p class="daily-empty" id="postEmpty">还没有动态，来发第一条。</p>
+      </div>
+
+      <!-- 相册（原图片功能） -->
+      <div id="communityAlbums" hidden>
+        <!-- 相册列表 -->
+        <div id="albumsView">
         <div class="albums-toolbar">
           <span class="albums-count" id="albumsCount"></span>
           <button class="btn primary btn-sm" id="newAlbumBtn" type="button">＋ 新建相册</button>
@@ -1515,7 +1664,7 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
       <!-- 相册详情 -->
       <div id="albumDetail" hidden>
         <div class="album-detail-head">
-          <a class="photos-back" id="albumBack" href="#photos">← 全部相册</a>
+          <a class="photos-back" id="albumBack" href="#community/albums">← 全部相册</a>
           <button class="album-del" id="albumDelete" type="button">删除相册</button>
         </div>
         <h3 class="album-title" id="albumTitle"></h3>
@@ -1536,13 +1685,14 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
         <div class="daily-grid" id="dailyGrid"></div>
         <p class="daily-empty" id="dailyEmpty">这个相册还没有照片，点「上传照片」放进来。</p>
       </div>
+      </div>
     </div>
   </section>
 </main>
 
 <footer class="footer">
   <div class="footer-inner">
-    <div>© <span id="year"></span> ROOM 514 · 由五个人共同维护 <span class="heart" aria-hidden="true">♥</span></div>
+    <div>© <span id="year"></span> 郑科宿舍社区 · 由 514 的五个人共同维护 <span class="heart" aria-hidden="true">♥</span></div>
     <button class="footer-by" id="footerBy" type="button" aria-label="查看懒羊羊的宿舍档案"></button>
     <button class="to-top" id="toTop" type="button">回到顶部 ↑</button>
   </div>
@@ -1635,6 +1785,8 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
       <div class="login-step" id="regStep3" hidden>
         <div class="reg-kicker">第 3 步 / 3 · 设置密码</div>
         <div class="reg-ok" id="regOk">邮箱已验证 ✓</div>
+        <label class="login-label" for="regNick">昵称（可选）</label>
+        <input class="login-input" id="regNick" type="text" maxlength="12" autocomplete="nickname" placeholder="社区里显示的名字">
         <label class="login-label" for="regPass">设置密码</label>
         <input class="login-input" id="regPass" type="password" autocomplete="new-password" placeholder="至少 6 位">
         <label class="login-label" for="regPass2">再输一次</label>
@@ -2165,14 +2317,6 @@ document.addEventListener("keydown", e => {
   else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
 });
 
-/* ============ 随机点名 ============ */
-function randomPick() {
-  const i = Math.floor(Math.random() * MEMBERS.length);
-  openModal(i);
-}
-$("#randomBtn").addEventListener("click", randomPick);
-$("#randomBtn2").addEventListener("click", randomPick);
-
 /* ============ 主题切换 ============ */
 const themeBtn = $("#themeBtn");
 function applyTheme(theme) {
@@ -2702,44 +2846,11 @@ setupQuoteLiquid();
 setupJelly();
 setupMagnetic();
 setupRipple();
-setupLifeCards();
 setupQuotes();
 setupCursor();
 setupNav();
 setupSettings();
 setupEntry();
-/* ============ 日常卡片：点开放大 ============ */
-function setupLifeCards() {
-  const grid = $(".life-grid");
-  if (!grid) return;
-  $$(".life-card", grid).forEach(card => {
-    const title = card.querySelector("h4");
-    card.setAttribute("tabindex", "0");
-    card.setAttribute("role", "button");
-    card.setAttribute("aria-label", "放大查看：" + (title ? title.textContent : "日常片段"));
-  });
-  const open = card => {
-    const time = card.querySelector(".time") ? card.querySelector(".time").textContent : "";
-    const emoji = card.querySelector(".emoji") ? card.querySelector(".emoji").textContent : "";
-    const title = card.querySelector("h4") ? card.querySelector("h4").textContent : "";
-    const desc = card.querySelector("p") ? card.querySelector("p").textContent : "";
-    openLightbox(`
-      <div class="lb-kicker">${esc(time)}</div>
-      <span class="lb-emoji" aria-hidden="true">${esc(emoji)}</span>
-      <h3 class="lb-title">${esc(title)}</h3>
-      <p class="lb-body lb-body-center">${esc(desc)}</p>
-    `);
-  };
-  grid.addEventListener("click", e => {
-    const card = e.target.closest(".life-card");
-    if (card) open(card);
-  });
-  grid.addEventListener("keydown", e => {
-    const card = e.target.closest(".life-card");
-    if (card && (e.key === "Enter" || e.key === " ")) { e.preventDefault(); open(card); }
-  });
-}
-
 /* ============ 日常相册：上传 / 点赞 / 评论 ============ */
 /* ------------------------------------------------------------------
    云端模式（Supabase）配置 —— 填好下面两行，所有设备就能看到同一批照片。
@@ -3242,11 +3353,16 @@ let dailyLikedIds = new Set();
 const dailyOpenIds = new Set();
 
 function dailyName() {
+  if (authSession && authSession.email) {
+    return userLabel(authSession) || authSession.email.split("@")[0];
+  }
   const el = $("#dailyName");
   const v = el ? el.value.trim() : "";
   if (v) return v;
-  if (authSession && authSession.email) return authSession.email.split("@")[0];
-  return "514 匿名";
+  const pn = $("#postName");
+  const pv = pn ? pn.value.trim() : "";
+  if (pv) return pv;
+  return "514 游客";
 }
 
 function dailyTimeAgo(ts) {
@@ -3349,7 +3465,7 @@ function albumCardHTML(a) {
   const coverHTML = cover
     ? `<img src="${cover}" alt="" loading="lazy">`
     : `<span class="album-ph" aria-hidden="true">📷</span>`;
-  return `<a class="album-card lg" href="#photos/${a.id}">
+  return `<a class="album-card lg" href="#community/albums/${a.id}">
     <span class="album-cover">${coverHTML}</span>
     <span class="album-meta">
       <strong>${esc(a.name)}</strong>
@@ -3363,7 +3479,7 @@ function renderAlbums() {
   if (!grid) return;
   const stray = dailyPhotos.filter(p => !p.albumId).length;
   const strayCard = stray
-    ? `<a class="album-card lg" href="#photos/none">
+    ? `<a class="album-card lg" href="#community/albums/none">
          <span class="album-cover"><span class="album-ph" aria-hidden="true">🗂️</span></span>
          <span class="album-meta"><strong>未分类照片</strong><em>${stray} 张照片</em></span>
        </a>`
@@ -3379,6 +3495,7 @@ function renderAlbums() {
 function refreshPhotosView() {
   if (currentAlbum === null) renderAlbums();
   else renderDaily();
+  renderCommunityPhotos();
 }
 
 function updateAlbumHeader() {
@@ -3691,7 +3808,7 @@ function setupAlbums() {
         dailyAlbums.unshift(a);
         input.value = "";
         form.hidden = true;
-        location.hash = "#photos/" + a.id;
+        location.hash = "#community/albums/" + a.id;
       } catch (err) {
         alert("创建相册失败：" + (err && err.message ? err.message : err));
       }
@@ -3708,7 +3825,7 @@ function setupAlbums() {
       await DailyStore.delAlbum(currentAlbum);
       dailyAlbums = dailyAlbums.filter(x => x.id !== currentAlbum);
       dailyPhotos.forEach(p => { if (p.albumId === currentAlbum) p.albumId = null; });
-      location.hash = "#photos";
+      location.hash = "#community/albums";
     } catch (err) {
       alert("删除相册失败：" + (err && err.message ? err.message : err));
     }
@@ -4019,16 +4136,628 @@ function setupQuotes() {
 
 $("#year").textContent = new Date().getFullYear();
 
-/* ============ 独立图片页：#photos / #photos/<相册> ============ */
+/* ============ 社区：动态 ============ */
+const POST_TABLE = "daily_posts";
+const POST_LIKES = "room514.posts.liked";
+const POST_MINE = "room514.posts.mine";
+let communityPosts = [];
+let postLikedIds = new Set();
+let postMineIds = new Set();
+let postOpenIds = new Set();
+let postPendingData = "";   // 待发布图片的 dataURL
+let postsFailed = "";
+let postsLoading = false;
+
+const TOPICS = ["日常", "约饭", "求助", "二手", "失物招领", "吐槽", "学习"];
+let feedSort = "new";
+let feedTopic = "";
+let feedSearch = "";
+let editingPostId = null;
+let composerTopic = "";
+
+const TOPIC_RE = /#([^\s#]{1,12})/;
+function postTopicOf(p) {
+  const m = (p && p.text ? p.text : "").match(TOPIC_RE);
+  return m ? m[1] : "";
+}
+function postTextOf(p) {
+  return (p && p.text ? p.text : "").replace(TOPIC_RE, "").trim();
+}
+function postHotScore(p) {
+  return (p.likes || 0) * 2 + (p.comments || []).length * 3;
+}
+function allTopics() {
+  const counts = {};
+  communityPosts.forEach(p => {
+    const t = postTopicOf(p);
+    if (t) counts[t] = (counts[t] || 0) + 1;
+  });
+  const names = TOPICS.filter(t => counts[t]);
+  Object.keys(counts).forEach(t => { if (!names.includes(t)) names.push(t); });
+  return names.map(t => ({ name: t, count: counts[t] }));
+}
+function visiblePosts() {
+  const q = feedSearch.trim().toLowerCase();
+  let list = communityPosts.filter(p => {
+    if (feedTopic && postTopicOf(p) !== feedTopic) return false;
+    if (!q) return true;
+    return ((p.author || "") + " " + (p.text || "")).toLowerCase().includes(q);
+  });
+  if (feedSort === "hot") {
+    list = list.slice().sort((a, b) => postHotScore(b) - postHotScore(a) || b.ts - a.ts);
+  } else {
+    list = list.slice().sort((a, b) => b.ts - a.ts);
+  }
+  return list;
+}
+function sameDay(ts) {
+  const a = new Date(ts), b = new Date();
+  return a.getFullYear() === b.getFullYear() && a.getMonth() === b.getMonth() && a.getDate() === b.getDate();
+}
+function updateCommStats() {
+  const authors = new Set();
+  communityPosts.forEach(p => authors.add((p.email || p.author || "匿名").toLowerCase()));
+  const set = (id, v) => { const el = $(id); if (el) el.textContent = v; };
+  set("#statPosts", communityPosts.length);
+  set("#statMembers", authors.size);
+  set("#statPhotos", dailyPhotos.length);
+  set("#statToday", communityPosts.filter(p => sameDay(p.ts)).length);
+}
+function renderTopicBars() {
+  const bar = $("#topicBar");
+  if (bar) {
+    const all = allTopics();
+    bar.innerHTML = `<button type="button" class="topic-chip${feedTopic ? "" : " on"}" data-topic="">全部</button>` +
+      all.map(t => `<button type="button" class="topic-chip${feedTopic === t.name ? " on" : ""}" data-topic="${esc(t.name)}">#${esc(t.name)}<small>${t.count}</small></button>`).join("");
+    bar.hidden = communityPosts.length === 0;
+  }
+  const comp = $("#composerTopics");
+  if (comp) {
+    comp.innerHTML = TOPICS.map(t =>
+      `<button type="button" class="topic-chip${composerTopic === t ? " on" : ""}" data-ctopic="${esc(t)}">#${esc(t)}</button>`
+    ).join("");
+  }
+}
+function renderCommunityPhotos() {
+  const wrap = $("#commPhotosWrap"), strip = $("#commPhotos");
+  if (!wrap || !strip) return;
+  const list = dailyPhotos.slice().sort((a, b) => b.ts - a.ts).slice(0, 8);
+  wrap.hidden = list.length === 0;
+  strip.innerHTML = list.map(ph =>
+    `<button type="button" data-photo="${ph.id}" aria-label="查看照片"><img src="${esc(ph.src)}" alt="" loading="lazy"></button>`
+  ).join("");
+  updateCommStats();
+}
+
+function setCommunityTab(tab) {
+  const feed = $("#communityFeed"), albums = $("#communityAlbums");
+  const bf = $("#ctabFeed"), ba = $("#ctabAlbums");
+  if (!feed || !albums || !bf || !ba) return;
+  const isAlbums = tab === "albums";
+  feed.hidden = isAlbums;
+  albums.hidden = !isAlbums;
+  bf.classList.toggle("on", !isAlbums);
+  ba.classList.toggle("on", isAlbums);
+  bf.setAttribute("aria-selected", String(!isAlbums));
+  ba.setAttribute("aria-selected", String(isAlbums));
+}
+
+function postCardHTML(p) {
+  const liked = postLikedIds.has(p.id);
+  const open = postOpenIds.has(p.id);
+  const mine = !!(authSession && p.email && authSession.email &&
+    p.email.toLowerCase() === authSession.email.toLowerCase());
+  const canDel = isAdmin() || mine || postMineIds.has(p.id);
+  const canEdit = mine || postMineIds.has(p.id);
+  const editing = editingPostId === p.id;
+  const avaImg = mine && authSession && authSession.avatar_url
+    ? `<img src="${esc(authSession.avatar_url)}" alt="">` : "";
+  const initial = esc((p.author || "游").slice(0, 1).toUpperCase());
+  const comments = p.comments || [];
+  const topic = postTopicOf(p);
+  const body = postTextOf(p);
+  return `<article class="post-card lg" data-id="${p.id}">
+    <div class="post-head">
+      <div class="post-ava" aria-hidden="true">${avaImg || initial}</div>
+      <div class="post-meta"><button type="button" class="post-author" data-act="author">${esc(p.author || "514 游客")}</button><span>${dailyTimeAgo(p.ts)}</span></div>
+      <div class="post-head-act">
+        ${canEdit && !editing ? `<button class="post-ed" type="button" data-act="edit" aria-label="编辑这条动态">✎</button>` : ""}
+        ${canDel && !editing ? `<button class="post-del" type="button" data-act="del" aria-label="删除这条动态">✕</button>` : ""}
+      </div>
+    </div>
+    ${topic ? `<button type="button" class="post-topic" data-act="topic">#${esc(topic)}</button>` : ""}
+    ${editing
+      ? `<form class="post-edit"><textarea maxlength="300">${esc(body)}</textarea>
+          <div class="post-edit-acts">
+            <button type="button" data-act="editcancel">取消</button>
+            <button type="submit" class="save">保存</button>
+          </div>
+        </form>`
+      : (body ? `<p class="post-text">${esc(body).replace(/\n/g, "<br>")}</p>` : "")}
+    ${p.image && !editing ? `<div class="post-img" data-act="zoom"><img src="${esc(p.image)}" alt="动态图片" loading="lazy"></div>` : ""}
+    <div class="post-acts">
+      <button class="d-btn${liked ? " on" : ""}" type="button" data-act="like" aria-pressed="${liked}">${liked ? "♥" : "♡"} <span>${p.likes || 0}</span></button>
+      <button class="d-btn" type="button" data-act="comments" aria-expanded="${open}">💬 <span>${comments.length}</span></button>
+    </div>
+    <div class="post-comments" ${open ? "" : "hidden"}>
+      ${comments.length ? `<ul>${comments.map((c, i) => `<li data-ci="${i}"><b>${esc(c.name || "匿名")}</b>${esc(c.text || "").replace(/@([^\s]{1,12})/g, '<span class="reply-to">@$1</span>')}<button type="button" class="comment-reply" data-act="reply" data-ci="${i}">回复</button></li>`).join("")}</ul>` : ""}
+      <form class="post-cform"><input maxlength="80" placeholder="说点什么…" aria-label="评论"><button type="submit">发送</button></form>
+    </div>
+  </article>`;
+}
+
+function renderPosts() {
+  const list = $("#postList");
+  const empty = $("#postEmpty");
+  if (!list || !empty) return;
+  updateCommStats();
+  renderTopicBars();
+  if (postsFailed === "missing") {
+    list.innerHTML = "";
+    empty.hidden = false;
+    empty.innerHTML = "社区动态还没开通：请先在 Supabase 的 SQL Editor 运行 <b>setup-community.sql</b>。相册可以正常使用。";
+    return;
+  }
+  if (postsFailed === "noaccess") {
+    list.innerHTML = "";
+    empty.hidden = false;
+    empty.innerHTML = "社区动态还没授权：请在 Supabase 的 SQL Editor 运行 <b>setup-community.sql</b> 里的 <b>grant</b> 语句。相册可以正常使用。";
+    return;
+  }
+  if (postsFailed) {
+    list.innerHTML = "";
+    empty.hidden = false;
+    empty.textContent = "动态加载失败了，稍后再试试。";
+    return;
+  }
+  if (postsLoading) {
+    list.innerHTML = `<div class="post-skeleton lg"><div class="sk-line" style="width:32%"></div><div class="sk-line" style="width:86%"></div><div class="sk-line" style="width:64%"></div></div>
+      <div class="post-skeleton lg"><div class="sk-line" style="width:26%"></div><div class="sk-line" style="width:74%"></div></div>`;
+    empty.hidden = true;
+    return;
+  }
+  const items = visiblePosts();
+  if (items.length) {
+    empty.hidden = true;
+  } else {
+    empty.hidden = false;
+    empty.textContent = communityPosts.length ? "没有找到匹配的动态，换个关键词或话题试试。" : "还没有动态，来发第一条。";
+  }
+  list.innerHTML = items.map(postCardHTML).join("");
+}
+
+async function fetchPosts() {
+  const res = await fetch(
+    `${RemoteDaily.base()}/rest/v1/${POST_TABLE}?select=*&order=created_at.desc&limit=100`,
+    { headers: RemoteDaily.headers() }
+  );
+  if (!res.ok) {
+    if (res.status === 404) throw new Error("missing");
+    if (res.status === 401 || res.status === 403) throw new Error("noaccess");
+    throw new Error("读取失败 " + res.status);
+  }
+  const rows = await res.json();
+  return rows.map(rowToPost);
+}
+
+function rowToPost(r) {
+  return {
+    id: r.id,
+    author: r.author || "514 游客",
+    email: r.author_email || "",
+    text: r.content || "",
+    image: r.image || "",
+    likes: r.likes || 0,
+    comments: Array.isArray(r.comments) ? r.comments : [],
+    ts: new Date(r.created_at).getTime()
+  };
+}
+
+async function createPost(rec) {
+  const res = await fetch(`${RemoteDaily.base()}/rest/v1/${POST_TABLE}`, {
+    method: "POST",
+    headers: RemoteDaily.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
+    body: JSON.stringify({
+      author: rec.author, author_email: rec.email,
+      content: rec.text, image: rec.image
+    })
+  });
+  if (!res.ok) throw new Error("发布失败 " + res.status);
+  const rows = await res.json();
+  return rowToPost(rows[0]);
+}
+
+async function patchPost(id, patch) {
+  const res = await fetch(`${RemoteDaily.base()}/rest/v1/${POST_TABLE}?id=eq.${id}`, {
+    method: "PATCH",
+    headers: RemoteDaily.headers({ "Content-Type": "application/json" }),
+    body: JSON.stringify(patch)
+  });
+  if (!res.ok) throw new Error("更新失败 " + res.status);
+}
+
+async function deletePostRemote(id) {
+  const res = await fetch(`${RemoteDaily.base()}/rest/v1/${POST_TABLE}?id=eq.${id}`, {
+    method: "DELETE",
+    headers: RemoteDaily.headers()
+  });
+  if (!res.ok) throw new Error("删除失败 " + res.status);
+}
+
+async function loadPosts() {
+  if (!RemoteDaily.on()) { postsFailed = "offline"; renderPosts(); return; }
+  postsLoading = true;
+  postsFailed = "";
+  renderPosts();
+  try { communityPosts = await fetchPosts(); }
+  catch (err) {
+    postsFailed = err.message === "missing" ? "missing" : err.message === "noaccess" ? "noaccess" : "error";
+  }
+  postsLoading = false;
+  renderPosts();
+}
+
+async function publishPost() {
+  const textEl = $("#postText");
+  const send = $("#postSend");
+  if (!textEl || !send) return;
+  const text = textEl.value.trim();
+  if (!text && !postPendingData) { alert("写点什么，或者选一张图再发。"); return; }
+  if (!RemoteDaily.on()) { alert("社区还没有连接云端，暂时不能发布。"); return; }
+  const finalText = composerTopic ? `#${composerTopic} ${text}`.trim() : text;
+
+  const nameEl = $("#postName");
+  const name = authSession
+    ? (userLabel(authSession) || dailyName())
+    : ((nameEl && nameEl.value.trim()) || dailyName());
+  if (!authSession) {
+    if (nameEl) nameEl.value = name;
+    try { localStorage.setItem(DAILY_NAME, name); } catch (err) {}
+    const dailyNameEl = $("#dailyName");
+    if (dailyNameEl && !dailyNameEl.value.trim()) dailyNameEl.value = name;
+  }
+
+  send.disabled = true;
+  send.textContent = "发布中…";
+  try {
+    let image = "";
+    if (postPendingData) {
+      const blob = await (await fetch(postPendingData)).blob();
+      const path = `posts/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.jpg`;
+      const up = await fetch(`${RemoteDaily.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
+        method: "POST",
+        headers: RemoteDaily.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+        body: blob
+      });
+      if (!up.ok) throw new Error("图片上传失败 " + up.status);
+      image = `${RemoteDaily.base()}/storage/v1/object/public/${DAILY_REMOTE.bucket}/${path}`;
+    }
+    const post = await createPost({
+      author: name, email: authSession && authSession.email ? authSession.email : "", text: finalText, image
+    });
+    communityPosts.unshift(post);
+    postMineIds.add(post.id);
+    try { localStorage.setItem(POST_MINE, JSON.stringify(Array.from(postMineIds))); } catch (err) {}
+    textEl.value = "";
+    composerTopic = "";
+    postPendingData = "";
+    const preview = $("#postPreview");
+    if (preview) { preview.hidden = true; preview.innerHTML = ""; }
+    const count = $("#postCount");
+    if (count) { count.textContent = "0/300"; count.classList.remove("warn"); }
+    const file = $("#postImage");
+    if (file) file.value = "";
+    postsFailed = "";
+    renderPosts();
+  } catch (err) {
+    alert("发布失败：" + (err && err.message ? err.message : err));
+  }
+  send.disabled = false;
+  send.textContent = "发布";
+}
+
+async function likePost(p, btn) {
+  const on = !postLikedIds.has(p.id);
+  const before = p.likes || 0;
+  if (on) postLikedIds.add(p.id); else postLikedIds.delete(p.id);
+  p.likes = Math.max(0, before + (on ? 1 : -1));
+  try { localStorage.setItem(POST_LIKES, JSON.stringify(Array.from(postLikedIds))); } catch (err) {}
+  if (btn) {
+    btn.classList.toggle("on", on);
+    btn.setAttribute("aria-pressed", String(on));
+    btn.innerHTML = `${on ? "♥" : "♡"} <span>${p.likes}</span>`;
+  }
+  if (feedSort === "hot") renderPosts();
+  try { await patchPost(p.id, { likes: p.likes }); }
+  catch (err) {
+    if (on) postLikedIds.delete(p.id); else postLikedIds.add(p.id);
+    p.likes = before;
+    renderPosts();
+    alert("点赞失败，稍后再试。");
+  }
+}
+
+function setupCommunity() {
+  try { postLikedIds = new Set(JSON.parse(localStorage.getItem(POST_LIKES) || "[]")); } catch (err) {}
+  try { postMineIds = new Set(JSON.parse(localStorage.getItem(POST_MINE) || "[]")); } catch (err) {}
+
+  const textEl = $("#postText");
+  const countEl = $("#postCount");
+  const syncCount = () => {
+    if (!textEl || !countEl) return;
+    const n = textEl.value.length;
+    countEl.textContent = n + "/300";
+    countEl.classList.toggle("warn", n >= 280);
+  };
+  if (textEl) {
+    textEl.addEventListener("input", syncCount);
+    textEl.addEventListener("keydown", e => {
+      if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) { e.preventDefault(); publishPost(); }
+    });
+  }
+  syncCount();
+
+  const compTopics = $("#composerTopics");
+  if (compTopics) compTopics.addEventListener("click", e => {
+    const b = e.target.closest("[data-ctopic]");
+    if (!b) return;
+    const t = b.dataset.ctopic;
+    composerTopic = composerTopic === t ? "" : t;
+    renderTopicBars();
+  });
+
+  const sorts = document.querySelectorAll(".feed-sorts [data-sort]");
+  sorts.forEach(b => b.addEventListener("click", () => {
+    feedSort = b.dataset.sort;
+    sorts.forEach(x => x.classList.toggle("on", x === b));
+    renderPosts();
+  }));
+
+  const search = $("#feedSearch");
+  if (search) search.addEventListener("input", () => {
+    feedSearch = search.value;
+    renderPosts();
+  });
+
+  const topicBar = $("#topicBar");
+  if (topicBar) topicBar.addEventListener("click", e => {
+    const b = e.target.closest("[data-topic]");
+    if (!b) return;
+    feedTopic = b.dataset.topic || "";
+    renderPosts();
+  });
+
+  const strip = $("#commPhotos");
+  if (strip) strip.addEventListener("click", e => {
+    const b = e.target.closest("[data-photo]");
+    if (!b) return;
+    const ph = dailyPhotos.find(x => x.id === Number(b.dataset.photo));
+    if (ph) openLightbox(`<img class="lb-photo" src="${esc(ph.src)}" alt="${esc(ph.name)} 上传的照片">
+      <div class="lb-caption">${esc(ph.name)} · ${dailyTimeAgo(ph.ts)} · ♥ ${ph.likes || 0}</div>`);
+  });
+
+  const nameEl = $("#postName");
+  if (nameEl) {
+    let saved = "";
+    try { saved = localStorage.getItem(DAILY_NAME) || ""; } catch (err) {}
+    nameEl.value = saved || (authSession && authSession.email ? authSession.email.split("@")[0] : "");
+    nameEl.addEventListener("input", () => {
+      try { localStorage.setItem(DAILY_NAME, nameEl.value.trim()); } catch (err) {}
+    });
+  }
+
+  const file = $("#postImage");
+  const preview = $("#postPreview");
+  if (file) file.addEventListener("change", async () => {
+    const f = file.files && file.files[0];
+    if (!f) return;
+    try {
+      postPendingData = await compressImage(f, 1400, .84);
+      if (preview) {
+        preview.innerHTML = `<img src="${postPendingData}" alt="待发布图片预览"><button type="button" class="pp-remove" data-act="rmimg" aria-label="移除图片">✕</button>`;
+        preview.hidden = false;
+      }
+    } catch (err) {
+      alert("这张图片读不出来，换一张试试。");
+    }
+  });
+  if (preview) preview.addEventListener("click", e => {
+    if (!e.target.closest("[data-act='rmimg']")) return;
+    postPendingData = "";
+    preview.hidden = true;
+    preview.innerHTML = "";
+    if (file) file.value = "";
+  });
+
+  const send = $("#postSend");
+  if (send) send.addEventListener("click", publishPost);
+
+  const tabs = document.querySelector(".community-tabs");
+  if (tabs) tabs.addEventListener("click", e => {
+    const b = e.target.closest("[data-ctab]");
+    if (!b) return;
+    const target = b.dataset.ctab === "albums" ? "#community/albums" : "#community";
+    if (location.hash === target) setCommunityTab(b.dataset.ctab);
+    else location.hash = target;
+  });
+
+  const list = $("#postList");
+  if (list) {
+    list.addEventListener("click", async e => {
+      const card = e.target.closest(".post-card[data-id]");
+      if (!card) return;
+      const p = communityPosts.find(x => x.id === Number(card.dataset.id));
+      if (!p) return;
+      const hit = e.target.closest("[data-act]");
+      const act = hit ? hit.dataset.act : "";
+
+      if (act === "zoom" && p.image) {
+        openLightbox(`<img class="lb-photo" src="${esc(p.image)}" alt="动态图片">
+          <div class="lb-caption">${esc(p.author || "514 游客")} · ${dailyTimeAgo(p.ts)}</div>`);
+        return;
+      }
+
+      if (act === "comments") {
+        if (postOpenIds.has(p.id)) postOpenIds.delete(p.id); else postOpenIds.add(p.id);
+        renderPosts();
+        const again = document.querySelector(`.post-card[data-id="${p.id}"] .post-cform input`);
+        if (again && postOpenIds.has(p.id)) again.focus();
+        return;
+      }
+
+      if (act === "like") {
+        likePost(p, hit);
+        return;
+      }
+
+      if (act === "topic") {
+        feedTopic = postTopicOf(p);
+        feedSearch = "";
+        const searchEl = $("#feedSearch");
+        if (searchEl) searchEl.value = "";
+        renderPosts();
+        const tools = document.querySelector(".feed-tools");
+        if (tools) tools.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      if (act === "author") {
+        feedTopic = "";
+        feedSearch = p.author || "";
+        const searchEl = $("#feedSearch");
+        if (searchEl) searchEl.value = feedSearch;
+        renderPosts();
+        const tools = document.querySelector(".feed-tools");
+        if (tools) tools.scrollIntoView({ behavior: "smooth", block: "center" });
+        return;
+      }
+
+      if (act === "edit") {
+        editingPostId = p.id;
+        renderPosts();
+        const ta = document.querySelector(`.post-card[data-id="${p.id}"] .post-edit textarea`);
+        if (ta) { ta.focus(); ta.setSelectionRange(ta.value.length, ta.value.length); }
+        return;
+      }
+
+      if (act === "editcancel") {
+        editingPostId = null;
+        renderPosts();
+        return;
+      }
+
+      if (act === "reply") {
+        const idx = Number(hit.dataset.ci);
+        const c = (p.comments || [])[idx];
+        if (!c) return;
+        const input = card.querySelector(".post-cform input");
+        if (!input) return;
+        input.value = "@" + (c.name || "匿名") + " ";
+        input.focus();
+        return;
+      }
+
+      if (act === "del") {
+        const canDel = isAdmin() || postMineIds.has(p.id) || (authSession && p.email &&
+          authSession.email && p.email.toLowerCase() === authSession.email.toLowerCase());
+        if (!canDel) return;
+        if (!confirm("删除这条动态？")) return;
+        try {
+          await deletePostRemote(p.id);
+          communityPosts = communityPosts.filter(x => x.id !== p.id);
+          postOpenIds.delete(p.id);
+          postMineIds.delete(p.id);
+          try { localStorage.setItem(POST_MINE, JSON.stringify(Array.from(postMineIds))); } catch (err) {}
+          renderPosts();
+        } catch (err) {
+          alert("删除失败：" + (err && err.message ? err.message : err));
+        }
+      }
+    });
+
+    list.addEventListener("dblclick", e => {
+      if (e.target.closest("button, input, textarea, form, a, .post-edit")) return;
+      const card = e.target.closest(".post-card[data-id]");
+      if (!card) return;
+      const p = communityPosts.find(x => x.id === Number(card.dataset.id));
+      if (!p) return;
+      if (!postLikedIds.has(p.id)) likePost(p, card.querySelector('[data-act="like"]'));
+      const burst = () => {
+        const c = document.querySelector(`.post-card[data-id="${p.id}"]`) || card;
+        c.classList.remove("heart-burst");
+        void c.offsetWidth;
+        c.classList.add("heart-burst");
+        setTimeout(() => c.classList.remove("heart-burst"), 800);
+      };
+      if (feedSort === "hot") setTimeout(burst, 40); else burst();
+    });
+
+    list.addEventListener("submit", async e => {
+      const editForm = e.target.closest(".post-edit");
+      if (editForm) {
+        e.preventDefault();
+        const card = editForm.closest(".post-card[data-id]");
+        if (!card) return;
+        const p = communityPosts.find(x => x.id === Number(card.dataset.id));
+        if (!p) return;
+        const ta = editForm.querySelector("textarea");
+        const text = ta ? ta.value.trim() : "";
+        if (!text) { if (ta) ta.focus(); return; }
+        const topic = postTopicOf(p);
+        const full = topic ? `#${topic} ${text}` : text;
+        const before = p.text;
+        p.text = full;
+        editingPostId = null;
+        renderPosts();
+        try { await patchPost(p.id, { content: full }); }
+        catch (err) {
+          p.text = before;
+          renderPosts();
+          alert("保存失败，稍后再试。");
+        }
+        return;
+      }
+
+      const form = e.target.closest(".post-cform");
+      if (!form) return;
+      e.preventDefault();
+      const card = form.closest(".post-card[data-id]");
+      if (!card) return;
+      const p = communityPosts.find(x => x.id === Number(card.dataset.id));
+      if (!p) return;
+      const input = form.querySelector("input");
+      const text = input ? input.value.trim() : "";
+      if (!text) return;
+      input.value = "";
+      const before = p.comments.slice();
+      p.comments.push({ name: dailyName(), text });
+      postOpenIds.add(p.id);
+      renderPosts();
+      try { await patchPost(p.id, { comments: p.comments }); }
+      catch (err) {
+        p.comments = before;
+        renderPosts();
+        alert("评论失败，稍后再试。");
+      }
+    });
+  }
+
+  renderTopicBars();
+  renderCommunityPhotos();
+  loadPosts();
+}
+
+/* ============ 社区路由：#community / #community/albums/<相册> ============ */
 function setupPhotosRoute() {
-  const photos = $("#photos");
-  if (!photos) return;
+  const page = $("#community");
+  if (!page) return;
   const apply = () => {
     const h = location.hash;
-    const inPhotos = h === "#photos" || h.startsWith("#photos/");
+    const inCommunity = h === "#community" || h.startsWith("#community/") ||
+      h === "#photos" || h.startsWith("#photos/");
     const was = document.body.classList.contains("view-photos");
 
-    if (!inPhotos) {
+    if (!inCommunity) {
       if (!was) return;
       document.body.classList.remove("view-photos");
       const id = h.slice(1);
@@ -4047,14 +4776,28 @@ function setupPhotosRoute() {
       window.scrollTo({ top: 0, behavior: "instant" });
     }
 
-    const rest = h.slice("#photos".length).replace(/^\/+/, "");
-    if (!rest) {
-      currentAlbum = null;
-      showAlbumList();
+    let rest = "";
+    if (h.startsWith("#photos")) {
+      rest = "albums" + h.slice("#photos".length);
     } else {
-      const id = rest === "none" ? "none" : Number(rest);
-      currentAlbum = Number.isFinite(id) ? id : "none";
-      showAlbumDetail();
+      rest = h.slice("#community".length).replace(/^\/+/, "");
+    }
+
+    if (rest === "albums" || rest.startsWith("albums/")) {
+      setCommunityTab("albums");
+      const sub = rest === "albums" ? "" : rest.slice("albums/".length);
+      if (!sub) {
+        currentAlbum = null;
+        showAlbumList();
+      } else {
+        const id = sub === "none" ? "none" : Number(sub);
+        currentAlbum = Number.isFinite(id) ? id : "none";
+        showAlbumDetail();
+      }
+    } else {
+      setCommunityTab("feed");
+      renderCommunityPhotos();
+      updateCommStats();
     }
   };
   window.addEventListener("hashchange", apply);
@@ -4108,6 +4851,43 @@ function syncUserUI() {
   if (mail) mail.textContent = authSession ? authSession.email : "";
   if (name) name.textContent = authSession ? userLabel(authSession) : "";
   if (ava) ava.innerHTML = avatarInner(authSession);
+  syncComposerIdentity();
+}
+
+/* 登录后所有发布都用账号昵称；未登录才允许手填昵称 */
+function syncComposerIdentity() {
+  const input = $("#postName");
+  const daily = $("#dailyName");
+  if (authSession && authSession.email) {
+    const label = userLabel(authSession) || authSession.email.split("@")[0];
+    if (input) {
+      input.value = label;
+      input.disabled = true;
+      input.title = "已登录，发布时使用账号昵称";
+      input.setAttribute("aria-label", "已登录，发布时使用账号昵称");
+    }
+    if (daily) {
+      daily.value = label;
+      daily.disabled = true;
+      daily.title = "已登录，上传时使用账号昵称";
+      daily.dataset.auth = "1";
+    }
+  } else {
+    let saved = "";
+    try { saved = localStorage.getItem(DAILY_NAME) || ""; } catch (err) {}
+    if (input) {
+      input.disabled = false;
+      input.title = "";
+      input.setAttribute("aria-label", "你的昵称");
+      input.value = saved;
+    }
+    if (daily) {
+      daily.disabled = false;
+      daily.title = "";
+      if (daily.dataset.auth === "1") daily.value = saved;
+      daily.dataset.auth = "0";
+    }
+  }
 }
 
 function showLoginView() {
@@ -4132,7 +4912,7 @@ function showRegStep(step) {
   const title = $("#loginTitle");
   const sub = $("#loginSub");
   if (title) title.textContent = "注册";
-  if (sub) sub.textContent = "邮箱验证后设置密码，以后就能用密码登录。";
+  if (sub) sub.textContent = "邮箱验证后设置昵称和密码，以后就能用密码登录。";
   loginMsg("");
 
   const n = Number(step) || 1;
@@ -4220,6 +5000,11 @@ async function doRegister() {
   loginMsg("");
   try {
     await Auth.setPassword(password);
+    const nickEl = $("#regNick");
+    const nick = nickEl ? nickEl.value.trim().slice(0, 12) : "";
+    if (nick) {
+      try { await Auth.updateMeta({ nickname: nick }); } catch (err) {}
+    }
     syncUserUI();
     closeLogin();
   } catch (e) {
@@ -4341,6 +5126,56 @@ function setupUser() {
     if (f) handleAvatarFile(f);
   });
 
+  /* 昵称 */
+  const nickBtn = $("#nickEditBtn");
+  const nickBox = $("#nickEdit");
+  const nickInput = $("#nickInput");
+  const nickSave = $("#nickSave");
+  const saveNick = async () => {
+    if (!authSession || !nickInput) return;
+    const v = nickInput.value.trim().slice(0, 12);
+    if (!v) { nickInput.focus(); return; }
+    if (nickSave) { nickSave.disabled = true; nickSave.textContent = "保存中…"; }
+    try {
+      authSession = await Auth.updateMeta({ nickname: v });
+      syncUserUI();
+      if (nickBox) nickBox.hidden = true;
+      // 同步更新自己已经发过的动态署名
+      if (authSession && authSession.email && RemoteDaily.on()) {
+        const email = authSession.email;
+        try {
+          await fetch(`${RemoteDaily.base()}/rest/v1/${POST_TABLE}?author_email=eq.${encodeURIComponent(email)}`, {
+            method: "PATCH",
+            headers: RemoteDaily.headers({ "Content-Type": "application/json" }),
+            body: JSON.stringify({ author: v })
+          });
+          communityPosts.forEach(p => {
+            if (p.email && p.email.toLowerCase() === email.toLowerCase()) p.author = v;
+          });
+          renderPosts();
+        } catch (err) {}
+      }
+    } catch (e) {
+      alert("昵称保存失败：" + (e && e.message ? e.message : e));
+    }
+    if (nickSave) { nickSave.disabled = false; nickSave.textContent = "保存昵称"; }
+  };
+  if (nickBtn) nickBtn.addEventListener("click", () => {
+    if (!authSession || !nickBox || !nickInput) return;
+    nickBox.hidden = false;
+    nickInput.value = authSession.nickname || "";
+    nickInput.focus();
+    nickInput.select();
+  });
+  if (nickSave) nickSave.addEventListener("click", saveNick);
+  if (nickInput) nickInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); saveNick(); }
+  });
+  const regNick = $("#regNick");
+  if (regNick) regNick.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); const p = $("#regPass"); if (p) p.focus(); }
+  });
+
   /* 登录 / 注册切换 */
   const toReg = $("#toRegister");
   if (toReg) toReg.addEventListener("click", () => showRegStep(1));
@@ -4411,6 +5246,7 @@ function setupUser() {
 setupDaily();
 setupAlbums();
 setupAdmin();
+setupCommunity();
 setupPhotosRoute();
 setupUser();
 </script>
