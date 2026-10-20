@@ -159,6 +159,8 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
   transition:background .2s,transform .2s var(--ease);
 }
 .nav .mini-cta:hover{background:var(--surface); transform:translateY(-1px)}
+/* 锚点跳转时给吸顶导航留位置 */
+#members, #life, #photos, #rules{scroll-margin-top:86px}
 
 /* ============ 通用 ============ */
 .wrap{max-width:var(--max); margin:0 auto; padding:0 24px}
@@ -810,7 +812,15 @@ html[data-theme="light"] .quote-inner.lg.lg{
   .member-card:nth-child(5){grid-column:1/-1; max-width:calc(50% - 9px); justify-self:center; width:100%}
   .life-grid{grid-template-columns:repeat(2,1fr)}
   .rules-wrap{grid-template-columns:1fr; gap:36px}
-  .nav-links{display:none}
+  /* 小屏保留导航：品牌/操作在第一行，四个栏目在第二行 */
+  .nav{flex-wrap:wrap; row-gap:4px}
+  .nav-actions{margin-left:auto}
+  .nav-links{
+    display:flex; order:3; width:100%; margin-left:0;
+    justify-content:center; flex-wrap:wrap; gap:2px;
+  }
+  .nav-links a{padding:7px 11px; font-size:13px; white-space:nowrap}
+  #members, #life, #photos, #rules{scroll-margin-top:118px}
 }
 @media (max-width:640px){
   .nav{padding:12px 16px; gap:10px}
@@ -973,6 +983,47 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
   .req-item{flex-wrap:wrap}
   .req-acts{width:100%; justify-content:flex-end}
 }
+/* ============ 用户登录 / 注册 ============ */
+.user-wrap{position:relative}
+.user-btn.on{border-color:var(--accent); color:var(--accent); font-weight:700}
+.user-pop{
+  position:absolute; top:calc(100% + 10px); right:0; z-index:65; width:220px; padding:12px;
+  display:flex; flex-direction:column; gap:10px; border-radius:14px;
+  background:var(--bg); border:1px solid var(--line); box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.user-pop[hidden]{display:none}
+.user-mail{font-size:12.5px; line-height:1.5; color:var(--muted); word-break:break-all}
+.user-logout{padding:8px 10px; border-radius:10px; border:1px solid var(--line); background:transparent; color:var(--text); font-size:12.5px; cursor:pointer; transition:.2s}
+.user-logout:hover{border-color:var(--accent); color:var(--accent)}
+.login-pop{position:fixed; inset:0; z-index:140; display:grid; place-items:center; padding:20px; background:rgba(6,7,12,.62); backdrop-filter:blur(8px); -webkit-backdrop-filter:blur(8px)}
+.login-pop[hidden]{display:none}
+.login-card{position:relative; width:min(400px,100%); padding:26px; border-radius:22px; background:var(--bg); border:1px solid var(--line); box-shadow:0 30px 80px rgba(0,0,0,.5)}
+.login-x{position:absolute; top:12px; right:12px; width:30px; height:30px; border-radius:50%; border:1px solid var(--line); background:transparent; color:var(--faint); font-size:13px; cursor:pointer; transition:.2s}
+.login-x:hover{color:var(--text); border-color:var(--accent)}
+.login-title{font-size:20px; font-weight:800; letter-spacing:-.02em}
+.login-sub{margin:8px 0 18px; font-size:13px; line-height:1.7; color:var(--muted)}
+.login-step{display:flex; flex-direction:column; gap:8px}
+.login-step[hidden]{display:none}
+.login-label{font-size:12px; color:var(--faint)}
+.login-input{
+  width:100%; padding:12px 14px; border-radius:12px; border:1px solid var(--line);
+  background:var(--surface); color:var(--text); font-size:15px; font-family:inherit; outline:none;
+  transition:border-color .2s;
+}
+.login-input:focus{border-color:var(--accent)}
+.login-code{letter-spacing:.35em; font-family:var(--mono); font-size:18px; text-align:center; text-indent:.35em}
+.login-main{width:100%; justify-content:center; margin-top:4px}
+.login-foot{display:flex; justify-content:space-between; gap:10px; margin-top:2px}
+.login-link{background:none; border:0; padding:0; color:var(--faint); font-size:12.5px; cursor:pointer; transition:.2s}
+.login-link:hover{color:var(--accent)}
+.login-link:disabled{opacity:.55; cursor:default}
+.login-msg{margin:12px 0 0; font-size:12.5px; line-height:1.6; color:#ff8080}
+.login-msg.ok{color:#4ade80}
+.login-msg[hidden]{display:none}
+@media(max-width:640px){
+  .user-pop{position:fixed; left:12px; right:12px; top:104px; width:auto}
+  .login-card{padding:22px}
+}
 /* ============ 设置 / 显示模式 ============ */
 .settings-wrap{position:relative}
 .settings-btn.on{border-color:var(--accent); color:var(--accent)}
@@ -1025,7 +1076,7 @@ html[data-mode="mobile"] .daily-card:hover{transform:none}
 html[data-mode="mobile"] .ripple{display:none}
 
 @media (max-width:640px){
-  .settings-pop{position:fixed; left:12px; right:12px; width:auto; top:64px}
+  .settings-pop{position:fixed; left:12px; right:12px; width:auto; top:104px}
 }
 
 /* ---- 折叠式设置分组 ---- */
@@ -1217,6 +1268,13 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
   <div class="nav-actions">
     <button class="mini-cta" id="randomBtn" type="button">🎲 <span class="txt">随机点名</span></button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☀️</button>
+    <div class="user-wrap">
+      <button class="icon-btn user-btn" id="userBtn" type="button" aria-label="登录 / 注册" title="登录 / 注册">👤</button>
+      <div class="user-pop" id="userPop" hidden role="dialog" aria-label="账号">
+        <div class="user-mail" id="userMail"></div>
+        <button class="user-logout" id="userLogout" type="button">退出登录</button>
+      </div>
+    </div>
     <div class="settings-wrap">
       <button class="icon-btn" id="settingsBtn" type="button" aria-label="设置" title="设置"
               aria-haspopup="true" aria-expanded="false">⚙️</button>
@@ -1505,6 +1563,33 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
       <button class="btn primary btn-sm" type="submit">登录</button>
     </div>
   </form>
+</div>
+
+<!-- 用户登录 / 注册（邮箱验证码） -->
+<div class="login-pop" id="loginPop" hidden>
+  <div class="login-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
+    <button class="login-x" id="loginClose" type="button" aria-label="关闭">✕</button>
+    <div class="login-title" id="loginTitle">登录 / 注册</div>
+    <p class="login-sub">输入邮箱接收验证码，第一次登录会自动注册账号。</p>
+
+    <div class="login-step" id="loginStep1">
+      <label class="login-label" for="loginEmail">邮箱</label>
+      <input class="login-input" id="loginEmail" type="email" inputmode="email" autocomplete="email" placeholder="you@example.com">
+      <button class="btn primary login-main" id="sendCodeBtn" type="button">发送验证码</button>
+    </div>
+
+    <div class="login-step" id="loginStep2" hidden>
+      <label class="login-label" for="loginCode">验证码</label>
+      <input class="login-input login-code" id="loginCode" type="text" inputmode="numeric" autocomplete="one-time-code" maxlength="10" placeholder="6 位数字">
+      <button class="btn primary login-main" id="verifyBtn" type="button">登录</button>
+      <div class="login-foot">
+        <button class="login-link" id="resendBtn" type="button" disabled>重新发送（60s）</button>
+        <button class="login-link" id="changeEmailBtn" type="button">换个邮箱</button>
+      </div>
+    </div>
+
+    <p class="login-msg" id="loginMsg" hidden></p>
+  </div>
 </div>
 
 <!-- 管理面板 -->
@@ -2893,6 +2978,106 @@ const AdminStore = {
   }
 };
 
+/* ---- 用户账号（Supabase Auth 邮箱验证码，免自建服务器） ---- */
+const AUTH_KEY = "room514.auth";
+let authSession = null;
+
+const Auth = {
+  base() { return RemoteDaily.base(); },
+  available() { return !!(DAILY_REMOTE.url && DAILY_REMOTE.key); },
+  headers(extra) {
+    return Object.assign({
+      apikey: DAILY_REMOTE.key,
+      "Content-Type": "application/json"
+    }, extra || {});
+  },
+  load() {
+    try { return JSON.parse(localStorage.getItem(AUTH_KEY) || "null"); } catch (e) { return null; }
+  },
+  save(s) {
+    authSession = s;
+    try { localStorage.setItem(AUTH_KEY, JSON.stringify(s)); } catch (e) {}
+  },
+  clear() {
+    authSession = null;
+    try { localStorage.removeItem(AUTH_KEY); } catch (e) {}
+  },
+  async errText(res) {
+    let raw = "";
+    try { raw = await res.text(); } catch (e) {}
+    let msg = raw;
+    try {
+      const j = JSON.parse(raw);
+      msg = j.msg || j.message || j.error_description || j.error || raw;
+    } catch (e) {}
+    if (res.status === 429 || /rate limit/i.test(msg)) return "发送太频繁了，请过一会儿再试";
+    if (/invalid.*(email|format)/i.test(msg)) return "邮箱格式不对，请检查一下";
+    if (/expired|invalid.*token/i.test(msg)) return "验证码不对或已过期，请重新获取";
+    return msg || ("请求失败 " + res.status);
+  },
+  async sendCode(email) {
+    const res = await fetch(`${this.base()}/auth/v1/otp`, {
+      method: "POST",
+      headers: this.headers(),
+      body: JSON.stringify({ email, create_user: true })
+    });
+    if (!res.ok) throw new Error(await this.errText(res));
+  },
+  async verify(email, token) {
+    const res = await fetch(`${this.base()}/auth/v1/verify`, {
+      method: "POST",
+      headers: this.headers(),
+      body: JSON.stringify({ email, token, type: "email" })
+    });
+    if (!res.ok) throw new Error(await this.errText(res));
+    const d = await res.json();
+    const s = {
+      access_token: d.access_token,
+      refresh_token: d.refresh_token,
+      expires_at: Date.now() + ((d.expires_in || 3600) * 1000),
+      email: (d.user && d.user.email) || email,
+      id: d.user && d.user.id
+    };
+    this.save(s);
+    return s;
+  },
+  async refresh(s) {
+    if (!s || !s.refresh_token) return null;
+    if (s.expires_at && s.expires_at - 60000 > Date.now()) return s;
+    try {
+      const res = await fetch(`${this.base()}/auth/v1/token?grant_type=refresh_token`, {
+        method: "POST",
+        headers: this.headers(),
+        body: JSON.stringify({ refresh_token: s.refresh_token })
+      });
+      if (!res.ok) { this.clear(); return null; }
+      const d = await res.json();
+      const next = {
+        access_token: d.access_token,
+        refresh_token: d.refresh_token || s.refresh_token,
+        expires_at: Date.now() + ((d.expires_in || 3600) * 1000),
+        email: (d.user && d.user.email) || s.email,
+        id: (d.user && d.user.id) || s.id
+      };
+      this.save(next);
+      return next;
+    } catch (e) {
+      return s;
+    }
+  },
+  async logout(s) {
+    if (s && s.access_token) {
+      try {
+        await fetch(`${this.base()}/auth/v1/logout`, {
+          method: "POST",
+          headers: this.headers({ Authorization: "Bearer " + s.access_token })
+        });
+      } catch (e) {}
+    }
+    this.clear();
+  }
+};
+
 let dailyPhotos = [];
 let dailyAlbums = [];
 let currentAlbum = null;   // null = 相册列表；"none" = 未分类；数字 = 相册 id
@@ -2903,7 +3088,9 @@ const dailyOpenIds = new Set();
 function dailyName() {
   const el = $("#dailyName");
   const v = el ? el.value.trim() : "";
-  return v || "514 匿名";
+  if (v) return v;
+  if (authSession && authSession.email) return authSession.email.split("@")[0];
+  return "514 匿名";
 }
 
 function dailyTimeAgo(ts) {
@@ -3227,7 +3414,7 @@ async function submitDeleteRequest(p) {
       src: p.src,
       name: p.name,
       albumId: p.albumId,
-      requester: dailyName()
+      requester: authSession && authSession.email ? authSession.email : dailyName()
     });
     pendingRequests.push(r);
     alert("删除申请已提交，管理员同意后才会删除。");
@@ -3718,11 +3905,227 @@ function setupPhotosRoute() {
   apply();
 }
 
+/* ============ 用户登录 / 注册（邮箱验证码） ============ */
+let resendTimer = null;
+let resendLeft = 0;
+let loginEmail = "";
+
+function loginMsg(text, ok) {
+  const m = $("#loginMsg");
+  if (!m) return;
+  m.hidden = !text;
+  m.textContent = text || "";
+  m.classList.toggle("ok", !!ok);
+}
+
+function syncUserUI() {
+  const btn = $("#userBtn");
+  const mail = $("#userMail");
+  if (btn) {
+    if (authSession) {
+      btn.textContent = (authSession.email || "U").charAt(0).toUpperCase();
+      btn.classList.add("on");
+      btn.title = authSession.email;
+      btn.setAttribute("aria-label", "账号：" + authSession.email);
+    } else {
+      btn.textContent = "👤";
+      btn.classList.remove("on");
+      btn.title = "登录 / 注册";
+      btn.setAttribute("aria-label", "登录 / 注册");
+    }
+  }
+  if (mail) mail.textContent = authSession ? authSession.email : "";
+}
+
+function openLogin() {
+  if (!Auth.available()) {
+    alert("当前是本地模式，邮箱登录需要先连接云端（DAILY_REMOTE）。");
+    return;
+  }
+  const pop = $("#loginPop");
+  if (!pop) return;
+  loginMsg("");
+  const s1 = $("#loginStep1");
+  const s2 = $("#loginStep2");
+  if (s1) s1.hidden = false;
+  if (s2) s2.hidden = true;
+  pop.hidden = false;
+  const em = $("#loginEmail");
+  if (em) setTimeout(() => em.focus(), 40);
+}
+
+function closeLogin() {
+  const pop = $("#loginPop");
+  if (pop) pop.hidden = true;
+  if (resendTimer) { clearInterval(resendTimer); resendTimer = null; }
+}
+
+function startResend() {
+  const b = $("#resendBtn");
+  if (!b) return;
+  resendLeft = 60;
+  b.disabled = true;
+  b.textContent = "重新发送（60s）";
+  if (resendTimer) clearInterval(resendTimer);
+  resendTimer = setInterval(() => {
+    resendLeft--;
+    if (resendLeft <= 0) {
+      clearInterval(resendTimer);
+      resendTimer = null;
+      b.disabled = false;
+      b.textContent = "重新发送验证码";
+    } else {
+      b.textContent = "重新发送（" + resendLeft + "s）";
+    }
+  }, 1000);
+}
+
+async function doSendCode() {
+  const em = $("#loginEmail");
+  const email = em ? em.value.trim() : "";
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+    loginMsg("请输入正确的邮箱地址");
+    if (em) em.focus();
+    return;
+  }
+  const b = $("#sendCodeBtn");
+  if (b) { b.disabled = true; b.textContent = "发送中…"; }
+  loginMsg("");
+  try {
+    await Auth.sendCode(email);
+    loginEmail = email;
+    const s1 = $("#loginStep1");
+    const s2 = $("#loginStep2");
+    if (s1) s1.hidden = true;
+    if (s2) s2.hidden = false;
+    const c = $("#loginCode");
+    if (c) { c.value = ""; c.focus(); }
+    loginMsg("验证码已发到 " + email + "，没收到可以看看垃圾箱", true);
+    startResend();
+  } catch (e) {
+    loginMsg(e && e.message ? e.message : String(e));
+  } finally {
+    if (b) { b.disabled = false; b.textContent = "发送验证码"; }
+  }
+}
+
+async function doVerify() {
+  const c = $("#loginCode");
+  const code = (c ? c.value : "").replace(/\D/g, "");
+  if (code.length < 6) {
+    loginMsg("验证码是 6 位数字");
+    if (c) c.focus();
+    return;
+  }
+  const b = $("#verifyBtn");
+  if (b) { b.disabled = true; b.textContent = "登录中…"; }
+  loginMsg("");
+  try {
+    const s = await Auth.verify(loginEmail, code);
+    authSession = s;
+    syncUserUI();
+    closeLogin();
+  } catch (e) {
+    loginMsg(e && e.message ? e.message : String(e));
+  } finally {
+    if (b) { b.disabled = false; b.textContent = "登录"; }
+  }
+}
+
+function setupUser() {
+  const btn = $("#userBtn");
+  const pop = $("#userPop");
+
+  authSession = Auth.load();
+  syncUserUI();
+  if (authSession) {
+    Auth.refresh(authSession).then(s => {
+      authSession = s;
+      syncUserUI();
+    });
+  }
+
+  if (btn) btn.addEventListener("click", e => {
+    e.stopPropagation();
+    if (!authSession) { openLogin(); return; }
+    if (pop) pop.hidden = !pop.hidden;
+  });
+
+  const out = $("#userLogout");
+  if (out) out.addEventListener("click", () => {
+    if (!confirm("退出当前账号？")) return;
+    const s = authSession;
+    Auth.clear();
+    syncUserUI();
+    if (pop) pop.hidden = true;
+    Auth.logout(s);
+  });
+
+  const send = $("#sendCodeBtn");
+  if (send) send.addEventListener("click", doSendCode);
+
+  const verify = $("#verifyBtn");
+  if (verify) verify.addEventListener("click", doVerify);
+
+  const again = $("#resendBtn");
+  if (again) again.addEventListener("click", async () => {
+    if (again.disabled || !loginEmail) return;
+    again.disabled = true;
+    try {
+      await Auth.sendCode(loginEmail);
+      loginMsg("验证码已重新发送", true);
+      startResend();
+    } catch (e) {
+      again.disabled = false;
+      loginMsg(e && e.message ? e.message : String(e));
+    }
+  });
+
+  const change = $("#changeEmailBtn");
+  if (change) change.addEventListener("click", () => {
+    const s1 = $("#loginStep1");
+    const s2 = $("#loginStep2");
+    if (s1) s1.hidden = false;
+    if (s2) s2.hidden = true;
+    loginMsg("");
+    const em = $("#loginEmail");
+    if (em) em.focus();
+  });
+
+  const close = $("#loginClose");
+  if (close) close.addEventListener("click", closeLogin);
+
+  const loginPop = $("#loginPop");
+  if (loginPop) loginPop.addEventListener("click", e => {
+    if (e.target === loginPop) closeLogin();
+  });
+
+  const code = $("#loginCode");
+  if (code) code.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); doVerify(); }
+  });
+  const email = $("#loginEmail");
+  if (email) email.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); doSendCode(); }
+  });
+
+  document.addEventListener("click", e => {
+    if (pop && !pop.hidden && !(e.target.closest && e.target.closest(".user-wrap"))) pop.hidden = true;
+  });
+  document.addEventListener("keydown", e => {
+    if (e.key === "Escape") {
+      if (pop && !pop.hidden) pop.hidden = true;
+      if (loginPop && !loginPop.hidden) closeLogin();
+    }
+  });
+}
+
 /* 放在脚本末尾调用：相册模块里有 const/let，必须等声明执行完 */
 setupDaily();
 setupAlbums();
 setupAdmin();
 setupPhotosRoute();
+setupUser();
 </script>
 </body>
 </html>
