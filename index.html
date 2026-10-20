@@ -854,6 +854,125 @@ html[data-theme="light"] .quote-inner.lg.lg{
   .cursor-glow{display:none}
   .lg-tilt{transform:none}
 }
+
+/* ============ 独立图片页 ============ */
+.photos-page{display:none}
+body.view-photos .photos-page{display:block; padding:112px 0 96px; min-height:100vh; position:relative; z-index:1}
+body.view-photos main > .hero,
+body.view-photos main > .marquee,
+body.view-photos main > #members,
+body.view-photos main > #life,
+body.view-photos main > #rules,
+body.view-photos main > #quoteBand,
+body.view-photos .footer{display:none !important}
+body.view-photos .photos-page .reveal{opacity:1; transform:none}
+.photos-head{margin-bottom:26px}
+.photos-head h2{margin:14px 0 10px; font-size:clamp(30px,4vw,46px); line-height:1.15; letter-spacing:-.03em}
+.photos-head p{max-width:560px; margin:0; color:var(--muted); font-size:15px; line-height:1.85}
+.photos-back{display:inline-flex; align-items:center; gap:6px; font-size:12.5px; color:var(--faint); padding:7px 14px; border-radius:999px; border:1px solid var(--line); margin-bottom:18px; transition:color .2s,border-color .2s}
+.photos-back:hover{color:var(--text); border-color:var(--accent)}
+.photos-entry{display:flex; align-items:center; gap:16px; margin-top:22px; padding:18px 22px; border-radius:20px; transition:transform .3s var(--ease)}
+.photos-entry:hover{transform:translateY(-3px)}
+.photos-entry .pe-ico{font-size:26px; line-height:1}
+.photos-entry .pe-text{display:flex; flex-direction:column; gap:5px; flex:1; min-width:0}
+.photos-entry strong{font-size:15px; letter-spacing:.01em}
+.photos-entry em{font-style:normal; font-size:12.5px; color:var(--faint); line-height:1.6}
+.photos-entry .pe-go{font-size:13px; color:var(--accent); white-space:nowrap; font-weight:600}
+@media(max-width:640px){
+  body.view-photos .photos-page{padding-top:96px}
+  .photos-entry{flex-wrap:wrap}
+  .photos-entry .pe-go{width:100%}
+}
+/* ============ 相册 ============ */
+.albums-toolbar{display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px}
+.albums-count{font-size:12.5px; color:var(--faint)}
+.album-create{display:flex; gap:10px; margin:-4px 0 18px; flex-wrap:wrap}
+.album-create input{flex:1; min-width:200px; padding:11px 15px; border-radius:12px; border:1px solid var(--line); background:var(--surface); color:var(--text); font-size:14px; font-family:inherit; outline:none; transition:border-color .2s}
+.album-create input:focus{border-color:var(--accent)}
+.albums-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(210px,1fr)); gap:16px}
+.album-card{display:flex; flex-direction:column; border-radius:18px; overflow:hidden; text-decoration:none; color:inherit; transition:transform .3s var(--ease)}
+.album-card:hover{transform:translateY(-4px)}
+.album-cover{position:relative; aspect-ratio:4/3; display:grid; place-items:center; overflow:hidden; background:linear-gradient(140deg,rgba(255,154,90,.28),rgba(139,123,255,.26))}
+.album-cover img{width:100%; height:100%; object-fit:cover; transition:transform .5s var(--ease)}
+.album-card:hover .album-cover img{transform:scale(1.05)}
+.album-ph{font-size:30px; opacity:.7}
+.album-meta{display:flex; flex-direction:column; gap:4px; padding:13px 15px 15px}
+.album-meta strong{font-size:14.5px; letter-spacing:.01em; white-space:nowrap; overflow:hidden; text-overflow:ellipsis}
+.album-meta em{font-style:normal; font-size:12px; color:var(--faint)}
+.album-card.add{align-items:center; justify-content:center; min-height:170px; border:1px dashed var(--line-strong); background:transparent; color:var(--faint); font-size:13.5px; gap:8px}
+.album-card.add:hover{color:var(--text); border-color:var(--accent)}
+.album-card.add .plus{font-size:26px; line-height:1}
+.album-detail-head{display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:6px}
+.album-del{padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--faint); font-size:12.5px; cursor:pointer; transition:.2s}
+.album-del:hover{color:#ff6b6b; border-color:rgba(255,107,107,.5)}
+.album-title{margin:14px 0 6px; font-size:clamp(24px,3vw,34px); letter-spacing:-.02em}
+.album-sub{margin:0 0 26px; font-size:13px; color:var(--faint)}
+#albumDetail[hidden], #albumsView[hidden], .album-create[hidden]{display:none}
+@media(max-width:640px){
+  .albums-grid{grid-template-columns:repeat(auto-fill,minmax(150px,1fr)); gap:12px}
+  .album-card.add{min-height:140px}
+  .album-meta{padding:11px 12px 13px}
+}
+/* ============ 移动到相册 ============ */
+.move-pop{position:fixed; inset:0; z-index:90; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.5); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.move-pop[hidden]{display:none}
+.move-card{width:min(420px,100%); max-height:min(74vh,560px); display:flex; flex-direction:column; gap:12px; padding:20px; border-radius:20px; background:var(--surface-2); border:1px solid var(--line); box-shadow:var(--shadow)}
+.move-title{font-size:15px; font-weight:700; letter-spacing:.01em}
+.move-list{display:flex; flex-direction:column; gap:8px; overflow:auto; padding:2px}
+.move-item{display:flex; align-items:center; gap:10px; padding:11px 13px; border-radius:12px; border:1px solid var(--line); background:transparent; color:var(--text); font-size:13.5px; text-align:left; cursor:pointer; transition:border-color .2s,background .2s}
+.move-item:hover{border-color:var(--accent); background:var(--card-hover)}
+.move-item[aria-current="true"]{border-color:var(--accent); color:var(--accent)}
+.move-item .mi-ico{font-size:16px; line-height:1}
+.move-item .mi-count{margin-left:auto; font-size:11.5px; color:var(--faint)}
+.move-cancel{align-self:flex-end}
+
+/* ============ 管理 / 登录 ============ */
+.photos-head-top{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-bottom:18px}
+.photos-head-top .photos-back{margin-bottom:0}
+.admin-entry{padding:7px 14px; border-radius:999px; border:1px solid var(--line); background:transparent; color:var(--faint); font-size:12.5px; cursor:pointer; transition:.2s}
+.admin-entry:hover{color:var(--text); border-color:var(--accent)}
+.admin-entry.on{color:var(--accent); border-color:var(--accent)}
+.auth-pop{position:fixed; inset:0; z-index:100; display:grid; place-items:center; padding:20px; background:rgba(0,0,0,.55); backdrop-filter:blur(6px); -webkit-backdrop-filter:blur(6px)}
+.auth-pop[hidden]{display:none}
+.auth-card{width:min(380px,100%); display:flex; flex-direction:column; gap:12px; padding:24px; border-radius:20px; background:var(--surface-2); border:1px solid var(--line); box-shadow:var(--shadow)}
+.auth-title{font-size:16px; font-weight:700}
+.auth-sub{font-size:12.5px; color:var(--faint); margin-top:-6px}
+.auth-card input{padding:11px 14px; border-radius:12px; border:1px solid var(--line); background:var(--surface); color:var(--text); font-size:14px; font-family:inherit; outline:none; transition:border-color .2s}
+.auth-card input:focus{border-color:var(--accent)}
+.auth-err{font-size:12.5px; color:#ff6b6b}
+.auth-actions{display:flex; justify-content:flex-end; gap:10px; margin-top:4px}
+.admin-panel{position:fixed; inset:0; z-index:95; overflow:auto; padding:24px 16px 70px; background:rgba(11,13,20,.78); backdrop-filter:blur(14px); -webkit-backdrop-filter:blur(14px)}
+html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
+.admin-panel[hidden]{display:none}
+.admin-inner{max-width:1000px; margin:0 auto; display:flex; flex-direction:column; gap:24px}
+.admin-head{display:flex; align-items:center; justify-content:space-between; gap:16px; position:sticky; top:0; z-index:2; padding:6px 0 12px}
+.admin-head h3{margin:0; font-size:22px; letter-spacing:-.02em}
+.admin-head-acts{display:flex; align-items:center; gap:8px}
+.admin-section{padding:20px; border-radius:20px; background:var(--surface); border:1px solid var(--line)}
+.admin-section h4{margin:0 0 14px; font-size:15px; display:flex; align-items:center; gap:8px}
+.admin-badge{display:inline-grid; place-items:center; min-width:20px; height:20px; padding:0 6px; border-radius:999px; background:var(--accent); color:#1a120c; font-size:11.5px; font-weight:700}
+.admin-hint{font-size:12px; font-weight:400; color:var(--faint)}
+.req-list{display:flex; flex-direction:column; gap:10px}
+.req-item{display:flex; align-items:center; gap:12px; padding:10px; border-radius:14px; border:1px solid var(--line)}
+.req-thumb{width:70px; height:54px; border-radius:10px; object-fit:cover; background:var(--surface-2); flex-shrink:0}
+.req-info{flex:1; min-width:0}
+.req-info b{display:block; font-size:13.5px; margin-bottom:3px}
+.req-info span{font-size:12px; color:var(--faint)}
+.req-acts{display:flex; gap:8px; flex-shrink:0}
+.req-acts button{padding:7px 12px; border-radius:10px; font-size:12.5px; cursor:pointer; border:1px solid var(--line); background:transparent; color:var(--text); transition:.2s}
+.req-yes{border-color:rgba(255,107,107,.45); color:#ff8080}
+.req-yes:hover{background:rgba(255,107,107,.14)}
+.req-no:hover{border-color:var(--accent)}
+.admin-photos{display:grid; grid-template-columns:repeat(auto-fill,minmax(120px,1fr)); gap:10px}
+.admin-photo{position:relative; aspect-ratio:1; border-radius:12px; overflow:hidden; background:var(--surface-2)}
+.admin-photo img{width:100%; height:100%; object-fit:cover}
+.admin-photo button{position:absolute; top:6px; right:6px; width:26px; height:26px; border-radius:50%; border:0; background:rgba(0,0,0,.55); color:#fff; font-size:12px; cursor:pointer; display:grid; place-items:center; opacity:0; transition:opacity .2s}
+.admin-photo:hover button{opacity:1}
+@media(max-width:640px){
+  .admin-photo button{opacity:1}
+  .req-item{flex-wrap:wrap}
+  .req-acts{width:100%; justify-content:flex-end}
+}
 </style>
 </head>
 <body>
@@ -875,6 +994,7 @@ html[data-theme="light"] .quote-inner.lg.lg{
   <nav class="nav-links" aria-label="页面导航">
     <a href="#members">成员</a>
     <a href="#life">日常</a>
+    <a href="#photos">图片</a>
     <a href="#rules">公约</a>
   </nav>
   <div class="nav-actions">
@@ -990,20 +1110,14 @@ html[data-theme="light"] .quote-inner.lg.lg{
         </article>
       </div>
 
-      <div class="daily-bar lg reveal">
-        <div>
-          <span class="db-title">日常相册</span>
-          <span class="db-sub">把你手机里的 514 时刻放上来 · 可点赞、可评论</span>
-        </div>
-        <div class="db-right">
-          <input class="daily-name" id="dailyName" maxlength="12" placeholder="你的昵称" aria-label="你的昵称">
-          <button class="btn ghost btn-sm" id="dailyRefreshBtn" type="button" hidden>↻ 刷新</button>
-          <button class="btn primary btn-sm" id="dailyUploadBtn" type="button">＋ 上传日常</button>
-          <input type="file" id="dailyFile" accept="image/*" multiple hidden>
-        </div>
-      </div>
-      <div class="daily-grid" id="dailyGrid"></div>
-      <p class="daily-empty" id="dailyEmpty">还没有照片，点「上传日常」放下第一张。<br><span style="font-size:12px">照片只保存在这台电脑的浏览器里，不会上传到网络。</span></p>
+      <a class="photos-entry lg reveal" href="#photos">
+        <span class="pe-ico" aria-hidden="true">📷</span>
+        <span class="pe-text">
+          <strong>我们的图片</strong>
+          <em>514 的日常瞬间都收在这里，可以点赞、评论，也能上传你自己的照片。</em>
+        </span>
+        <span class="pe-go">进去看看 →</span>
+      </a>
     </div>
   </section>
 
@@ -1033,6 +1147,60 @@ html[data-theme="light"] .quote-inner.lg.lg{
       <div class="quote-dots" id="quoteDots"></div>
     </div>
   </section>
+  <!-- 我们的图片（独立页面） -->
+  <section class="photos-page" id="photos" aria-label="我们的图片">
+    <div class="wrap">
+      <div class="photos-head">
+        <div class="photos-head-top">
+          <a class="photos-back" href="#top">← 返回首页</a>
+          <button class="admin-entry" id="adminEntry" type="button">🔒 管理</button>
+        </div>
+        <div class="eyebrow"><span class="pulse"></span>OUR PHOTOS</div>
+        <h2>我们的<span class="grad">图片</span></h2>
+        <p>514 的日常瞬间都收在这里。建个相册，把同一段回忆放在一起。</p>
+      </div>
+
+      <!-- 相册列表 -->
+      <div id="albumsView">
+        <div class="albums-toolbar">
+          <span class="albums-count" id="albumsCount"></span>
+          <button class="btn primary btn-sm" id="newAlbumBtn" type="button">＋ 新建相册</button>
+        </div>
+        <form class="album-create" id="albumCreate" hidden>
+          <input id="albumNameInput" maxlength="20" placeholder="相册名字，比如：军训 / 第一次聚餐" aria-label="相册名字">
+          <button class="btn primary btn-sm" type="submit">创建</button>
+          <button class="btn ghost btn-sm" type="button" id="albumCreateCancel">取消</button>
+        </form>
+        <div class="albums-grid" id="albumsGrid"></div>
+        <p class="daily-empty" id="albumsEmpty">还没有相册，点「新建相册」把照片分门别类。</p>
+      </div>
+
+      <!-- 相册详情 -->
+      <div id="albumDetail" hidden>
+        <div class="album-detail-head">
+          <a class="photos-back" id="albumBack" href="#photos">← 全部相册</a>
+          <button class="album-del" id="albumDelete" type="button">删除相册</button>
+        </div>
+        <h3 class="album-title" id="albumTitle"></h3>
+        <p class="album-sub" id="albumSub"></p>
+
+        <div class="daily-bar lg">
+          <div>
+            <span class="db-title">上传照片</span>
+            <span class="db-sub">照片会放进当前相册 · 可点赞、可评论</span>
+          </div>
+          <div class="db-right">
+            <input class="daily-name" id="dailyName" maxlength="12" placeholder="你的昵称" aria-label="你的昵称">
+            <button class="btn ghost btn-sm" id="dailyRefreshBtn" type="button" hidden>↻ 刷新</button>
+            <button class="btn primary btn-sm" id="dailyUploadBtn" type="button">＋ 上传照片</button>
+            <input type="file" id="dailyFile" accept="image/*" multiple hidden>
+          </div>
+        </div>
+        <div class="daily-grid" id="dailyGrid"></div>
+        <p class="daily-empty" id="dailyEmpty">这个相册还没有照片，点「上传照片」放进来。</p>
+      </div>
+    </div>
+  </section>
 </main>
 
 <footer class="footer">
@@ -1054,6 +1222,56 @@ html[data-theme="light"] .quote-inner.lg.lg{
 <!-- 放大 / 详情层 -->
 <div class="lightbox" id="lightbox" role="dialog" aria-modal="true" aria-label="放大查看" aria-hidden="true">
   <div class="lightbox-card lg" id="lightboxCard"></div>
+</div>
+
+<!-- 移动到相册 -->
+<div class="move-pop" id="movePop" hidden>
+  <div class="move-card" role="dialog" aria-modal="true" aria-label="移动到相册">
+    <div class="move-title">移动到相册</div>
+    <div class="move-list" id="moveList"></div>
+    <button class="btn ghost btn-sm move-cancel" id="moveCancel" type="button">取消</button>
+  </div>
+</div>
+
+<!-- 管理员登录 -->
+<div class="auth-pop" id="authPop" hidden>
+  <form class="auth-card" id="authForm">
+    <div class="auth-title">管理员登录</div>
+    <div class="auth-sub">登录后才能处理删除申请</div>
+    <input id="authUser" autocomplete="username" placeholder="账号" aria-label="管理员账号">
+    <input id="authPass" type="password" autocomplete="current-password" placeholder="密码" aria-label="管理员密码">
+    <div class="auth-err" id="authErr" hidden></div>
+    <div class="auth-actions">
+      <button class="btn ghost btn-sm" type="button" id="authCancel">取消</button>
+      <button class="btn primary btn-sm" type="submit">登录</button>
+    </div>
+  </form>
+</div>
+
+<!-- 管理面板 -->
+<div class="admin-panel" id="adminPanel" hidden>
+  <div class="admin-inner">
+    <div class="admin-head">
+      <h3>相册管理</h3>
+      <div class="admin-head-acts">
+        <button class="btn ghost btn-sm" type="button" id="adminRefresh">↻ 刷新</button>
+        <button class="btn ghost btn-sm" type="button" id="adminLogout">退出</button>
+        <button class="icon-btn" type="button" id="adminClose" aria-label="关闭">✕</button>
+      </div>
+    </div>
+
+    <section class="admin-section">
+      <h4>待处理的删除申请 <span class="admin-badge" id="reqCount">0</span></h4>
+      <div class="req-list" id="reqList"></div>
+      <p class="daily-empty" id="reqEmpty">暂时没有待处理的申请。</p>
+    </section>
+
+    <section class="admin-section">
+      <h4>全部照片 <span class="admin-hint" id="adminPhotoCount"></span></h4>
+      <div class="admin-photos" id="adminPhotos"></div>
+      <p class="daily-empty" id="adminPhotosEmpty">还没有照片。</p>
+    </section>
+  </div>
 </div>
 
 <script>
@@ -2002,7 +2220,12 @@ const DAILY_REMOTE = {
 const DAILY_LS = "room514.daily.photos";
 const DAILY_LIKES = "room514.daily.liked";
 const DAILY_NAME = "room514.daily.name";
+const DAILY_ALBUMS = "room514.daily.albums";
 const DAILY_UID = "room514.uid";
+const ADMIN_USER = "lanyangyang";
+const ADMIN_HASH = "16072cad73f78943535337bfaf7e342ff9ed227b5f83e18bddfc4838e39b4c2e";
+const ADMIN_SESSION = "room514.admin";
+const REQUESTS_LS = "room514.daily.requests";
 
 const DailyDB = (() => {
   let dbp = null;
@@ -2062,8 +2285,40 @@ const RemoteDaily = {
       name: r.name || "514 匿名",
       ts: new Date(r.created_at).getTime(),
       likes: r.likes || 0,
-      comments: Array.isArray(r.comments) ? r.comments : []
+      comments: Array.isArray(r.comments) ? r.comments : [],
+      albumId: r.album_id != null ? r.album_id : null
     }));
+  },
+  async albums() {
+    const res = await fetch(
+      `${this.base()}/rest/v1/daily_albums?select=*&order=created_at.desc`,
+      { headers: this.headers() }
+    );
+    if (!res.ok) throw new Error("读取相册失败 " + res.status);
+    const rows = await res.json();
+    return rows.map(r => ({
+      id: r.id,
+      name: r.name || "未命名相册",
+      cover: r.cover || "",
+      ts: new Date(r.created_at).getTime()
+    }));
+  },
+  async addAlbum(name) {
+    const res = await fetch(`${this.base()}/rest/v1/daily_albums`, {
+      method: "POST",
+      headers: this.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
+      body: JSON.stringify({ name })
+    });
+    if (!res.ok) throw new Error("创建相册失败 " + res.status);
+    const row = (await res.json())[0];
+    return { id: row.id, name: row.name, cover: "", ts: new Date(row.created_at).getTime() };
+  },
+  async delAlbum(id) {
+    const res = await fetch(`${this.base()}/rest/v1/daily_albums?id=eq.${id}`, {
+      method: "DELETE",
+      headers: this.headers()
+    });
+    if (!res.ok) throw new Error("删除相册失败 " + res.status);
   },
   async add(rec) {
     const blob = await (await fetch(rec.src)).blob();
@@ -2078,7 +2333,7 @@ const RemoteDaily = {
     const res = await fetch(`${this.base()}/rest/v1/${DAILY_REMOTE.table}`, {
       method: "POST",
       headers: this.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
-      body: JSON.stringify({ src, name: rec.name, likes: 0, comments: [] })
+      body: JSON.stringify({ src, name: rec.name, likes: 0, comments: [], album_id: rec.albumId || null })
     });
     if (!res.ok) throw new Error("保存记录失败 " + res.status);
     const row = (await res.json())[0];
@@ -2088,7 +2343,7 @@ const RemoteDaily = {
     const res = await fetch(`${this.base()}/rest/v1/${DAILY_REMOTE.table}?id=eq.${rec.id}`, {
       method: "PATCH",
       headers: this.headers({ "Content-Type": "application/json" }),
-      body: JSON.stringify({ likes: rec.likes, comments: rec.comments || [] })
+      body: JSON.stringify({ likes: rec.likes, comments: rec.comments || [], album_id: rec.albumId != null ? rec.albumId : null })
     });
     if (!res.ok) throw new Error("更新失败 " + res.status);
   },
@@ -2114,6 +2369,31 @@ const DailyStore = {
   remote() { return RemoteDaily.on(); },
   ls() { try { return JSON.parse(localStorage.getItem(DAILY_LS) || "[]"); } catch (e) { return []; } },
   lsSave(v) { try { localStorage.setItem(DAILY_LS, JSON.stringify(v)); } catch (e) {} },
+  albumsLs() { try { return JSON.parse(localStorage.getItem(DAILY_ALBUMS) || "[]"); } catch (e) { return []; } },
+  albumsSave(v) { try { localStorage.setItem(DAILY_ALBUMS, JSON.stringify(v)); } catch (e) {} },
+  async albums() {
+    if (this.remote()) return RemoteDaily.albums();
+    return this.albumsLs();
+  },
+  async addAlbum(name) {
+    if (this.remote()) return RemoteDaily.addAlbum(name);
+    const a = { id: Date.now() + Math.floor(Math.random() * 1000), name, cover: "", ts: Date.now() };
+    const list = this.albumsLs();
+    list.unshift(a);
+    this.albumsSave(list);
+    return a;
+  },
+  async delAlbum(id) {
+    if (this.remote()) return RemoteDaily.delAlbum(id);
+    this.albumsSave(this.albumsLs().filter(a => a.id !== id));
+    try {
+      const photos = await DailyDB.list();
+      await Promise.all(photos.filter(p => p.albumId === id)
+        .map(p => DailyDB.put(Object.assign({}, p, { albumId: null }))));
+    } catch (e) {
+      this.lsSave(this.ls().map(p => p.albumId === id ? Object.assign({}, p, { albumId: null }) : p));
+    }
+  },
   async all() {
     if (this.remote()) return RemoteDaily.all();
     try { return await DailyDB.list(); } catch (e) { return this.ls(); }
@@ -2134,6 +2414,12 @@ const DailyStore = {
     try { await DailyDB.put(rec); }
     catch (e) { this.lsSave(this.ls().map(p => p.id === rec.id ? rec : p)); }
   },
+  async move(id, albumId) {
+    const p = dailyPhotos.find(x => x.id === id);
+    if (!p) return;
+    p.albumId = albumId;
+    await this.put(p);
+  },
   async del(id, src) {
     if (this.remote()) return RemoteDaily.del(id, src);
     try { await DailyDB.del(id); }
@@ -2141,7 +2427,76 @@ const DailyStore = {
   }
 };
 
+/* ---- 删除申请（普通用户提交，管理员审批） ---- */
+const AdminStore = {
+  ls() { try { return JSON.parse(localStorage.getItem(REQUESTS_LS) || "[]"); } catch (e) { return []; } },
+  lsSave(v) { try { localStorage.setItem(REQUESTS_LS, JSON.stringify(v)); } catch (e) {} },
+  async list() {
+    if (DailyStore.remote()) {
+      const res = await fetch(
+        `${RemoteDaily.base()}/rest/v1/daily_delete_requests?select=*&order=created_at.desc`,
+        { headers: RemoteDaily.headers() }
+      );
+      if (!res.ok) throw new Error("读取申请失败 " + res.status);
+      const rows = await res.json();
+      return rows.map(r => ({
+        id: r.id,
+        photoId: r.photo_id,
+        src: r.photo_src || "",
+        name: r.photo_name || "",
+        albumId: r.album_id,
+        requester: r.requester || "514 匿名",
+        status: r.status || "pending",
+        ts: new Date(r.created_at).getTime(),
+        handledTs: r.handled_at ? new Date(r.handled_at).getTime() : 0
+      }));
+    }
+    return this.ls();
+  },
+  async add(rec) {
+    const item = Object.assign({}, rec, { status: "pending", ts: Date.now() });
+    if (DailyStore.remote()) {
+      const res = await fetch(`${RemoteDaily.base()}/rest/v1/daily_delete_requests`, {
+        method: "POST",
+        headers: RemoteDaily.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
+        body: JSON.stringify({
+          photo_id: rec.photoId,
+          photo_src: rec.src,
+          photo_name: rec.name,
+          album_id: rec.albumId != null ? rec.albumId : null,
+          requester: rec.requester,
+          status: "pending"
+        })
+      });
+      if (!res.ok) throw new Error("提交申请失败 " + res.status);
+      const row = (await res.json())[0];
+      item.id = row.id;
+      return item;
+    }
+    item.id = Date.now() + Math.floor(Math.random() * 1000);
+    const list = this.ls();
+    list.unshift(item);
+    this.lsSave(list);
+    return item;
+  },
+  async setStatus(id, status) {
+    if (DailyStore.remote()) {
+      const res = await fetch(`${RemoteDaily.base()}/rest/v1/daily_delete_requests?id=eq.${id}`, {
+        method: "PATCH",
+        headers: RemoteDaily.headers({ "Content-Type": "application/json" }),
+        body: JSON.stringify({ status, handled_at: new Date().toISOString() })
+      });
+      if (!res.ok) throw new Error("更新申请失败 " + res.status);
+      return;
+    }
+    this.lsSave(this.ls().map(r => r.id === id ? Object.assign({}, r, { status, handledTs: Date.now() }) : r));
+  }
+};
+
 let dailyPhotos = [];
+let dailyAlbums = [];
+let currentAlbum = null;   // null = 相册列表；"none" = 未分类；数字 = 相册 id
+let pendingRequests = [];
 let dailyLikedIds = new Set();
 const dailyOpenIds = new Set();
 
@@ -2202,6 +2557,7 @@ function dailyCardHTML(p) {
           <button class="d-btn" type="button" data-act="comments" aria-label="展开评论">
             <i class="d-ico">💬</i><span>${comments.length}</span>
           </button>
+          <button class="d-btn" type="button" data-act="move" aria-label="移动到相册" title="移动到相册">📁</button>
           <button class="d-btn d-del" type="button" data-act="del" aria-label="删除这张照片">✕</button>
         </div>
       </div>
@@ -2216,13 +2572,417 @@ function dailyCardHTML(p) {
     </article>`;
 }
 
+function albumPhotos(id) {
+  if (id === "none") return dailyPhotos.filter(p => !p.albumId);
+  return dailyPhotos.filter(p => p.albumId === id);
+}
+
+function getAlbum(id) {
+  if (id === "none") return { id: "none", name: "未分类照片", cover: "", ts: 0 };
+  return dailyAlbums.find(a => a.id === id) || null;
+}
+
+function currentAlbumPhotos() {
+  if (currentAlbum === null) return dailyPhotos;
+  return albumPhotos(currentAlbum);
+}
+
 function renderDaily() {
   const grid = $("#dailyGrid");
   if (!grid) return;
-  grid.innerHTML = dailyPhotos.map(dailyCardHTML).join("");
+  const list = currentAlbumPhotos();
+  grid.innerHTML = list.map(dailyCardHTML).join("");
   applyGlass(grid);
   const empty = $("#dailyEmpty");
+  if (empty) empty.hidden = list.length > 0;
+  updateAlbumHeader();
+  const panel = $("#adminPanel");
+  if (panel && !panel.hidden) renderAdminPhotos();
+}
+
+function albumCardHTML(a) {
+  const list = albumPhotos(a.id);
+  const cover = a.cover || (list[0] ? list[0].src : "");
+  const coverHTML = cover
+    ? `<img src="${cover}" alt="" loading="lazy">`
+    : `<span class="album-ph" aria-hidden="true">📷</span>`;
+  return `<a class="album-card lg" href="#photos/${a.id}">
+    <span class="album-cover">${coverHTML}</span>
+    <span class="album-meta">
+      <strong>${esc(a.name)}</strong>
+      <em>${list.length} 张照片</em>
+    </span>
+  </a>`;
+}
+
+function renderAlbums() {
+  const grid = $("#albumsGrid");
+  if (!grid) return;
+  const stray = dailyPhotos.filter(p => !p.albumId).length;
+  const strayCard = stray
+    ? `<a class="album-card lg" href="#photos/none">
+         <span class="album-cover"><span class="album-ph" aria-hidden="true">🗂️</span></span>
+         <span class="album-meta"><strong>未分类照片</strong><em>${stray} 张照片</em></span>
+       </a>`
+    : "";
+  grid.innerHTML = dailyAlbums.map(albumCardHTML).join("") + strayCard;
+  applyGlass(grid);
+  const empty = $("#albumsEmpty");
+  if (empty) empty.hidden = (dailyAlbums.length + (stray ? 1 : 0)) > 0;
+  const count = $("#albumsCount");
+  if (count) count.textContent = dailyAlbums.length ? `${dailyAlbums.length} 个相册` : "";
+}
+
+function refreshPhotosView() {
+  if (currentAlbum === null) renderAlbums();
+  else renderDaily();
+}
+
+function updateAlbumHeader() {
+  if (currentAlbum === null) return;
+  const a = getAlbum(currentAlbum);
+  const title = $("#albumTitle");
+  const sub = $("#albumSub");
+  const del = $("#albumDelete");
+  if (title) title.textContent = a ? a.name : (dailyAlbums.length ? "相册不存在" : "加载中…");
+  if (sub) {
+    if (currentAlbum === "none") sub.textContent = "还没有归入相册的照片都会出现在这里。";
+    else sub.textContent = a ? `${albumPhotos(currentAlbum).length} 张照片 · 点照片可放大，可以点赞和评论` : "";
+  }
+  if (del) del.hidden = currentAlbum === "none" || !a || !isAdmin();
+}
+
+function showAlbumList() {
+  const list = $("#albumsView"), detail = $("#albumDetail");
+  if (!list || !detail) return;
+  list.hidden = false;
+  detail.hidden = true;
+  renderAlbums();
+}
+
+function showAlbumDetail() {
+  const list = $("#albumsView"), detail = $("#albumDetail");
+  if (!list || !detail) return;
+  list.hidden = true;
+  detail.hidden = false;
+  updateAlbumHeader();
+  renderDaily();
+}
+
+function closeMovePop() {
+  const pop = $("#movePop");
+  if (pop) pop.hidden = true;
+}
+
+function openMovePop(p) {
+  const pop = $("#movePop"), list = $("#moveList");
+  if (!pop || !list) return;
+  const items = [];
+  items.push(`<button class="move-item" type="button" data-to="none"${!p.albumId ? ' aria-current="true"' : ''}>
+    <span class="mi-ico">🗂️</span>未分类照片</button>`);
+  dailyAlbums.forEach(a => {
+    items.push(`<button class="move-item" type="button" data-to="${a.id}"${p.albumId === a.id ? ' aria-current="true"' : ''}>
+      <span class="mi-ico">📁</span>${esc(a.name)}<span class="mi-count">${albumPhotos(a.id).length} 张</span></button>`);
+  });
+  items.push(`<button class="move-item" type="button" data-to="__new">
+    <span class="mi-ico">＋</span>新建相册并移入</button>`);
+  list.innerHTML = items.join("");
+  pop.dataset.photoId = String(p.id);
+  pop.hidden = false;
+}
+
+async function movePhotoTo(id, to) {
+  let albumId = to === "none" ? null : Number(to);
+  if (to === "__new") {
+    const name = prompt("给新相册起个名字");
+    if (!name || !name.trim()) return;
+    const a = await DailyStore.addAlbum(name.trim());
+    dailyAlbums.unshift(a);
+    albumId = a.id;
+  }
+  await DailyStore.move(id, albumId);
+  closeMovePop();
+  refreshPhotosView();
+}
+
+/* ---- 管理员 ---- */
+function isAdmin() {
+  try { return sessionStorage.getItem(ADMIN_SESSION) === "1"; } catch (e) { return false; }
+}
+
+async function hashText(text) {
+  const buf = await crypto.subtle.digest("SHA-256", new TextEncoder().encode(text));
+  return Array.from(new Uint8Array(buf)).map(b => b.toString(16).padStart(2, "0")).join("");
+}
+
+function syncAdminEntry() {
+  const entry = $("#adminEntry");
+  if (!entry) return;
+  entry.classList.toggle("on", isAdmin());
+  entry.innerHTML = isAdmin() ? "⚙️ 管理面板" : "🔒 管理";
+}
+
+function openAuth() {
+  const pop = $("#authPop");
+  if (!pop) return;
+  const err = $("#authErr");
+  if (err) { err.hidden = true; err.textContent = ""; }
+  const p = $("#authPass");
+  if (p) p.value = "";
+  pop.hidden = false;
+  const u = $("#authUser");
+  if (u) setTimeout(() => u.focus(), 30);
+}
+
+function closeAuth() {
+  const pop = $("#authPop");
+  if (pop) pop.hidden = true;
+}
+
+function openAdmin() {
+  const panel = $("#adminPanel");
+  if (!panel) return;
+  panel.hidden = false;
+  refreshAdmin();
+}
+
+function closeAdmin() {
+  const panel = $("#adminPanel");
+  if (panel) panel.hidden = true;
+}
+
+function pendingReqFor(photoId) {
+  return pendingRequests.find(r => r.photoId === photoId) || null;
+}
+
+async function refreshAdmin() {
+  renderAdminPhotos();
+  try {
+    const all = await AdminStore.list();
+    pendingRequests = all.filter(r => r.status === "pending");
+    renderRequests();
+    renderAdminPhotos();
+  } catch (e) {
+    const empty = $("#reqEmpty");
+    if (empty) {
+      empty.hidden = false;
+      const msg = e && e.message ? e.message : String(e);
+      empty.textContent = /404/.test(msg)
+        ? "还没有创建删除申请表，请先在 Supabase 运行建表 SQL。"
+        : "读取申请失败：" + msg;
+    }
+  }
+}
+
+function renderRequests() {
+  const list = $("#reqList"), empty = $("#reqEmpty"), count = $("#reqCount");
+  if (!list) return;
+  if (count) count.textContent = String(pendingRequests.length);
+  list.innerHTML = pendingRequests.map(r => `
+    <div class="req-item" data-req="${r.id}">
+      ${r.src ? `<img class="req-thumb" src="${r.src}" alt="" loading="lazy">` : `<span class="req-thumb"></span>`}
+      <div class="req-info">
+        <b>${esc(r.requester)} 申请删除</b>
+        <span>${esc(r.name || "未命名")} · ${dailyTimeAgo(r.ts)}</span>
+      </div>
+      <div class="req-acts">
+        <button class="req-yes" type="button" data-act="approve">同意删除</button>
+        <button class="req-no" type="button" data-act="reject">拒绝</button>
+      </div>
+    </div>`).join("");
+  if (empty) empty.hidden = pendingRequests.length > 0;
+}
+
+function renderAdminPhotos() {
+  const grid = $("#adminPhotos"), empty = $("#adminPhotosEmpty"), count = $("#adminPhotoCount");
+  if (!grid) return;
+  grid.innerHTML = dailyPhotos.map(p => `
+    <div class="admin-photo" data-id="${p.id}">
+      <img src="${p.src}" alt="" loading="lazy">
+      <button type="button" data-act="admin-del" title="删除这张照片">✕</button>
+    </div>`).join("");
   if (empty) empty.hidden = dailyPhotos.length > 0;
+  if (count) count.textContent = dailyPhotos.length ? `共 ${dailyPhotos.length} 张` : "";
+}
+
+async function removePhoto(p) {
+  await DailyStore.del(p.id, p.src);
+  dailyPhotos = dailyPhotos.filter(x => x.id !== p.id);
+  dailyLikedIds.delete(p.id);
+  try { localStorage.setItem(DAILY_LIKES, JSON.stringify(Array.from(dailyLikedIds))); } catch (e) {}
+  renderDaily();
+}
+
+async function submitDeleteRequest(p) {
+  try {
+    if (!pendingRequests.length) {
+      try {
+        const all = await AdminStore.list();
+        pendingRequests = all.filter(r => r.status === "pending");
+      } catch (e) {}
+    }
+    if (pendingReqFor(p.id)) { alert("这张照片已经有待处理的删除申请了，等管理员处理吧。"); return; }
+    const r = await AdminStore.add({
+      photoId: p.id,
+      src: p.src,
+      name: p.name,
+      albumId: p.albumId,
+      requester: dailyName()
+    });
+    pendingRequests.push(r);
+    alert("删除申请已提交，管理员同意后才会删除。");
+  } catch (e) {
+    const msg = e && e.message ? e.message : String(e);
+    alert(/404/.test(msg)
+      ? "提交失败：删除申请表还没建好，请先让管理员在 Supabase 运行建表 SQL。"
+      : "提交申请失败：" + msg);
+  }
+}
+
+function setupAdmin() {
+  const entry = $("#adminEntry");
+  if (entry) entry.addEventListener("click", () => {
+    if (isAdmin()) openAdmin();
+    else openAuth();
+  });
+  syncAdminEntry();
+
+  const authForm = $("#authForm");
+  if (authForm) authForm.addEventListener("submit", async e => {
+    e.preventDefault();
+    const uEl = $("#authUser"), pEl = $("#authPass"), err = $("#authErr");
+    const u = uEl ? uEl.value.trim() : "";
+    const p = pEl ? pEl.value : "";
+    try {
+      const h = await hashText(p);
+      if (u === ADMIN_USER && h === ADMIN_HASH) {
+        try { sessionStorage.setItem(ADMIN_SESSION, "1"); } catch (e2) {}
+        closeAuth();
+        syncAdminEntry();
+        openAdmin();
+      } else if (err) {
+        err.hidden = false;
+        err.textContent = "账号或密码不对";
+      }
+    } catch (e2) {
+      if (err) { err.hidden = false; err.textContent = "当前环境不支持登录校验"; }
+    }
+  });
+
+  const cancel = $("#authCancel");
+  if (cancel) cancel.addEventListener("click", closeAuth);
+
+  const close = $("#adminClose");
+  if (close) close.addEventListener("click", closeAdmin);
+  const refresh = $("#adminRefresh");
+  if (refresh) refresh.addEventListener("click", refreshAdmin);
+  const logout = $("#adminLogout");
+  if (logout) logout.addEventListener("click", () => {
+    try { sessionStorage.removeItem(ADMIN_SESSION); } catch (e) {}
+    closeAdmin();
+    syncAdminEntry();
+  });
+
+  const reqList = $("#reqList");
+  if (reqList) reqList.addEventListener("click", async e => {
+    const btn = e.target.closest("button[data-act]");
+    if (!btn) return;
+    const item = btn.closest(".req-item");
+    if (!item) return;
+    const id = Number(item.dataset.req);
+    const req = pendingRequests.find(r => r.id === id);
+    if (!req) return;
+    btn.disabled = true;
+    try {
+      if (btn.dataset.act === "approve") {
+        const p = dailyPhotos.find(x => x.id === req.photoId);
+        if (p) await removePhoto(p);
+        await AdminStore.setStatus(req.id, "approved");
+      } else {
+        await AdminStore.setStatus(req.id, "rejected");
+      }
+      pendingRequests = pendingRequests.filter(r => r.id !== id);
+      renderRequests();
+      renderAdminPhotos();
+    } catch (err) {
+      alert("操作失败：" + (err && err.message ? err.message : err));
+    }
+    btn.disabled = false;
+  });
+
+  const adminPhotos = $("#adminPhotos");
+  if (adminPhotos) adminPhotos.addEventListener("click", async e => {
+    const btn = e.target.closest('[data-act="admin-del"]');
+    if (!btn) return;
+    const wrap = btn.closest(".admin-photo");
+    if (!wrap) return;
+    const id = Number(wrap.dataset.id);
+    const p = dailyPhotos.find(x => x.id === id);
+    if (!p) return;
+    if (!confirm("直接删除这张照片？点赞和评论也会一起删掉。")) return;
+    try {
+      await removePhoto(p);
+      renderAdminPhotos();
+    } catch (err) {
+      alert("删除失败：" + (err && err.message ? err.message : err));
+    }
+  });
+}
+
+function setupAlbums() {
+  const newBtn = $("#newAlbumBtn");
+  const form = $("#albumCreate");
+  const input = $("#albumNameInput");
+  const cancel = $("#albumCreateCancel");
+  if (newBtn && form && input) {
+    newBtn.addEventListener("click", () => { form.hidden = false; input.focus(); });
+    if (cancel) cancel.addEventListener("click", () => { form.hidden = true; input.value = ""; });
+    form.addEventListener("submit", async e => {
+      e.preventDefault();
+      const name = input.value.trim();
+      if (!name) { input.focus(); return; }
+      const submit = form.querySelector('button[type="submit"]');
+      if (submit) submit.disabled = true;
+      try {
+        const a = await DailyStore.addAlbum(name);
+        dailyAlbums.unshift(a);
+        input.value = "";
+        form.hidden = true;
+        location.hash = "#photos/" + a.id;
+      } catch (err) {
+        alert("创建相册失败：" + (err && err.message ? err.message : err));
+      }
+      if (submit) submit.disabled = false;
+    });
+  }
+
+  const del = $("#albumDelete");
+  if (del) del.addEventListener("click", async () => {
+    if (typeof currentAlbum !== "number") return;
+    const a = getAlbum(currentAlbum);
+    if (!confirm("删除相册「" + (a ? a.name : "") + "」？\n相册里的照片会转到「未分类」，不会被删掉。")) return;
+    try {
+      await DailyStore.delAlbum(currentAlbum);
+      dailyAlbums = dailyAlbums.filter(x => x.id !== currentAlbum);
+      dailyPhotos.forEach(p => { if (p.albumId === currentAlbum) p.albumId = null; });
+      location.hash = "#photos";
+    } catch (err) {
+      alert("删除相册失败：" + (err && err.message ? err.message : err));
+    }
+  });
+
+  const pop = $("#movePop");
+  if (pop) {
+    pop.addEventListener("click", async e => {
+      if (e.target === pop) { closeMovePop(); return; }
+      const b = e.target.closest(".move-item");
+      if (!b) return;
+      try { await movePhotoTo(Number(pop.dataset.photoId), b.dataset.to); }
+      catch (err) { alert("移动失败：" + (err && err.message ? err.message : err)); }
+    });
+    const moveCancel = $("#moveCancel");
+    if (moveCancel) moveCancel.addEventListener("click", closeMovePop);
+  }
 }
 
 async function uploadDaily(files) {
@@ -2236,7 +2996,7 @@ async function uploadDaily(files) {
     if (btn) btn.textContent = `上传中 ${i + 1}/${files.length}`;
     try {
       const src = await compressImage(f);
-      const rec = { src, name: dailyName(), ts: Date.now(), likes: 0, comments: [] };
+      const rec = { src, name: dailyName(), ts: Date.now(), likes: 0, comments: [], albumId: typeof currentAlbum === "number" ? currentAlbum : null };
       const added = await DailyStore.add(rec);
       if (added && typeof added === "object") {
         rec.id = added.id;
@@ -2274,15 +3034,17 @@ function setupDaily() {
   const emptyEl = $("#dailyEmpty");
   if (emptyEl) {
     emptyEl.innerHTML = remote
-      ? `还没有照片，点「上传日常」放下第一张。<br><span style="font-size:12px">照片存在云端，所有设备都能看到同一批。</span>`
-      : `还没有照片，点「上传日常」放下第一张。<br><span style="font-size:12px">照片只保存在这台电脑的浏览器里，不会上传到网络。</span>`;
+      ? `还没有照片，点「上传照片」放下第一张。<br><span style="font-size:12px">照片存在云端，所有设备都能看到同一批。</span>`
+      : `还没有照片，点「上传照片」放下第一张。<br><span style="font-size:12px">照片只保存在这台电脑的浏览器里，不会上传到网络。</span>`;
   }
   const refreshBtn = $("#dailyRefreshBtn");
   if (refreshBtn) refreshBtn.hidden = !remote;
 
-  DailyStore.all().then(list => {
+  Promise.all([DailyStore.all(), DailyStore.albums().catch(() => [])]).then(([list, albums]) => {
     dailyPhotos = (list || []).slice().sort((a, b) => b.ts - a.ts);
-    renderDaily();
+    dailyAlbums = (albums || []).slice().sort((a, b) => b.ts - a.ts);
+    refreshPhotosView();
+    updateAlbumHeader();
   }).catch(err => {
     if (emptyEl) {
       emptyEl.hidden = false;
@@ -2293,14 +3055,19 @@ function setupDaily() {
   });
 
   if (remote) {
-    const snap = list => JSON.stringify(list.map(p => [p.id, p.likes, (p.comments || []).length]));
+    const snap = list => JSON.stringify(list.map(p => [p.id, p.likes, (p.comments || []).length, p.albumId]));
+    const snapAlbums = list => JSON.stringify(list.map(a => [a.id, a.name]));
     const sync = async () => {
       if (document.hidden || grid.contains(document.activeElement)) return;
       try {
-        const list = (await DailyStore.all()).sort((a, b) => b.ts - a.ts);
-        if (snap(list) === snap(dailyPhotos)) return;
+        const [list, albums] = await Promise.all([DailyStore.all(), DailyStore.albums().catch(() => dailyAlbums)]);
+        list.sort((a, b) => b.ts - a.ts);
+        albums.sort((a, b) => b.ts - a.ts);
+        if (snap(list) === snap(dailyPhotos) && snapAlbums(albums) === snapAlbums(dailyAlbums)) return;
         dailyPhotos = list;
-        renderDaily();
+        dailyAlbums = albums;
+        refreshPhotosView();
+        updateAlbumHeader();
       } catch (e) {}
     };
     if (refreshBtn) refreshBtn.addEventListener("click", sync);
@@ -2349,6 +3116,8 @@ function setupDaily() {
       return;
     }
 
+    if (act === "move") { openMovePop(p); return; }
+
     if (act === "like") {
       const on = !dailyLikedIds.has(id);
       if (on) dailyLikedIds.add(id); else dailyLikedIds.delete(id);
@@ -2370,14 +3139,14 @@ function setupDaily() {
     }
 
     if (act === "del") {
-      if (!confirm("删除这张照片？点赞和评论也会一起删掉。")) return;
-      await DailyStore.del(id, p.src);
-      dailyPhotos = dailyPhotos.filter(x => x.id !== id);
-      dailyLikedIds.delete(id);
-      try { localStorage.setItem(DAILY_LIKES, JSON.stringify(Array.from(dailyLikedIds))); } catch (err) {}
-      card.remove();
-      const empty = $("#dailyEmpty");
-      if (empty) empty.hidden = dailyPhotos.length > 0;
+      if (isAdmin()) {
+        if (!confirm("删除这张照片？点赞和评论也会一起删掉。")) return;
+        await removePhoto(p);
+      } else {
+        if (!confirm("删除需要管理员同意。\n现在提交删除申请吗？")) return;
+        await submitDeleteRequest(p);
+      }
+      return;
     }
   });
 
@@ -2507,8 +3276,53 @@ function setupQuotes() {
 
 $("#year").textContent = new Date().getFullYear();
 
+/* ============ 独立图片页：#photos / #photos/<相册> ============ */
+function setupPhotosRoute() {
+  const photos = $("#photos");
+  if (!photos) return;
+  const apply = () => {
+    const h = location.hash;
+    const inPhotos = h === "#photos" || h.startsWith("#photos/");
+    const was = document.body.classList.contains("view-photos");
+
+    if (!inPhotos) {
+      if (!was) return;
+      document.body.classList.remove("view-photos");
+      const id = h.slice(1);
+      const target = id ? document.getElementById(id) : null;
+      if (target) {
+        const y = target.getBoundingClientRect().top + window.scrollY;
+        window.scrollTo({ top: Math.max(0, y), behavior: "instant" });
+      } else {
+        window.scrollTo({ top: 0, behavior: "instant" });
+      }
+      return;
+    }
+
+    if (!was) {
+      document.body.classList.add("view-photos");
+      window.scrollTo({ top: 0, behavior: "instant" });
+    }
+
+    const rest = h.slice("#photos".length).replace(/^\/+/, "");
+    if (!rest) {
+      currentAlbum = null;
+      showAlbumList();
+    } else {
+      const id = rest === "none" ? "none" : Number(rest);
+      currentAlbum = Number.isFinite(id) ? id : "none";
+      showAlbumDetail();
+    }
+  };
+  window.addEventListener("hashchange", apply);
+  apply();
+}
+
 /* 放在脚本末尾调用：相册模块里有 const/let，必须等声明执行完 */
 setupDaily();
+setupAlbums();
+setupAdmin();
+setupPhotosRoute();
 </script>
 </body>
 </html>
