@@ -925,6 +925,57 @@ body.view-photos .photos-page .reveal{opacity:1; transform:none}
 .community-tab:hover{color:var(--text)}
 .community-tab.on{background:linear-gradient(135deg,var(--accent),#ff5f6d); color:#1b1008}
 .community-tab.on:hover{color:#1b1008}
+
+/* ============ 社区：频道 ============ */
+.channel-toolbar{display:flex; align-items:center; justify-content:space-between; gap:14px; margin-bottom:18px; flex-wrap:wrap}
+.channel-toolbar b{font-size:15px; margin-right:8px}
+.channel-sub{font-size:12.5px; color:var(--faint)}
+.channel-grid{display:grid; grid-template-columns:repeat(auto-fill,minmax(220px,1fr)); gap:14px}
+.channel-card{display:flex; flex-direction:column; gap:8px; text-align:left; padding:17px; border-radius:18px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; cursor:pointer; transition:transform .2s,border-color .2s}
+.channel-card:hover{transform:translateY(-3px); border-color:var(--accent)}
+.cc-top{display:flex; align-items:center; gap:10px}
+.cc-ava{width:38px; height:38px; border-radius:12px; display:grid; place-items:center; background:linear-gradient(140deg,var(--accent),#8b7bff); color:#1b1008; font-weight:800; font-size:16px; flex:0 0 auto}
+.cc-name{font-size:14.5px; font-weight:700}
+.cc-desc{font-size:12.5px; color:var(--muted); line-height:1.6; min-height:34px}
+.cc-meta{font-size:11.5px; color:var(--faint)}
+.channel-apps{display:flex; flex-direction:column; gap:10px}
+.channel-app{display:flex; align-items:center; gap:10px; padding:11px 14px; border-radius:14px; border:1px solid var(--line); font-size:13px}
+.channel-app b{flex:1; font-weight:600}
+.chan-state{font-size:11.5px; padding:3px 10px; border-radius:999px; border:1px solid var(--line)}
+.chan-state.pending{color:var(--accent); border-color:rgba(255,154,90,.5)}
+.chan-state.approved{color:#5ad18b; border-color:rgba(90,209,139,.45)}
+.chan-state.rejected{color:#ff8080; border-color:rgba(255,107,107,.4)}
+.channel-banner{display:flex; align-items:flex-start; justify-content:space-between; gap:16px; padding:18px 20px; border-radius:20px; margin-bottom:18px; border:1px solid rgba(139,123,255,.35); background:linear-gradient(135deg,rgba(139,123,255,.14),rgba(255,154,90,.08)); flex-wrap:wrap}
+.cb-kicker{font-size:10.5px; letter-spacing:.16em; color:var(--accent); font-weight:700; margin-bottom:6px}
+.channel-banner h3{margin:0 0 6px; font-size:20px}
+.channel-banner p{margin:0 0 8px; font-size:13px; color:var(--muted); line-height:1.65}
+.cb-meta{font-size:11.5px; color:var(--faint)}
+.cb-acts{display:flex; gap:8px; flex-wrap:wrap}
+.channel-banner[hidden],.channel-lock[hidden]{display:none}
+.channel-lock{padding:15px 18px; border-radius:16px; margin-bottom:18px; border:1px dashed var(--line); background:var(--surface); color:var(--muted); font-size:13px; line-height:1.7}
+.channel-lock button{margin-left:8px}
+@media(max-width:640px){
+  .channel-banner{flex-direction:column}
+  .channel-grid{grid-template-columns:1fr}
+}
+/* ============ 好友 / 社交弹窗 ============ */
+.social-card{width:min(520px,100%); max-height:min(84vh,660px); overflow:auto; display:flex; flex-direction:column; gap:14px; padding:22px; border-radius:20px; background:var(--surface-2); border:1px solid var(--line); box-shadow:var(--shadow)}
+.social-head{display:flex; align-items:center; justify-content:space-between; gap:10px}
+.social-head h3{margin:0; font-size:17px}
+.social-form{display:flex; gap:8px; flex-wrap:wrap}
+.social-form input{flex:1; min-width:180px; padding:10px 13px; border-radius:11px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:13px; outline:none}
+.social-form input:focus{border-color:var(--accent)}
+.social-hint{font-size:12px; color:var(--faint); line-height:1.6; margin:0}
+.social-sec{display:flex; flex-direction:column; gap:9px; border-top:1px solid var(--line); padding-top:13px}
+.social-sec> b{font-size:13px}
+.social-list{display:flex; flex-direction:column; gap:8px; margin:0; padding:0; list-style:none}
+.social-row{display:flex; align-items:center; gap:10px; padding:10px 12px; border-radius:13px; border:1px solid var(--line); font-size:13px}
+.social-row .sr-name{flex:1; min-width:0; overflow:hidden; text-overflow:ellipsis; white-space:nowrap}
+.social-row .sr-mail{font-size:11.5px; color:var(--faint)}
+.social-row button{padding:6px 12px; border-radius:9px; border:1px solid var(--line); background:transparent; color:var(--text); font-size:12px; cursor:pointer; transition:.2s}
+.social-row button:hover{border-color:var(--accent); color:var(--accent)}
+.social-row button.danger:hover{border-color:#ff6b6b; color:#ff8080}
+.social-empty{font-size:12.5px; color:var(--faint)}
 .post-composer{padding:18px; border-radius:20px; margin-bottom:22px}
 .post-composer textarea{width:100%; min-height:96px; resize:vertical; padding:14px; border-radius:14px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:14px; line-height:1.7; outline:none; transition:border-color .2s}
 .post-composer textarea:focus{border-color:var(--accent)}
@@ -999,6 +1050,15 @@ body.view-photos .photos-page .reveal{opacity:1; transform:none}
 .topic-chip small{opacity:.65; margin-left:4px; font-size:10.5px}
 .composer-topics{display:flex; gap:7px; flex-wrap:wrap; margin-top:10px}
 .composer-topics .topic-chip{font-size:11.5px; padding:5px 11px}
+.topic-chip.topic-add{border-style:dashed; color:var(--accent)}
+.topic-chip.topic-add:hover{border-color:var(--accent); background:rgba(255,154,90,.08)}
+.topic-custom{display:flex; gap:7px; margin-top:8px; align-items:center; flex-wrap:wrap}
+.topic-custom[hidden]{display:none}
+.topic-custom input{flex:1; min-width:150px; padding:7px 11px; border-radius:9px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:12.5px; outline:none; transition:border-color .2s}
+.topic-custom input:focus{border-color:var(--accent)}
+.topic-custom button{padding:7px 12px; border-radius:9px; border:1px solid var(--line); background:var(--surface-2); color:var(--text); font:inherit; font-size:12px; cursor:pointer; transition:.2s}
+.topic-custom button:hover{border-color:var(--line-strong)}
+.topic-custom #topicCustomAdd{border-color:transparent; background:linear-gradient(135deg,var(--accent),#ff5f6d); color:#1b1008; font-weight:700}
 .post-count{font-size:11.5px; color:var(--faint); font-variant-numeric:tabular-nums}
 .post-count.warn{color:var(--accent)}
 .post-topic{display:inline-flex; align-items:center; padding:3px 10px; border-radius:999px; background:rgba(255,154,90,.14); color:var(--accent); font-size:11.5px; font-weight:600; margin-bottom:9px; cursor:pointer; border:0; font-family:inherit}
@@ -1437,6 +1497,7 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
           <input id="nickInput" maxlength="12" placeholder="新昵称" aria-label="新昵称">
           <button class="nick-save" id="nickSave" type="button">保存昵称</button>
         </div>
+        <button class="user-logout" id="friendsBtn" type="button">好友</button>
         <button class="user-logout" id="avatarPick" type="button">更换头像</button>
         <button class="user-logout danger" id="userLogout" type="button">退出登录</button>
         <input type="file" id="avatarFile" accept="image/*" hidden>
@@ -1590,11 +1651,26 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 
       <div class="community-tabs" role="tablist" aria-label="社区内容">
         <button class="community-tab on" id="ctabFeed" type="button" role="tab" aria-selected="true" data-ctab="feed">动态</button>
+        <button class="community-tab" id="ctabChannels" type="button" role="tab" aria-selected="false" data-ctab="channels">频道</button>
         <button class="community-tab" id="ctabAlbums" type="button" role="tab" aria-selected="false" data-ctab="albums">相册</button>
       </div>
 
       <!-- 动态 -->
       <div id="communityFeed">
+        <div class="channel-banner" id="channelBanner" hidden>
+          <div class="cb-main">
+            <div class="cb-kicker">CHANNEL</div>
+            <h3 id="cbName"></h3>
+            <p id="cbDesc"></p>
+            <div class="cb-meta" id="cbMeta"></div>
+          </div>
+          <div class="cb-acts">
+            <button type="button" class="btn ghost btn-sm" id="cbMembers">成员</button>
+            <button type="button" class="btn ghost btn-sm" id="cbInvite">＋ 邀请好友</button>
+            <button type="button" class="btn ghost btn-sm" id="cbExit">返回广场</button>
+          </div>
+        </div>
+        <div class="channel-lock" id="channelLock" hidden></div>
         <div class="comm-notice">
           <span class="cn-ico" aria-hidden="true">📢</span>
           <div class="cn-body">
@@ -1611,9 +1687,14 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
           <div class="comm-photo-strip" id="commPhotos"></div>
         </section>
 
-        <div class="post-composer lg">
+        <div class="post-composer lg" id="postComposer">
           <textarea id="postText" maxlength="300" placeholder="分享点什么…（Ctrl + Enter 快速发布）"></textarea>
           <div class="composer-topics" id="composerTopics" aria-label="选择话题"></div>
+          <div class="topic-custom" id="topicCustomBox" hidden>
+            <input id="topicCustomInput" maxlength="12" placeholder="自定义话题名（最多 12 字）" aria-label="自定义话题名">
+            <button type="button" id="topicCustomAdd">添加并选中</button>
+            <button type="button" id="topicCustomCancel">取消</button>
+          </div>
           <div class="post-preview" id="postPreview" hidden></div>
           <div class="composer-foot">
             <span class="composer-as">以
@@ -1642,6 +1723,23 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 
         <div class="post-list" id="postList"></div>
         <p class="daily-empty" id="postEmpty">还没有动态，来发第一条。</p>
+      </div>
+
+      <!-- 频道 -->
+      <div id="communityChannels" hidden>
+        <div class="channel-toolbar">
+          <div>
+            <b>频道</b>
+            <span class="channel-sub" id="channelSub">申请一个频道，拉上好友一起聊。</span>
+          </div>
+          <button class="btn primary btn-sm" id="channelApplyBtn" type="button">＋ 申请创建频道</button>
+        </div>
+        <div class="channel-grid" id="channelGrid"></div>
+        <p class="daily-empty" id="channelEmpty">还没有频道。申请一个，拉上好友一起玩。</p>
+        <div id="myAppsWrap" hidden>
+          <div class="comm-sec-head"><b>我的申请</b></div>
+          <div class="channel-apps" id="myApps"></div>
+        </div>
       </div>
 
       <!-- 相册（原图片功能） -->
@@ -1735,6 +1833,11 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
   </form>
 </div>
 
+<!-- 好友 / 频道弹窗 -->
+<div class="auth-pop" id="socialPop" hidden>
+  <div class="social-card" id="socialCard" role="dialog" aria-modal="true"></div>
+</div>
+
 <!-- 用户登录 / 注册 -->
 <div class="login-pop" id="loginPop" hidden>
   <div class="login-card" role="dialog" aria-modal="true" aria-labelledby="loginTitle">
@@ -1803,7 +1906,7 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 <div class="admin-panel" id="adminPanel" hidden>
   <div class="admin-inner">
     <div class="admin-head">
-      <h3>相册管理</h3>
+      <h3>社区管理</h3>
       <div class="admin-head-acts">
         <button class="btn ghost btn-sm" type="button" id="adminRefresh">↻ 刷新</button>
         <button class="btn ghost btn-sm" type="button" id="adminLogout">退出</button>
@@ -1815,6 +1918,12 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
       <h4>待处理的删除申请 <span class="admin-badge" id="reqCount">0</span></h4>
       <div class="req-list" id="reqList"></div>
       <p class="daily-empty" id="reqEmpty">暂时没有待处理的申请。</p>
+    </section>
+
+    <section class="admin-section">
+      <h4>频道申请 <span class="admin-badge" id="chanReqCount">0</span></h4>
+      <div class="req-list" id="chanReqList"></div>
+      <p class="daily-empty" id="chanReqEmpty">暂时没有待处理的频道申请。</p>
     </section>
 
     <section class="admin-section">
@@ -2873,8 +2982,8 @@ const DAILY_LIKES = "room514.daily.liked";
 const DAILY_NAME = "room514.daily.name";
 const DAILY_ALBUMS = "room514.daily.albums";
 const DAILY_UID = "room514.uid";
-const ADMIN_USER = "lanyangyang";
-const ADMIN_HASH = "16072cad73f78943535337bfaf7e342ff9ed227b5f83e18bddfc4838e39b4c2e";
+const ADMIN_USER = "3029389747";
+const ADMIN_HASH = "192f6964d7a3902b5a181d0f98120f750694a8d583ce966f6f189a5e6fcf1b0d";
 const ADMIN_SESSION = "room514.admin";
 const REQUESTS_LS = "room514.daily.requests";
 
@@ -3163,10 +3272,12 @@ const Auth = {
   save(s) {
     authSession = s;
     try { localStorage.setItem(AUTH_KEY, JSON.stringify(s)); } catch (e) {}
+    refreshSocialIdentity();
   },
   clear() {
     authSession = null;
     try { localStorage.removeItem(AUTH_KEY); } catch (e) {}
+    refreshSocialIdentity();
   },
   async errText(res) {
     let raw = "";
@@ -3617,6 +3728,8 @@ function pendingReqFor(photoId) {
 
 async function refreshAdmin() {
   renderAdminPhotos();
+  renderAdminChannels();
+  if (!channelsLoaded && RemoteDaily.on()) loadChannels();
   try {
     const all = await AdminStore.list();
     pendingRequests = all.filter(r => r.status === "pending");
@@ -4149,11 +4262,104 @@ let postsFailed = "";
 let postsLoading = false;
 
 const TOPICS = ["日常", "约饭", "求助", "二手", "失物招领", "吐槽", "学习"];
+const CUSTOM_TOPICS_KEY = "room514.topics.custom";
+let customTopics = [];
 let feedSort = "new";
 let feedTopic = "";
 let feedSearch = "";
 let editingPostId = null;
 let composerTopic = "";
+
+/* ============ 社区：频道 / 好友 ============ */
+const CHANNELS_TABLE = "channels";
+const MEMBERS_TABLE = "channel_members";
+const FRIENDS_TABLE = "friends";
+let channels = [];
+let channelMembers = [];
+let friendRows = [];
+let activeChannel = null;
+let channelCanPost = false;
+let channelsLoaded = false;
+
+function sbUrl(table, query) {
+  return `${RemoteDaily.base()}/rest/v1/${table}${query ? "?" + query : ""}`;
+}
+async function sbSelect(table, query) {
+  const res = await fetch(sbUrl(table, query), { headers: RemoteDaily.headers() });
+  if (!res.ok) throw new Error(table + " " + res.status);
+  return res.json();
+}
+async function sbInsert(table, row) {
+  const res = await fetch(sbUrl(table), {
+    method: "POST",
+    headers: RemoteDaily.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
+    body: JSON.stringify(row)
+  });
+  if (!res.ok) throw new Error(table + " " + res.status);
+  const rows = await res.json();
+  return rows[0];
+}
+async function sbPatch(table, query, patch) {
+  const res = await fetch(sbUrl(table, query), {
+    method: "PATCH",
+    headers: RemoteDaily.headers({ "Content-Type": "application/json" }),
+    body: JSON.stringify(patch)
+  });
+  if (!res.ok) throw new Error(table + " " + res.status);
+}
+async function sbDelete(table, query) {
+  const res = await fetch(sbUrl(table, query), { method: "DELETE", headers: RemoteDaily.headers() });
+  if (!res.ok) throw new Error(table + " " + res.status);
+}
+
+function myEmail() {
+  return authSession && authSession.email ? String(authSession.email).toLowerCase() : "";
+}
+function myLabel() {
+  return authSession ? (userLabel(authSession) || myEmail().split("@")[0]) : dailyName();
+}
+function emailLabel(email, fallback) {
+  const f = (fallback || "").trim();
+  if (f) return f;
+  const e = String(email || "");
+  return e ? e.split("@")[0] : "同学";
+}
+function mapChannel(r) {
+  return {
+    id: r.id, name: r.name || "未命名频道", description: r.description || "",
+    ownerEmail: String(r.owner_email || "").toLowerCase(), ownerName: r.owner_name || "",
+    status: r.status || "pending", ts: new Date(r.created_at).getTime()
+  };
+}
+function mapMember(r) {
+  return {
+    id: r.id, channelId: r.channel_id, email: String(r.member_email || "").toLowerCase(),
+    name: r.member_name || "", invitedBy: String(r.invited_by || "").toLowerCase()
+  };
+}
+function mapFriend(r) {
+  return {
+    id: r.id, requesterEmail: String(r.requester_email || "").toLowerCase(), requesterName: r.requester_name || "",
+    addresseeEmail: String(r.addressee_email || "").toLowerCase(), addresseeName: r.addressee_name || "",
+    status: r.status || "pending"
+  };
+}
+function channelRole(ch) {
+  const me = myEmail();
+  if (!ch || !me) return "guest";
+  if (ch.ownerEmail === me) return "owner";
+  if (channelMembers.some(m => m.channelId === ch.id && m.email === me)) return "member";
+  return "guest";
+}
+function acceptedFriends() {
+  const me = myEmail();
+  if (!me) return [];
+  return friendRows
+    .filter(f => f.status === "accepted" && (f.requesterEmail === me || f.addresseeEmail === me))
+    .map(f => f.requesterEmail === me
+      ? { email: f.addresseeEmail, name: emailLabel(f.addresseeEmail, f.addresseeName) }
+      : { email: f.requesterEmail, name: emailLabel(f.requesterEmail, f.requesterName) });
+}
 
 const TOPIC_RE = /#([^\s#]{1,12})/;
 function postTopicOf(p) {
@@ -4178,7 +4384,9 @@ function allTopics() {
 }
 function visiblePosts() {
   const q = feedSearch.trim().toLowerCase();
+  const chId = activeChannel ? activeChannel.id : null;
   let list = communityPosts.filter(p => {
+    if (chId ? Number(p.channelId) !== Number(chId) : p.channelId) return false;
     if (feedTopic && postTopicOf(p) !== feedTopic) return false;
     if (!q) return true;
     return ((p.author || "") + " " + (p.text || "")).toLowerCase().includes(q);
@@ -4213,9 +4421,11 @@ function renderTopicBars() {
   }
   const comp = $("#composerTopics");
   if (comp) {
-    comp.innerHTML = TOPICS.map(t =>
+    const names = TOPICS.concat(customTopics.filter(t => !TOPICS.includes(t)));
+    comp.innerHTML = names.map(t =>
       `<button type="button" class="topic-chip${composerTopic === t ? " on" : ""}" data-ctopic="${esc(t)}">#${esc(t)}</button>`
-    ).join("");
+    ).join("") +
+      `<button type="button" class="topic-chip topic-add" data-addtopic="1">＋ 自定义</button>`;
   }
 }
 function renderCommunityPhotos() {
@@ -4230,16 +4440,20 @@ function renderCommunityPhotos() {
 }
 
 function setCommunityTab(tab) {
-  const feed = $("#communityFeed"), albums = $("#communityAlbums");
-  const bf = $("#ctabFeed"), ba = $("#ctabAlbums");
+  const feed = $("#communityFeed"), albums = $("#communityAlbums"), chans = $("#communityChannels");
+  const bf = $("#ctabFeed"), bc = $("#ctabChannels"), ba = $("#ctabAlbums");
   if (!feed || !albums || !bf || !ba) return;
-  const isAlbums = tab === "albums";
-  feed.hidden = isAlbums;
+  const isAlbums = tab === "albums", isChans = tab === "channels";
+  feed.hidden = isAlbums || isChans;
   albums.hidden = !isAlbums;
-  bf.classList.toggle("on", !isAlbums);
+  if (chans) chans.hidden = !isChans;
+  bf.classList.toggle("on", !isAlbums && !isChans);
+  if (bc) bc.classList.toggle("on", isChans);
   ba.classList.toggle("on", isAlbums);
-  bf.setAttribute("aria-selected", String(!isAlbums));
+  bf.setAttribute("aria-selected", String(!isAlbums && !isChans));
+  if (bc) bc.setAttribute("aria-selected", String(isChans));
   ba.setAttribute("aria-selected", String(isAlbums));
+  if (isChans) renderChannels();
 }
 
 function postCardHTML(p) {
@@ -4321,7 +4535,11 @@ function renderPosts() {
     empty.hidden = true;
   } else {
     empty.hidden = false;
-    empty.textContent = communityPosts.length ? "没有找到匹配的动态，换个关键词或话题试试。" : "还没有动态，来发第一条。";
+    if (activeChannel) {
+      empty.textContent = channelCanPost ? "这个频道还没有动态，发第一条吧。" : "这个频道还没有动态。";
+    } else {
+      empty.textContent = communityPosts.length ? "没有找到匹配的动态，换个关键词或话题试试。" : "还没有动态，来发第一条。";
+    }
   }
   list.innerHTML = items.map(postCardHTML).join("");
 }
@@ -4349,18 +4567,21 @@ function rowToPost(r) {
     image: r.image || "",
     likes: r.likes || 0,
     comments: Array.isArray(r.comments) ? r.comments : [],
+    channelId: r.channel_id != null ? Number(r.channel_id) : null,
     ts: new Date(r.created_at).getTime()
   };
 }
 
 async function createPost(rec) {
+  const body = {
+    author: rec.author, author_email: rec.email,
+    content: rec.text, image: rec.image
+  };
+  if (rec.channelId) body.channel_id = rec.channelId;
   const res = await fetch(`${RemoteDaily.base()}/rest/v1/${POST_TABLE}`, {
     method: "POST",
     headers: RemoteDaily.headers({ "Content-Type": "application/json", Prefer: "return=representation" }),
-    body: JSON.stringify({
-      author: rec.author, author_email: rec.email,
-      content: rec.text, image: rec.image
-    })
+    body: JSON.stringify(body)
   });
   if (!res.ok) throw new Error("发布失败 " + res.status);
   const rows = await res.json();
@@ -4404,6 +4625,7 @@ async function publishPost() {
   const text = textEl.value.trim();
   if (!text && !postPendingData) { alert("写点什么，或者选一张图再发。"); return; }
   if (!RemoteDaily.on()) { alert("社区还没有连接云端，暂时不能发布。"); return; }
+  if (activeChannel && !channelCanPost) { alert("加入频道后才能在这里发布。"); return; }
   const finalText = composerTopic ? `#${composerTopic} ${text}`.trim() : text;
 
   const nameEl = $("#postName");
@@ -4433,7 +4655,8 @@ async function publishPost() {
       image = `${RemoteDaily.base()}/storage/v1/object/public/${DAILY_REMOTE.bucket}/${path}`;
     }
     const post = await createPost({
-      author: name, email: authSession && authSession.email ? authSession.email : "", text: finalText, image
+      author: name, email: authSession && authSession.email ? authSession.email : "", text: finalText, image,
+      channelId: activeChannel ? activeChannel.id : null
     });
     communityPosts.unshift(post);
     postMineIds.add(post.id);
@@ -4477,9 +4700,429 @@ async function likePost(p, btn) {
   }
 }
 
+/* ============ 频道 / 好友：界面与逻辑 ============ */
+function openSocial(html) {
+  const pop = $("#socialPop"), card = $("#socialCard");
+  if (!pop || !card) return;
+  card.innerHTML = html;
+  pop.hidden = false;
+}
+function closeSocial() {
+  const pop = $("#socialPop");
+  if (pop) pop.hidden = true;
+}
+
+function channelCardHTML(c) {
+  const count = channelMembers.filter(m => m.channelId === c.id).length;
+  const owner = emailLabel(c.ownerEmail, c.ownerName);
+  const initial = (c.name || "频").slice(0, 1).toUpperCase();
+  return `<button type="button" class="channel-card" data-channel="${c.id}">
+    <span class="cc-top"><span class="cc-ava" aria-hidden="true">${esc(initial)}</span><span class="cc-name">${esc(c.name)}</span></span>
+    <span class="cc-desc">${esc(c.description || "还没有介绍")}</span>
+    <span class="cc-meta">${esc(owner)} 创建 · ${count} 位成员</span>
+  </button>`;
+}
+
+function renderMyApps() {
+  const wrap = $("#myAppsWrap"), box = $("#myApps");
+  if (!wrap || !box) return;
+  const me = myEmail();
+  const mine = me ? channels.filter(c => c.ownerEmail === me) : [];
+  wrap.hidden = mine.length === 0;
+  box.innerHTML = mine.map(c => {
+    const label = c.status === "approved" ? "已通过" : c.status === "rejected" ? "未通过" : "审核中";
+    return `<div class="channel-app"><b>${esc(c.name)}</b><span class="chan-state ${esc(c.status)}">${label}</span></div>`;
+  }).join("");
+}
+
+function renderChannels() {
+  const grid = $("#channelGrid"), empty = $("#channelEmpty"), sub = $("#channelSub");
+  if (!grid) return;
+  const approved = channels.filter(c => c.status === "approved");
+  grid.innerHTML = approved.map(channelCardHTML).join("");
+  if (empty) empty.hidden = approved.length > 0;
+  if (sub) sub.textContent = approved.length ? `${approved.length} 个频道` : "申请一个频道，拉上好友一起聊。";
+  renderMyApps();
+}
+
+function openChannel(id) {
+  const ch = channels.find(c => c.id === Number(id));
+  if (!ch) return;
+  activeChannel = ch;
+  setCommunityTab("feed");
+  syncChannelUI();
+  renderPosts();
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+function exitChannel() {
+  activeChannel = null;
+  syncChannelUI();
+  renderPosts();
+}
+
+function syncChannelUI() {
+  const banner = $("#channelBanner"), lock = $("#channelLock"), composer = $("#postComposer");
+  if (!banner) return;
+  if (!activeChannel) {
+    banner.hidden = true;
+    if (lock) lock.hidden = true;
+    if (composer) composer.hidden = false;
+    channelCanPost = false;
+    return;
+  }
+  const ch = activeChannel;
+  const members = channelMembers.filter(m => m.channelId === ch.id);
+  const role = channelRole(ch);
+  const canPost = isAdmin() || role !== "guest";
+  channelCanPost = canPost;
+  banner.hidden = false;
+  const nameEl = $("#cbName"), descEl = $("#cbDesc"), metaEl = $("#cbMeta"), invite = $("#cbInvite");
+  if (nameEl) nameEl.textContent = ch.name;
+  if (descEl) descEl.textContent = ch.description || "这个频道还没有介绍。";
+  if (metaEl) metaEl.textContent = `${emailLabel(ch.ownerEmail, ch.ownerName)} 创建 · ${members.length} 位成员`;
+  if (invite) invite.hidden = !(isAdmin() || role !== "guest");
+  if (composer) composer.hidden = !canPost;
+  if (lock) {
+    lock.hidden = canPost;
+    lock.textContent = canPost ? "" :
+      (authSession
+        ? `这里是「${ch.name}」频道，只有成员才能发布。让频道主把你加进去，或者先回广场发动态。`
+        : `这里是「${ch.name}」频道，只有成员才能发布。请先登录，再让频道主邀请你。`);
+  }
+}
+
+async function loadChannels() {
+  if (!RemoteDaily.on()) return;
+  try {
+    channels = (await sbSelect(CHANNELS_TABLE, "select=*&order=created_at.desc")).map(mapChannel);
+    channelsLoaded = true;
+  } catch (err) {
+    channels = [];
+    channelsLoaded = false;
+  }
+  if (activeChannel) activeChannel = channels.find(c => c.id === activeChannel.id) || null;
+  renderChannels();
+  renderAdminChannels();
+  syncChannelUI();
+}
+async function loadChannelMembers() {
+  if (!RemoteDaily.on()) return;
+  try { channelMembers = (await sbSelect(MEMBERS_TABLE, "select=*")).map(mapMember); }
+  catch (err) { channelMembers = []; }
+  renderChannels();
+  syncChannelUI();
+}
+async function loadFriends() {
+  if (!RemoteDaily.on() || !myEmail()) return;
+  try { friendRows = (await sbSelect(FRIENDS_TABLE, "select=*")).map(mapFriend); }
+  catch (err) { friendRows = []; }
+}
+
+function refreshSocialIdentity() {
+  friendRows = [];
+  if (!RemoteDaily.on()) return;
+  loadChannels().then(loadChannelMembers);
+}
+
+function friendRowHTML(f, kind) {
+  const me = myEmail();
+  if (kind === "in") {
+    return `<li class="social-row"><span class="sr-name">${esc(emailLabel(f.requesterEmail, f.requesterName))}<span class="sr-mail"> ${esc(f.requesterEmail)}</span></span><button type="button" data-faccept="${f.id}">同意</button><button type="button" class="danger" data-freject="${f.id}">拒绝</button></li>`;
+  }
+  if (kind === "out") {
+    return `<li class="social-row"><span class="sr-name">${esc(emailLabel(f.addresseeEmail, f.addresseeName))}<span class="sr-mail"> ${esc(f.addresseeEmail)}</span></span><button type="button" class="danger" data-fcancel="${f.id}">取消</button></li>`;
+  }
+  return `<li class="social-row"><span class="sr-name">${esc(f.name)}<span class="sr-mail"> ${esc(f.email)}</span></span></li>`;
+}
+
+function renderFriendsModal() {
+  const me = myEmail();
+  const incoming = friendRows.filter(f => f.addresseeEmail === me && f.status === "pending");
+  const outgoing = friendRows.filter(f => f.requesterEmail === me && f.status === "pending");
+  const friends = acceptedFriends();
+  openSocial(`
+    <div class="social-head"><h3>好友</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <form class="social-form" id="friendAddForm">
+      <input id="friendEmail" type="email" inputmode="email" placeholder="对方的登录邮箱" aria-label="好友邮箱">
+      <button class="btn primary btn-sm" type="submit">添加好友</button>
+    </form>
+    <p class="social-hint">用对方注册时的邮箱添加。互为好友后，就能互相邀请进频道。</p>
+    <div class="social-sec"><b>收到的好友申请</b>${incoming.length
+      ? `<ul class="social-list">${incoming.map(f => friendRowHTML(f, "in")).join("")}</ul>`
+      : `<p class="social-empty">暂时没有。</p>`}</div>
+    <div class="social-sec"><b>我发出的申请</b>${outgoing.length
+      ? `<ul class="social-list">${outgoing.map(f => friendRowHTML(f, "out")).join("")}</ul>`
+      : `<p class="social-empty">暂时没有。</p>`}</div>
+    <div class="social-sec"><b>我的好友（${friends.length}）</b>${friends.length
+      ? `<ul class="social-list">${friends.map(f => friendRowHTML(f, "friend")).join("")}</ul>`
+      : `<p class="social-empty">还没有好友，输入对方邮箱加一个。</p>`}</div>
+  `);
+}
+
+async function openFriends() {
+  if (!authSession) { openLogin(); return; }
+  openSocial(`<div class="social-head"><h3>好友</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div><p class="social-empty">加载中…</p>`);
+  await loadFriends();
+  renderFriendsModal();
+}
+
+async function addFriend(email) {
+  const me = myEmail();
+  const target = String(email || "").trim().toLowerCase();
+  if (!target || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(target)) { alert("请输入正确的邮箱。"); return; }
+  if (target === me) { alert("不能添加自己。"); return; }
+  const existing = friendRows.find(f =>
+    (f.requesterEmail === me && f.addresseeEmail === target) ||
+    (f.requesterEmail === target && f.addresseeEmail === me));
+  if (existing) {
+    if (existing.status === "accepted") { alert("你们已经是好友了。"); return; }
+    if (existing.requesterEmail === me) { alert("已经申请过了，等对方同意。"); return; }
+    await acceptFriend(existing.id);
+    return;
+  }
+  try {
+    const row = await sbInsert(FRIENDS_TABLE, {
+      requester_email: me, requester_name: myLabel(), addressee_email: target, addressee_name: ""
+    });
+    friendRows.push(mapFriend(row));
+    renderFriendsModal();
+  } catch (err) {
+    alert("添加失败：" + (err && err.message ? err.message : err) + "\n如果提示找不到表，请先在 Supabase 运行 setup-channels.sql。");
+  }
+}
+
+async function acceptFriend(id) {
+  const f = friendRows.find(x => x.id === Number(id));
+  if (!f) return;
+  try {
+    await sbPatch(FRIENDS_TABLE, `id=eq.${f.id}`, { status: "accepted" });
+    f.status = "accepted";
+    renderFriendsModal();
+  } catch (err) { alert("操作失败，稍后再试。"); }
+}
+
+async function removeFriend(id) {
+  const f = friendRows.find(x => x.id === Number(id));
+  if (!f) return;
+  try {
+    await sbDelete(FRIENDS_TABLE, `id=eq.${f.id}`);
+    friendRows = friendRows.filter(x => x.id !== f.id);
+    renderFriendsModal();
+  } catch (err) { alert("操作失败，稍后再试。"); }
+}
+
+function openInvite(ch) {
+  if (!authSession) { openLogin(); return; }
+  const role = channelRole(ch);
+  if (!(isAdmin() || role !== "guest")) { alert("只有频道成员才能邀请好友。"); return; }
+  const members = channelMembers.filter(m => m.channelId === ch.id);
+  const friends = acceptedFriends().filter(f =>
+    f.email !== ch.ownerEmail && !members.some(m => m.email === f.email));
+  openSocial(`
+    <div class="social-head"><h3>邀请好友进「${esc(ch.name)}」</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <p class="social-hint">只有你的好友能收到邀请。对方加入后就能在频道里发布内容。</p>
+    ${friends.length
+      ? `<ul class="social-list">${friends.map(f => `<li class="social-row"><span class="sr-name">${esc(f.name)}<span class="sr-mail"> ${esc(f.email)}</span></span><button type="button" data-cinvite="${esc(f.email)}" data-cid="${ch.id}">邀请</button></li>`).join("")}</ul>`
+      : `<p class="social-empty">还没有可以邀请的好友。</p><button type="button" class="btn ghost btn-sm" data-openfriends="1">去加好友</button>`}
+  `);
+}
+
+async function inviteToChannel(chId, email) {
+  const ch = channels.find(c => c.id === Number(chId));
+  if (!ch) return;
+  const target = String(email || "").toLowerCase();
+  const friend = acceptedFriends().find(f => f.email === target);
+  try {
+    const row = await sbInsert(MEMBERS_TABLE, {
+      channel_id: ch.id, member_email: target, member_name: friend ? friend.name : "", invited_by: myEmail()
+    });
+    channelMembers.push(mapMember(row));
+    renderChannels();
+    syncChannelUI();
+    openInvite(ch);
+  } catch (err) {
+    alert("邀请失败：" + (err && err.message ? err.message : err) + "\n如果提示找不到表，请先在 Supabase 运行 setup-channels.sql。");
+  }
+}
+
+function openChannelMembers(ch) {
+  const members = channelMembers.filter(m => m.channelId === ch.id && m.email !== ch.ownerEmail);
+  const rows = [{ email: ch.ownerEmail, name: emailLabel(ch.ownerEmail, ch.ownerName), owner: true }]
+    .concat(members.map(m => ({ email: m.email, name: emailLabel(m.email, m.name), owner: false })));
+  openSocial(`
+    <div class="social-head"><h3>「${esc(ch.name)}」成员</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <ul class="social-list">${rows.map(r => `<li class="social-row"><span class="sr-name">${esc(r.name)}${r.owner ? " · 频道主" : ""}<span class="sr-mail"> ${esc(r.email)}</span></span></li>`).join("")}</ul>
+  `);
+}
+
+function openChannelApply() {
+  if (!authSession) { openLogin(); return; }
+  const me = myEmail();
+  const mine = channels.filter(c => c.ownerEmail === me && c.status === "pending");
+  if (mine.length >= 3) { alert("最多同时申请 3 个频道，先等管理员处理。"); return; }
+  openSocial(`
+    <div class="social-head"><h3>申请创建频道</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <p class="social-hint">提交后需要管理员同意。通过后你就是频道主，可以发布内容并邀请好友加入。</p>
+    <form class="social-form" id="chanApplyForm" style="flex-direction:column">
+      <input id="chanName" maxlength="16" placeholder="频道名字（最多 16 字）" aria-label="频道名字">
+      <input id="chanDesc" maxlength="60" placeholder="一句话介绍（可选）" aria-label="频道介绍">
+      <button class="btn primary btn-sm" type="submit">提交申请</button>
+    </form>
+  `);
+  const n = $("#chanName");
+  if (n) n.focus();
+}
+
+async function submitChannelApply() {
+  const nameEl = $("#chanName"), descEl = $("#chanDesc");
+  const name = nameEl ? nameEl.value.replace(/\s+/g, " ").trim().slice(0, 16) : "";
+  const desc = descEl ? descEl.value.trim().slice(0, 60) : "";
+  if (!name) { alert("给频道起个名字。"); return; }
+  if (!myEmail()) { openLogin(); return; }
+  try {
+    const row = await sbInsert(CHANNELS_TABLE, {
+      name, description: desc, owner_email: myEmail(), owner_name: myLabel(), status: "pending"
+    });
+    channels.push(mapChannel(row));
+    renderChannels();
+    renderAdminChannels();
+    closeSocial();
+    alert("申请已提交，等管理员同意后就能用了。");
+  } catch (err) {
+    alert("提交失败：" + (err && err.message ? err.message : err) + "\n如果提示找不到表，请先在 Supabase 运行 setup-channels.sql。");
+  }
+}
+
+function renderAdminChannels() {
+  const list = $("#chanReqList"), empty = $("#chanReqEmpty"), count = $("#chanReqCount");
+  if (!list || !empty) return;
+  const pending = channels.filter(c => c.status === "pending");
+  if (count) count.textContent = pending.length;
+  empty.hidden = pending.length > 0;
+  list.innerHTML = pending.map(c => `<div class="req-item">
+    <div class="req-info"><b>${esc(c.name)}</b><span>${esc(emailLabel(c.ownerEmail, c.ownerName))} · ${esc(c.ownerEmail)}${c.description ? " · " + esc(c.description) : ""}</span></div>
+    <div class="req-acts"><button type="button" class="req-yes" data-chan-ok="${c.id}">同意</button><button type="button" class="req-no" data-chan-no="${c.id}">拒绝</button></div>
+  </div>`).join("");
+}
+
+async function approveChannel(id) {
+  const ch = channels.find(c => c.id === Number(id));
+  if (!ch) return;
+  try {
+    await sbPatch(CHANNELS_TABLE, `id=eq.${ch.id}`, { status: "approved" });
+    ch.status = "approved";
+    try {
+      if (!channelMembers.some(m => m.channelId === ch.id && m.email === ch.ownerEmail)) {
+        const row = await sbInsert(MEMBERS_TABLE, {
+          channel_id: ch.id, member_email: ch.ownerEmail, member_name: ch.ownerName || "", invited_by: "owner"
+        });
+        channelMembers.push(mapMember(row));
+      }
+    } catch (err) {}
+    renderAdminChannels();
+    renderChannels();
+    syncChannelUI();
+  } catch (err) { alert("操作失败：" + (err && err.message ? err.message : err)); }
+}
+
+async function rejectChannel(id) {
+  const ch = channels.find(c => c.id === Number(id));
+  if (!ch) return;
+  try {
+    await sbPatch(CHANNELS_TABLE, `id=eq.${ch.id}`, { status: "rejected" });
+    ch.status = "rejected";
+    renderAdminChannels();
+    renderChannels();
+  } catch (err) { alert("操作失败：" + (err && err.message ? err.message : err)); }
+}
+
+function setupChannels() {
+  const grid = $("#channelGrid");
+  if (grid) grid.addEventListener("click", e => {
+    const b = e.target.closest("[data-channel]");
+    if (b) openChannel(b.dataset.channel);
+  });
+
+  const applyBtn = $("#channelApplyBtn");
+  if (applyBtn) applyBtn.addEventListener("click", openChannelApply);
+
+  const memBtn = $("#cbMembers");
+  if (memBtn) memBtn.addEventListener("click", () => { if (activeChannel) openChannelMembers(activeChannel); });
+  const invBtn = $("#cbInvite");
+  if (invBtn) invBtn.addEventListener("click", () => { if (activeChannel) openInvite(activeChannel); });
+  const exitBtn = $("#cbExit");
+  if (exitBtn) exitBtn.addEventListener("click", exitChannel);
+
+  const card = $("#socialCard");
+  if (card) {
+    card.addEventListener("click", e => {
+      if (e.target.closest("[data-sclose]")) { closeSocial(); return; }
+      if (e.target.closest("[data-openfriends]")) { openFriends(); return; }
+      const ok = e.target.closest("[data-faccept]");
+      if (ok) { acceptFriend(ok.dataset.faccept); return; }
+      const rej = e.target.closest("[data-freject]");
+      if (rej) { removeFriend(rej.dataset.freject); return; }
+      const can = e.target.closest("[data-fcancel]");
+      if (can) { removeFriend(can.dataset.fcancel); return; }
+      const inv = e.target.closest("[data-cinvite]");
+      if (inv) { inviteToChannel(inv.dataset.cid, inv.dataset.cinvite); return; }
+    });
+    card.addEventListener("submit", e => {
+      if (e.target.id === "friendAddForm") {
+        e.preventDefault();
+        const el = $("#friendEmail");
+        addFriend(el ? el.value : "");
+        return;
+      }
+      if (e.target.id === "chanApplyForm") { e.preventDefault(); submitChannelApply(); }
+    });
+  }
+
+  const pop = $("#socialPop");
+  if (pop) pop.addEventListener("click", e => { if (e.target === pop) closeSocial(); });
+
+  const reqList = $("#chanReqList");
+  if (reqList) reqList.addEventListener("click", e => {
+    const ok = e.target.closest("[data-chan-ok]");
+    if (ok) { approveChannel(ok.dataset.chanOk); return; }
+    const no = e.target.closest("[data-chan-no]");
+    if (no) rejectChannel(no.dataset.chanNo);
+  });
+
+  const friendsBtn = $("#friendsBtn");
+  if (friendsBtn) friendsBtn.addEventListener("click", () => {
+    const p = $("#userPop");
+    if (p) p.hidden = true;
+    openFriends();
+  });
+
+  loadChannels().then(loadChannelMembers);
+}
+
 function setupCommunity() {
   try { postLikedIds = new Set(JSON.parse(localStorage.getItem(POST_LIKES) || "[]")); } catch (err) {}
   try { postMineIds = new Set(JSON.parse(localStorage.getItem(POST_MINE) || "[]")); } catch (err) {}
+  try {
+    const savedTopics = JSON.parse(localStorage.getItem(CUSTOM_TOPICS_KEY) || "[]");
+    customTopics = Array.isArray(savedTopics)
+      ? savedTopics.filter(t => typeof t === "string" && t.trim()).slice(0, 30)
+      : [];
+  } catch (err) { customTopics = []; }
+
+  const addCustomTopic = () => {
+    const box = $("#topicCustomBox");
+    const input = $("#topicCustomInput");
+    const v = (input ? input.value : "").replace(/#/g, "").replace(/\s+/g, "").trim().slice(0, 12);
+    if (!v) { if (input) input.focus(); return; }
+    if (!TOPICS.includes(v) && !customTopics.includes(v)) {
+      customTopics.push(v);
+      try { localStorage.setItem(CUSTOM_TOPICS_KEY, JSON.stringify(customTopics)); } catch (err) {}
+    }
+    composerTopic = v;
+    renderTopicBars();
+    if (input) input.value = "";
+    if (box) box.hidden = true;
+  };
 
   const textEl = $("#postText");
   const countEl = $("#postCount");
@@ -4499,11 +5142,34 @@ function setupCommunity() {
 
   const compTopics = $("#composerTopics");
   if (compTopics) compTopics.addEventListener("click", e => {
+    if (e.target.closest("[data-addtopic]")) {
+      const box = $("#topicCustomBox");
+      const input = $("#topicCustomInput");
+      if (box) box.hidden = false;
+      if (input) { input.value = ""; input.focus(); }
+      return;
+    }
     const b = e.target.closest("[data-ctopic]");
     if (!b) return;
     const t = b.dataset.ctopic;
     composerTopic = composerTopic === t ? "" : t;
     renderTopicBars();
+  });
+
+  const customAdd = $("#topicCustomAdd");
+  if (customAdd) customAdd.addEventListener("click", addCustomTopic);
+  const customCancel = $("#topicCustomCancel");
+  if (customCancel) customCancel.addEventListener("click", () => {
+    const box = $("#topicCustomBox");
+    if (box) box.hidden = true;
+  });
+  const customInput = $("#topicCustomInput");
+  if (customInput) customInput.addEventListener("keydown", e => {
+    if (e.key === "Enter") { e.preventDefault(); addCustomTopic(); }
+    if (e.key === "Escape") {
+      const box = $("#topicCustomBox");
+      if (box) box.hidden = true;
+    }
   });
 
   const sorts = document.querySelectorAll(".feed-sorts [data-sort]");
@@ -4576,8 +5242,9 @@ function setupCommunity() {
   if (tabs) tabs.addEventListener("click", e => {
     const b = e.target.closest("[data-ctab]");
     if (!b) return;
-    const target = b.dataset.ctab === "albums" ? "#community/albums" : "#community";
-    if (location.hash === target) setCommunityTab(b.dataset.ctab);
+    const t = b.dataset.ctab;
+    const target = t === "albums" ? "#community/albums" : t === "channels" ? "#community/channels" : "#community";
+    if (location.hash === target) setCommunityTab(t);
     else location.hash = target;
   });
 
@@ -4744,6 +5411,7 @@ function setupCommunity() {
 
   renderTopicBars();
   renderCommunityPhotos();
+  setupChannels();
   loadPosts();
 }
 
@@ -4783,7 +5451,11 @@ function setupPhotosRoute() {
       rest = h.slice("#community".length).replace(/^\/+/, "");
     }
 
-    if (rest === "albums" || rest.startsWith("albums/")) {
+    if (rest === "channels") {
+      activeChannel = null;
+      setCommunityTab("channels");
+      renderChannels();
+    } else if (rest === "albums" || rest.startsWith("albums/")) {
       setCommunityTab("albums");
       const sub = rest === "albums" ? "" : rest.slice("albums/".length);
       if (!sub) {
@@ -4796,6 +5468,8 @@ function setupPhotosRoute() {
       }
     } else {
       setCommunityTab("feed");
+      syncChannelUI();
+      renderPosts();
       renderCommunityPhotos();
       updateCommStats();
     }
