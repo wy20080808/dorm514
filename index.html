@@ -973,9 +973,226 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
   .req-item{flex-wrap:wrap}
   .req-acts{width:100%; justify-content:flex-end}
 }
+/* ============ 设置 / 显示模式 ============ */
+.settings-wrap{position:relative}
+.settings-btn.on{border-color:var(--accent); color:var(--accent)}
+.settings-pop{
+  position:absolute; top:calc(100% + 10px); right:0; z-index:60; width:272px; padding:12px;
+  display:flex; flex-direction:column; gap:6px; max-height:calc(100vh - 90px); overflow:auto;
+  border-radius:16px; background:var(--bg); border:1px solid var(--line);
+  box-shadow:0 24px 60px rgba(0,0,0,.35);
+}
+.settings-pop[hidden]{display:none}
+.settings-title{font-family:var(--mono); font-size:11px; letter-spacing:.12em; text-transform:uppercase; color:var(--faint); padding:2px 4px 4px}
+.mode-opt{
+  display:flex; align-items:center; gap:10px; padding:10px 11px; border-radius:12px; cursor:pointer;
+  border:1px solid var(--line); background:transparent; text-align:left; color:var(--text);
+  transition:border-color .18s,background .18s;
+}
+.mode-opt:hover{border-color:var(--line-strong); background:var(--surface)}
+.mode-opt[aria-checked="true"]{border-color:var(--accent)}
+.mode-ico{font-size:17px; line-height:1}
+.mode-txt{display:flex; flex-direction:column; gap:2px; min-width:0}
+.mode-txt b{font-size:13.5px; font-weight:700}
+.mode-txt small{font-size:11.5px; color:var(--faint); line-height:1.4}
+.mode-check{margin-left:auto; color:var(--accent); font-size:13px; opacity:0; transition:opacity .18s}
+.mode-opt[aria-checked="true"] .mode-check{opacity:1}
+.settings-tip{font-size:11px; color:var(--faint); padding:4px 4px 2px}
+
+/* ---- 手机模式：关掉光效与形变，保流畅 ---- */
+html[data-mode="mobile"] .cursor-glow{display:none}
+html[data-mode="mobile"] .noise{display:none}
+html[data-mode="mobile"] .blob{animation:none}
+html[data-mode="mobile"] .lg-tilt{transform:none !important}
+html[data-mode="mobile"] .lg.lg{
+  background:linear-gradient(155deg,var(--glass-hi),transparent 38%),var(--glass-tint);
+  backdrop-filter:blur(9px) saturate(130%);
+  -webkit-backdrop-filter:blur(9px) saturate(130%);
+  transition:border-color .2s,background .2s,color .2s;
+}
+html[data-mode="mobile"] .quote-inner.lg.lg{
+  background:linear-gradient(135deg,rgba(255,154,90,.16),rgba(139,123,255,.12)),var(--glass-tint);
+}
+html[data-mode="mobile"] .nav::before{
+  backdrop-filter:blur(10px) saturate(140%);
+  -webkit-backdrop-filter:blur(10px) saturate(140%);
+}
+html[data-mode="mobile"] .lg.lg:hover{box-shadow:var(--glass-inset),var(--glass-shadow)}
+html[data-mode="mobile"] .member-card:hover,
+html[data-mode="mobile"] .life-card:hover,
+html[data-mode="mobile"] .album-card:hover,
+html[data-mode="mobile"] .daily-card:hover{transform:none}
+html[data-mode="mobile"] .ripple{display:none}
+
+@media (max-width:640px){
+  .settings-pop{position:fixed; left:12px; right:12px; width:auto; top:64px}
+}
+
+/* ---- 折叠式设置分组 ---- */
+.set-group{
+  display:flex; align-items:center; gap:10px; width:100%;
+  padding:11px 12px; border-radius:12px; border:1px solid var(--line);
+  background:transparent; color:var(--text); cursor:pointer; font-size:13.5px; text-align:left;
+  transition:border-color .18s,background .18s;
+}
+.set-group:hover{border-color:var(--line-strong); background:var(--surface)}
+.set-group[aria-expanded="true"]{border-color:var(--accent)}
+.set-group .sg-name{font-weight:700}
+.set-group .sg-val{margin-left:auto; font-size:12px; color:var(--faint)}
+.set-group .sg-arrow{font-size:14px; color:var(--faint); line-height:1; transition:transform .2s}
+.set-group[aria-expanded="true"] .sg-arrow{transform:rotate(90deg)}
+.set-sub{display:flex; flex-direction:column; gap:6px; padding:2px 0 4px}
+.set-sub[hidden]{display:none}
+
+/* ---- 普通光效：无光效 / 无液态玻璃 / 无果冻；明暗用 ☀️🌙 切换 ---- */
+html[data-theme="light"][data-fx="plain"]{
+  --bg:#ffffff; --bg-soft:#fafafa;
+  --surface:#ffffff; --surface-2:#f4f4f4;
+  --line:rgba(0,0,0,.1); --line-strong:rgba(0,0,0,.18);
+  --text:#111111; --muted:#555555; --faint:#8a8a8a;
+  --shadow:0 8px 24px rgba(0,0,0,.06);
+  --glow-op:0; --grid-op:0; --card-hover:#f2f2f2;
+}
+html[data-theme="dark"][data-fx="plain"]{
+  --bg:#000000; --bg-soft:#0b0b0b;
+  --surface:#0e0e0e; --surface-2:#171717;
+  --line:rgba(255,255,255,.12); --line-strong:rgba(255,255,255,.22);
+  --text:#f2f2f2; --muted:#9b9b9b; --faint:#6a6a6a;
+  --shadow:0 8px 24px rgba(0,0,0,.7);
+  --glow-op:0; --grid-op:0; --card-hover:#171717;
+}
+html[data-fx="plain"] .blob,
+html[data-fx="plain"] .noise,
+html[data-fx="plain"] .cursor-glow{display:none}
+html[data-fx="plain"] .lg.lg{
+  background:var(--surface);
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+  box-shadow:none;
+  transition:border-color .2s,background .2s,color .2s;
+}
+html[data-fx="plain"] .lg.lg:hover{box-shadow:none; border-color:var(--line-strong)}
+html[data-fx="plain"] .quote-inner.lg.lg{background:var(--surface)}
+html[data-fx="plain"] .nav::before{
+  backdrop-filter:none; -webkit-backdrop-filter:none;
+  background:var(--bg); border-color:var(--line); box-shadow:none;
+}
+html[data-fx="plain"] .btn.primary.lg.lg{background:var(--accent); color:#1a120c; box-shadow:none}
+html[data-fx="plain"] .lg-tilt{transform:none !important}
+html[data-fx="plain"] .member-card:hover,
+html[data-fx="plain"] .life-card:hover,
+html[data-fx="plain"] .album-card:hover,
+html[data-fx="plain"] .daily-card:hover{transform:none; box-shadow:none}
+html[data-fx="plain"] .reveal{opacity:1; translate:none}
+html[data-fx="plain"] .pulse{animation:none}
+html[data-fx="plain"] .ripple{display:none}
+html[data-fx="plain"] .settings-pop{backdrop-filter:none; -webkit-backdrop-filter:none}
+
+/* ============ 进站前的模式选择 ============ */
+.entry-screen{
+  position:fixed; inset:0; z-index:200; display:none; place-items:center; padding:20px;
+  background:radial-gradient(900px 520px at 50% -10%, rgba(255,154,90,.18), transparent 62%), rgba(6,7,12,.95);
+}
+html[data-entry="1"] .entry-screen{display:grid}
+html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
+.entry-screen.out{opacity:0; transition:opacity .35s ease; pointer-events:none}
+.entry-card{
+  width:min(560px,100%); max-height:calc(100vh - 32px); overflow:auto;
+  padding:28px; border-radius:24px; border:1px solid var(--line-strong);
+  background:var(--bg-soft); box-shadow:0 30px 80px rgba(0,0,0,.55);
+}
+.entry-eyebrow{font-family:var(--mono); font-size:11.5px; letter-spacing:.16em; color:var(--accent); text-transform:uppercase}
+.entry-card h2{margin:10px 0 8px; font-size:clamp(22px,4vw,28px); letter-spacing:-.02em}
+.entry-sub{margin:0 0 20px; font-size:13.5px; line-height:1.7; color:var(--muted)}
+.entry-group{margin-bottom:16px}
+.entry-label{font-size:12px; color:var(--faint); margin-bottom:8px; letter-spacing:.04em}
+.entry-opts{display:grid; grid-template-columns:1fr 1fr; gap:10px}
+.entry-opt{
+  display:flex; flex-direction:column; align-items:flex-start; gap:3px;
+  padding:14px; border-radius:14px; border:1px solid var(--line);
+  background:var(--surface); color:var(--text); cursor:pointer; text-align:left;
+  transition:border-color .18s,background .18s,transform .18s;
+}
+.entry-opt:hover{border-color:var(--line-strong); transform:translateY(-1px)}
+.entry-opt[aria-checked="true"]{border-color:var(--accent); background:color-mix(in srgb,var(--accent) 12%, transparent)}
+.eo-ico{font-size:19px; line-height:1}
+.eo-name{font-size:14px; font-weight:700}
+.eo-desc{font-size:11.5px; color:var(--faint)}
+.entry-go{width:100%; justify-content:center; margin-top:4px}
+@media (max-width:480px){
+  .entry-card{padding:22px}
+  .entry-opts{grid-template-columns:1fr}
+}
 </style>
+<script>
+(function(){
+  try {
+    var m = localStorage.getItem("room514.mode");
+    if (m !== "mobile" && m !== "desktop") {
+      m = (window.matchMedia && window.matchMedia("(hover: none) and (pointer: coarse)").matches) ? "mobile" : "desktop";
+    }
+    document.documentElement.dataset.mode = m;
+    var fx = localStorage.getItem("room514.fx");
+    if (fx === "day") { fx = "plain"; localStorage.setItem("room514-theme", "light"); }
+    else if (fx === "night") { fx = "plain"; localStorage.setItem("room514-theme", "dark"); }
+    if (fx !== "plain") fx = "senior";
+    document.documentElement.dataset.fx = fx;
+    // 每次进入都显示选择页；只有切换设置后的自动刷新才跳过
+    var skip = false;
+    try {
+      skip = sessionStorage.getItem("room514.skipEntry") === "1";
+      if (skip) sessionStorage.removeItem("room514.skipEntry");
+    } catch (e2) {}
+    if (!skip) document.documentElement.dataset.entry = "1";
+  } catch (e) {
+    document.documentElement.dataset.mode = "desktop";
+    document.documentElement.dataset.fx = "senior";
+    document.documentElement.dataset.entry = "1";
+  }
+})();
+</script>
 </head>
 <body>
+<div class="entry-screen" id="entryScreen" role="dialog" aria-modal="true" aria-labelledby="entryTitle">
+  <div class="entry-card">
+    <div class="entry-eyebrow">ROOM 514</div>
+    <h2 id="entryTitle">进门前，先调一下</h2>
+    <p class="entry-sub">选好显示模式和光效再进去，之后随时能在右上角 ⚙️ 里改。</p>
+
+    <div class="entry-group">
+      <div class="entry-label">显示模式</div>
+      <div class="entry-opts" data-entry-group="mode">
+        <button type="button" class="entry-opt" data-value="desktop" aria-checked="true">
+          <span class="eo-ico" aria-hidden="true">🖥️</span>
+          <span class="eo-name">电脑模式</span>
+          <span class="eo-desc">光效全开 · 鼠标跟随</span>
+        </button>
+        <button type="button" class="entry-opt" data-value="mobile" aria-checked="false">
+          <span class="eo-ico" aria-hidden="true">📱</span>
+          <span class="eo-name">手机模式</span>
+          <span class="eo-desc">更省电 · 更流畅</span>
+        </button>
+      </div>
+    </div>
+
+    <div class="entry-group">
+      <div class="entry-label">光效</div>
+      <div class="entry-opts" data-entry-group="fx">
+        <button type="button" class="entry-opt" data-value="senior" aria-checked="true">
+          <span class="eo-ico" aria-hidden="true">✨</span>
+          <span class="eo-name">高级模式</span>
+          <span class="eo-desc">液态玻璃 · 光晕 · 果冻</span>
+        </button>
+        <button type="button" class="entry-opt" data-value="plain" aria-checked="false">
+          <span class="eo-ico" aria-hidden="true">▫️</span>
+          <span class="eo-name">普通模式</span>
+          <span class="eo-desc">无光效 · 平面清爽</span>
+        </button>
+      </div>
+    </div>
+
+    <button class="btn primary entry-go" id="entryGo" type="button">进入 514</button>
+  </div>
+</div>
 
 <div class="bg" aria-hidden="true">
   <div class="grid"></div>
@@ -1000,6 +1217,48 @@ html[data-theme="light"] .admin-panel{background:rgba(246,242,234,.86)}
   <div class="nav-actions">
     <button class="mini-cta" id="randomBtn" type="button">🎲 <span class="txt">随机点名</span></button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☀️</button>
+    <div class="settings-wrap">
+      <button class="icon-btn" id="settingsBtn" type="button" aria-label="设置" title="设置"
+              aria-haspopup="true" aria-expanded="false">⚙️</button>
+      <div class="settings-pop" id="settingsPop" hidden role="dialog" aria-label="显示设置">
+        <button class="set-group" type="button" data-open="mode" aria-expanded="false">
+          <span class="sg-name">显示模式</span>
+          <span class="sg-val" data-cur="mode">电脑模式</span>
+          <span class="sg-arrow" aria-hidden="true">›</span>
+        </button>
+        <div class="set-sub" data-panel="mode" hidden>
+          <button class="mode-opt" type="button" role="menuitemradio" data-group="mode" data-value="desktop" aria-checked="true">
+            <span class="mode-ico" aria-hidden="true">🖥️</span>
+            <span class="mode-txt"><b>电脑模式</b><small>玻璃光效 · 果冻形变 · 鼠标跟随</small></span>
+            <span class="mode-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="mode-opt" type="button" role="menuitemradio" data-group="mode" data-value="mobile" aria-checked="false">
+            <span class="mode-ico" aria-hidden="true">📱</span>
+            <span class="mode-txt"><b>手机模式</b><small>关闭光效与形变 · 更省电更流畅</small></span>
+            <span class="mode-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+
+        <button class="set-group" type="button" data-open="fx" aria-expanded="false">
+          <span class="sg-name">光效</span>
+          <span class="sg-val" data-cur="fx">高级模式</span>
+          <span class="sg-arrow" aria-hidden="true">›</span>
+        </button>
+        <div class="set-sub" data-panel="fx" hidden>
+          <button class="mode-opt" type="button" role="menuitemradio" data-group="fx" data-value="senior" aria-checked="true">
+            <span class="mode-ico" aria-hidden="true">✨</span>
+            <span class="mode-txt"><b>高级模式</b><small>液态玻璃 · 光晕 · 果冻（现在这样）</small></span>
+            <span class="mode-check" aria-hidden="true">✓</span>
+          </button>
+          <button class="mode-opt" type="button" role="menuitemradio" data-group="fx" data-value="plain" aria-checked="false">
+            <span class="mode-ico" aria-hidden="true">▫️</span>
+            <span class="mode-txt"><b>普通模式</b><small>无光效 · 无液态玻璃 · 无果冻</small></span>
+            <span class="mode-check" aria-hidden="true">✓</span>
+          </button>
+        </div>
+        <div class="settings-tip">切换后页面会自动刷新</div>
+      </div>
+    </div>
   </div>
 </header>
 
@@ -1854,6 +2113,7 @@ function setupGlass() {
 
 /* ============ 鼠标跟随：高光 + 3D 倾斜 ============ */
 function setupGlassMotion() {
+  if (isMobileMode() || isFxLite()) return;   // 手机 / 平面光效：跳过跟随与倾斜
   const TILT = 7;                       // 最大倾斜角度
   const isMouse = e => !e.pointerType || e.pointerType === "mouse" || e.pointerType === "pen";
 
@@ -1883,6 +2143,7 @@ function setupGlassMotion() {
 
 /* ============ 引言区：液态玻璃流光 ============ */
 function setupQuoteLiquid() {
+  if (isMobileMode() || isFxLite()) return;   // 手机关掉流动光斑
   const box = $("#quoteInner");
   if (!box) return;
   const reduce = window.matchMedia("(prefers-reduced-motion: reduce)").matches;
@@ -1934,6 +2195,7 @@ function setupQuoteLiquid() {
 /* ============ 进入方向驱动的果冻形变（所有玻璃框） ============ */
 function setupJelly() {
   if (window.matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  if (isMobileMode() || isFxLite()) return;   // 手机 / 平面光效：取消果冻形变
 
   const play = (el, e) => {
     const r = el.getBoundingClientRect();
@@ -2014,6 +2276,7 @@ function setupJelly() {
 
 /* ============ 磁性按钮 ============ */
 function setupMagnetic() {
+  if (isMobileMode() || isFxLite()) return;   // 手机 / 平面光效：取消磁性按钮
   const MAG = 9;
   const isMouse = e => !e.pointerType || e.pointerType === "mouse" || e.pointerType === "pen";
   $$(".btn, .icon-btn, .mini-cta, .to-top").forEach(btn => {
@@ -2030,6 +2293,7 @@ function setupMagnetic() {
 
 /* ============ 点击涟漪 ============ */
 function setupRipple() {
+  if (isMobileMode() || isFxLite()) return;   // 手机 / 平面光效：跳过点击涟漪
   const SEL = ".btn, .member-card, .life-card, .hero-avatar, .icon-btn, .mini-cta, .rules li";
   document.addEventListener("pointerdown", e => {
     const el = e.target && e.target.closest ? e.target.closest(SEL) : null;
@@ -2050,6 +2314,7 @@ function setupRipple() {
 
 /* ============ 光标光晕 ============ */
 function setupCursor() {
+  if (isMobileMode() || isFxLite()) return;   // 手机 / 平面光效：关掉光标光晕
   const glow = $("#cursorGlow");
   if (!glow) return;
 
@@ -2093,6 +2358,139 @@ function setupNav() {
   addEventListener("scroll", onScroll, { passive: true });
   onScroll();
   $("#toTop").addEventListener("click", () => scrollTo({ top: 0, behavior: "smooth" }));
+}
+
+/* ============ 设置：显示模式 / 光效 ============ */
+const MODE_KEY = "room514.mode";
+const FX_KEY = "room514.fx";
+function isMobileMode() { return document.documentElement.dataset.mode === "mobile"; }
+function currentFx() {
+  const f = document.documentElement.dataset.fx;
+  return f === "plain" ? "plain" : "senior";
+}
+function isFxLite() { return currentFx() !== "senior"; }
+
+function syncModeUI() {
+  const m = isMobileMode() ? "mobile" : "desktop";
+  const fx = currentFx();
+  $$(".mode-opt").forEach(b => {
+    const g = b.dataset.group;
+    const v = g === "fx" ? fx : m;
+    b.setAttribute("aria-checked", String(b.dataset.value === v));
+  });
+  const mLabel = $('.sg-val[data-cur="mode"]');
+  if (mLabel) mLabel.textContent = m === "mobile" ? "手机模式" : "电脑模式";
+  const fLabel = $('.sg-val[data-cur="fx"]');
+  if (fLabel) fLabel.textContent = fx === "plain" ? "普通模式" : "高级模式";
+  const btn = $("#settingsBtn");
+  if (btn) {
+    btn.classList.toggle("on", m === "mobile" || fx !== "senior");
+    btn.title = "设置（当前：" + (m === "mobile" ? "手机模式" : "电脑模式") + " · " + (fx === "plain" ? "普通光效" : "高级光效") + "）";
+  }
+}
+
+function setupSettings() {
+  const btn = $("#settingsBtn"), pop = $("#settingsPop");
+  if (!btn || !pop) return;
+  syncModeUI();
+  const close = () => { pop.hidden = true; btn.setAttribute("aria-expanded", "false"); };
+  btn.addEventListener("click", e => {
+    e.stopPropagation();
+    const willOpen = pop.hidden;
+    pop.hidden = !willOpen;
+    btn.setAttribute("aria-expanded", String(willOpen));
+  });
+
+  // 折叠分组：点标题展开自己的两个选项，收起其他组
+  const setOpenGroup = name => {
+    $$(".set-group", pop).forEach(g => g.setAttribute("aria-expanded", String(g.dataset.open === name)));
+    $$(".set-sub", pop).forEach(p => { p.hidden = p.dataset.panel !== name; });
+  };
+  $$(".set-group", pop).forEach(g => {
+    g.addEventListener("click", e => {
+      e.stopPropagation();
+      const open = g.getAttribute("aria-expanded") === "true";
+      setOpenGroup(open ? "" : g.dataset.open);
+    });
+  });
+
+  pop.addEventListener("click", e => {
+    const opt = e.target.closest(".mode-opt");
+    if (!opt) return;
+    const group = opt.dataset.group;
+    const val = opt.dataset.value;
+    close();
+
+    if (group === "mode") {
+      if (val === (isMobileMode() ? "mobile" : "desktop")) return;
+      try { localStorage.setItem(MODE_KEY, val); } catch (err) {}
+      document.documentElement.dataset.mode = val;
+    } else {
+      if (val === currentFx()) return;
+      try { localStorage.setItem(FX_KEY, val); } catch (err) {}
+      document.documentElement.dataset.fx = val;
+    }
+    reloadSkipEntry();
+  });
+  document.addEventListener("click", e => {
+    if (!pop.hidden && !(e.target.closest && e.target.closest(".settings-wrap"))) close();
+  });
+  document.addEventListener("keydown", e => { if (e.key === "Escape") close(); });
+}
+
+/* ============ 进站前的模式选择 ============ */
+function closeEntryScreen() {
+  const s = $("#entryScreen");
+  if (!s) return;
+  s.classList.add("out");
+  document.documentElement.removeAttribute("data-entry");
+  setTimeout(() => s.remove(), 400);
+}
+
+function reloadSkipEntry() {
+  try { sessionStorage.setItem("room514.skipEntry", "1"); } catch (e) {}
+  location.reload();
+}
+
+function setupEntry() {
+  const screen = $("#entryScreen");
+  if (!screen) return;
+  if (document.documentElement.dataset.entry !== "1") { screen.remove(); return; }
+
+  let mode = isMobileMode() ? "mobile" : "desktop";
+  let fx = currentFx();
+
+  const paint = () => {
+    $$(".entry-opt", screen).forEach(b => {
+      const g = b.parentElement.dataset.entryGroup;
+      b.setAttribute("aria-checked", String(b.dataset.value === (g === "fx" ? fx : mode)));
+    });
+  };
+  paint();
+
+  screen.addEventListener("click", e => {
+    const opt = e.target.closest(".entry-opt");
+    if (!opt) return;
+    const g = opt.parentElement.dataset.entryGroup;
+    if (g === "fx") fx = opt.dataset.value;
+    else mode = opt.dataset.value;
+    paint();
+  });
+
+  const go = $("#entryGo");
+  if (go) go.addEventListener("click", () => {
+    const prevMode = isMobileMode() ? "mobile" : "desktop";
+    const prevFx = currentFx();
+    try {
+      localStorage.setItem(MODE_KEY, mode);
+      localStorage.setItem(FX_KEY, fx);
+    } catch (e) {}
+    document.documentElement.dataset.mode = mode;
+    document.documentElement.dataset.fx = fx;
+    if (mode !== prevMode || fx !== prevFx) { reloadSkipEntry(); return; }
+    closeEntryScreen();
+    syncModeUI();
+  });
 }
 
 /* ============ 初始化 ============ */
@@ -2168,6 +2566,8 @@ setupLifeCards();
 setupQuotes();
 setupCursor();
 setupNav();
+setupSettings();
+setupEntry();
 /* ============ 日常卡片：点开放大 ============ */
 function setupLifeCards() {
   const grid = $(".life-grid");
