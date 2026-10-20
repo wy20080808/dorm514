@@ -986,9 +986,11 @@ body.view-photos .photos-page .reveal{opacity:1; transform:none}
 .post-preview[hidden]{display:none}
 .composer-foot{display:flex; align-items:center; justify-content:space-between; gap:12px; margin-top:12px; flex-wrap:wrap}
 .composer-as{font-size:12.5px; color:var(--faint); display:inline-flex; align-items:center; gap:7px}
-.post-name{width:104px; padding:5px 9px; border-radius:8px; border:1px solid var(--line); background:var(--surface); color:var(--text); font:inherit; font-size:12.5px; outline:none}
-.post-name:focus{border-color:var(--accent)}
-.post-name:disabled,.daily-name:disabled{background:var(--surface-2); color:var(--muted); cursor:not-allowed; border-style:dashed}
+.composer-as b{color:var(--text); font-weight:600}
+.composer-as .ca-ava{width:22px; height:22px; border-radius:7px; display:grid; place-items:center; overflow:hidden; background:linear-gradient(140deg,var(--accent),#8b7bff); color:#1b1008; font-weight:800; font-size:11px; flex:0 0 auto}
+.composer-as .ca-ava img{width:100%; height:100%; object-fit:cover; display:block}
+.composer-as .ca-login{border:0; background:transparent; color:var(--accent); font:inherit; font-size:12.5px; cursor:pointer; padding:0; text-decoration:underline; text-underline-offset:2px}
+.daily-name:disabled{background:var(--surface-2); color:var(--muted); cursor:not-allowed; border-style:dashed}
 .composer-acts{display:flex; align-items:center; gap:10px}
 .composer-acts .btn{cursor:pointer}
 .post-list{display:flex; flex-direction:column; gap:16px}
@@ -1697,9 +1699,7 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
           </div>
           <div class="post-preview" id="postPreview" hidden></div>
           <div class="composer-foot">
-            <span class="composer-as">以
-              <input id="postName" class="post-name" maxlength="12" placeholder="昵称" aria-label="你的昵称">
-              发布</span>
+            <span class="composer-as" id="composerAs"></span>
             <div class="composer-acts">
               <span class="post-count" id="postCount">0/300</span>
               <label class="btn ghost btn-sm" for="postImage">＋ 图片</label>
@@ -3382,11 +3382,15 @@ const Auth = {
       body: JSON.stringify({ data })
     });
     const d = await res.json().catch(() => ({}));
-    if (!res.ok) throw new Error(d.msg || d.message || ("保存失败 " + res.status));
+    if (!res.ok) {
+      const raw = d.msg || d.message || d.error_description || "";
+      throw new Error("保存失败 " + res.status + (raw ? "：" + raw : ""));
+    }
     const u = d.user || d || {};
     const meta = u.user_metadata || {};
     authSession = Object.assign({}, authSession, {
       email: u.email || authSession.email,
+      id: u.id || authSession.id || "",
       avatar_url: meta.avatar_url || "",
       nickname: meta.nickname || ""
     });
@@ -3409,15 +3413,53 @@ const Auth = {
     return d.user || d;
   },
   async uploadAvatar(dataUrl) {
-    if (!authSession || !authSession.id) throw new Error("请先登录");
+    if (!authSession || !authSession.access_token) throw new Error("请先登录再换头像");
+
+    // 1) 保证令牌新鲜
+    try {
+      const fresh = await this.refresh(authSession);
+      if (fresh) authSession = fresh;
+    } catch (e) {}
+
+    // 2) 拿不到 uid 就问一次接口（避免早期版本保存的会话缺少 id）
+    let uid = authSession.id || "";
+    if (!uid) {
+      try {
+        const r = await fetch(`${this.base()}/auth/v1/user`, {
+          headers: this.headers({ Authorization: "Bearer " + authSession.access_token })
+        });
+        if (r.ok) {
+          const u = await r.json();
+          uid = u.id || "";
+          if (uid) authSession = Object.assign({}, authSession, { id: uid });
+        }
+      } catch (e) {}
+    }
+    if (!uid) uid = "u" + Date.now().toString(36);
+
     const blob = await (await fetch(dataUrl)).blob();
-    const path = `avatars/${authSession.id}.jpg`;
-    const up = await fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
-      method: "POST",
-      headers: this.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
-      body: blob
-    });
-    if (!up.ok) throw new Error("头像上传失败 " + up.status);
+    const put = async path => {
+      const res = await fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
+        method: "POST",
+        headers: this.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+        body: blob
+      });
+      if (res.ok) return;
+      const txt = await res.text().catch(() => "");
+      const err = new Error("存储写入失败 " + res.status + (txt ? "（" + txt.slice(0, 140) + "）" : ""));
+      err.status = res.status;
+      throw err;
+    };
+
+    // 3) 先试 avatars/ 目录，失败就退回桶根目录（和照片同一个位置，权限一定通）
+    let path = `avatars/${uid}.jpg`;
+    try {
+      await put(path);
+    } catch (e1) {
+      path = `avatar-${uid}.jpg`;
+      await put(path);
+    }
+
     const url = `${this.base()}/storage/v1/object/public/${DAILY_REMOTE.bucket}/${path}?v=${Date.now()}`;
     await this.updateMeta({ avatar_url: url });
     return url;
@@ -3470,10 +3512,9 @@ function dailyName() {
   const el = $("#dailyName");
   const v = el ? el.value.trim() : "";
   if (v) return v;
-  const pn = $("#postName");
-  const pv = pn ? pn.value.trim() : "";
-  if (pv) return pv;
-  return "514 游客";
+  let saved = "";
+  try { saved = localStorage.getItem(DAILY_NAME) || ""; } catch (err) {}
+  return saved || "514 游客";
 }
 
 function dailyTimeAgo(ts) {
@@ -4628,16 +4669,9 @@ async function publishPost() {
   if (activeChannel && !channelCanPost) { alert("加入频道后才能在这里发布。"); return; }
   const finalText = composerTopic ? `#${composerTopic} ${text}`.trim() : text;
 
-  const nameEl = $("#postName");
   const name = authSession
     ? (userLabel(authSession) || dailyName())
-    : ((nameEl && nameEl.value.trim()) || dailyName());
-  if (!authSession) {
-    if (nameEl) nameEl.value = name;
-    try { localStorage.setItem(DAILY_NAME, name); } catch (err) {}
-    const dailyNameEl = $("#dailyName");
-    if (dailyNameEl && !dailyNameEl.value.trim()) dailyNameEl.value = name;
-  }
+    : dailyName();
 
   send.disabled = true;
   send.textContent = "发布中…";
@@ -4820,6 +4854,7 @@ async function loadFriends() {
 
 function refreshSocialIdentity() {
   friendRows = [];
+  try { syncUserUI(); } catch (err) {}
   if (!RemoteDaily.on()) return;
   loadChannels().then(loadChannelMembers);
 }
@@ -5202,16 +5237,6 @@ function setupCommunity() {
       <div class="lb-caption">${esc(ph.name)} · ${dailyTimeAgo(ph.ts)} · ♥ ${ph.likes || 0}</div>`);
   });
 
-  const nameEl = $("#postName");
-  if (nameEl) {
-    let saved = "";
-    try { saved = localStorage.getItem(DAILY_NAME) || ""; } catch (err) {}
-    nameEl.value = saved || (authSession && authSession.email ? authSession.email.split("@")[0] : "");
-    nameEl.addEventListener("input", () => {
-      try { localStorage.setItem(DAILY_NAME, nameEl.value.trim()); } catch (err) {}
-    });
-  }
-
   const file = $("#postImage");
   const preview = $("#postPreview");
   if (file) file.addEventListener("change", async () => {
@@ -5528,38 +5553,37 @@ function syncUserUI() {
   syncComposerIdentity();
 }
 
-/* 登录后所有发布都用账号昵称；未登录才允许手填昵称 */
+/* 发布身份：登录后自动用账号头像 + 昵称；未登录以游客身份发布 */
 function syncComposerIdentity() {
-  const input = $("#postName");
+  const chip = $("#composerAs");
   const daily = $("#dailyName");
   if (authSession && authSession.email) {
     const label = userLabel(authSession) || authSession.email.split("@")[0];
-    if (input) {
-      input.value = label;
-      input.disabled = true;
-      input.title = "已登录，发布时使用账号昵称";
-      input.setAttribute("aria-label", "已登录，发布时使用账号昵称");
-    }
     if (daily) {
       daily.value = label;
       daily.disabled = true;
       daily.title = "已登录，上传时使用账号昵称";
       daily.dataset.auth = "1";
     }
+    if (chip) {
+      chip.innerHTML = `以 <span class="ca-ava" aria-hidden="true">${avatarInner(authSession)}</span><b>${esc(label)}</b> 发布`;
+      chip.hidden = false;
+    }
   } else {
     let saved = "";
     try { saved = localStorage.getItem(DAILY_NAME) || ""; } catch (err) {}
-    if (input) {
-      input.disabled = false;
-      input.title = "";
-      input.setAttribute("aria-label", "你的昵称");
-      input.value = saved;
-    }
     if (daily) {
       daily.disabled = false;
       daily.title = "";
       if (daily.dataset.auth === "1") daily.value = saved;
       daily.dataset.auth = "0";
+    }
+    if (chip) {
+      const who = saved ? esc(saved) : "514 游客";
+      chip.innerHTML = `<span>以 <b>${who}</b> 发布</span><button type="button" class="ca-login" id="composerLogin">登录后显示头像和昵称</button>`;
+      chip.hidden = false;
+      const lb = $("#composerLogin");
+      if (lb) lb.addEventListener("click", openLogin);
     }
   }
 }
@@ -5740,7 +5764,7 @@ async function doVerify() {
 
 async function handleAvatarFile(file) {
   if (!file) return;
-  if (!authSession) return;
+  if (!authSession) { alert("请先登录再换头像。"); openLogin(); return; }
   const pick = $("#avatarPick");
   if (pick) { pick.disabled = true; pick.textContent = "上传中…"; }
   try {
@@ -5751,7 +5775,7 @@ async function handleAvatarFile(file) {
     setTimeout(() => { if (pick) pick.textContent = "更换头像"; }, 1800);
   } catch (e) {
     if (pick) pick.textContent = "更换头像";
-    alert("头像换失败：" + (e && e.message ? e.message : e));
+    alert("头像没换成：" + (e && e.message ? e.message : e) + "\n\n如果一直失败，把这句话截图发我，里面有具体原因。");
   } finally {
     if (pick) pick.disabled = false;
     const input = $("#avatarFile");
