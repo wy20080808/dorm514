@@ -160,6 +160,24 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
 }
 .nav-links a:hover{color:var(--text)}
 .nav-actions{display:flex; align-items:center; gap:8px}
+.install-btn{
+  display:inline-flex; align-items:center; gap:6px; padding:8px 13px; border-radius:999px;
+  border:1px solid rgba(255,154,90,.55); background:rgba(255,154,90,.12);
+  color:var(--accent); font:inherit; font-size:12.5px; font-weight:700; cursor:pointer;
+  transition:background .2s, transform .2s var(--ease), border-color .2s; white-space:nowrap;
+}
+.install-btn:hover{background:rgba(255,154,90,.22); transform:translateY(-1px); border-color:var(--accent)}
+.install-btn[hidden]{display:none}
+.install-steps{display:flex; flex-direction:column; gap:10px; margin:0; padding:0; list-style:none; counter-reset:st}
+.install-steps li{display:flex; gap:10px; font-size:13px; line-height:1.65; color:var(--muted)}
+.install-steps li::before{
+  counter-increment:st; content:counter(st);
+  flex:0 0 auto; width:22px; height:22px; border-radius:50%;
+  display:grid; place-items:center; font-size:11.5px; font-weight:700;
+  background:rgba(255,154,90,.16); color:var(--accent); border:1px solid rgba(255,154,90,.4);
+}
+.install-note{font-size:12px; color:var(--faint); line-height:1.7; margin:0; padding:10px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--line)}
+@media(max-width:560px){ .install-btn{padding:7px 10px} .install-btn .ib-long{display:none} }
 .icon-btn{
   display:grid; place-items:center; width:38px; height:38px; border-radius:12px; cursor:pointer;
   background:var(--surface); border:1px solid var(--line); font-size:16px;
@@ -1403,6 +1421,17 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 .eo-name{font-size:14px; font-weight:700}
 .eo-desc{font-size:11.5px; color:var(--faint)}
 .entry-go{width:100%; justify-content:center; margin-top:4px}
+.entry-install{
+  display:flex; align-items:center; justify-content:center; gap:7px;
+  width:100%; margin-top:10px; padding:11px 14px; border-radius:14px;
+  border:1px dashed rgba(255,154,90,.5); background:rgba(255,154,90,.08);
+  color:var(--accent); font:inherit; font-size:13px; font-weight:600; cursor:pointer;
+  transition:background .2s, border-color .2s;
+}
+.entry-install:hover{background:rgba(255,154,90,.16); border-color:var(--accent)}
+.entry-install[hidden]{display:none}
+/* 入口页还没关掉时，点“安装到桌面”弹出的说明层要盖在入口页上面 */
+.entry-screen ~ .auth-pop{z-index:300}
 @media (max-width:480px){
   .entry-card{padding:22px}
   .entry-opts{grid-template-columns:1fr}
@@ -1476,6 +1505,9 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
     </div>
 
     <button class="btn primary entry-go" id="entryGo" type="button">进入 514</button>
+    <button class="entry-install" id="entryInstallBtn" type="button" hidden>
+      <span aria-hidden="true">⤓</span> 安装到桌面，下次直接打开
+    </button>
   </div>
 </div>
 
@@ -1498,6 +1530,9 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
     <a href="#members">成员</a>
   </nav>
   <div class="nav-actions">
+    <button class="install-btn" id="installBtn" type="button" hidden title="安装到桌面" aria-label="安装到桌面">
+      <span aria-hidden="true">⤓</span><span>安装<span class="ib-long">到桌面</span></span>
+    </button>
     <button class="icon-btn" id="themeBtn" type="button" aria-label="切换明暗主题" title="切换明暗主题">☀️</button>
     <div class="user-wrap">
       <button class="icon-btn user-btn" id="userBtn" type="button" aria-label="登录 / 注册" title="登录 / 注册">👤</button>
@@ -5154,6 +5189,116 @@ function setupChannels() {
   loadChannels().then(loadChannelMembers);
 }
 
+/* ============ 安装到桌面（PWA） ============ */
+let deferredInstall = null;
+let installDone = false;
+
+function isStandaloneApp() {
+  try {
+    const mq = window.matchMedia;
+    if (mq && (
+      mq("(display-mode: standalone)").matches ||
+      mq("(display-mode: fullscreen)").matches ||
+      mq("(display-mode: minimal-ui)").matches ||
+      mq("(display-mode: window-controls-overlay)").matches
+    )) return true;
+  } catch (err) {}
+  if (navigator.standalone === true) return true;                 // iOS 从主屏启动
+  if (document.referrer && document.referrer.indexOf("android-app://") === 0) return true;
+  return false;
+}
+
+function installPlatform() {
+  const ua = navigator.userAgent || "";
+  if (/iPad|iPhone|iPod/.test(ua)) return "ios";
+  if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return "ios";
+  if (/Android/i.test(ua)) return "android";
+  return "desktop";
+}
+
+function syncInstallBtn() {
+  const hide = installDone || isStandaloneApp();   // 已安装 / 已是桌面 App 就不显示
+  ["#installBtn", "#entryInstallBtn"].forEach(sel => {
+    const btn = $(sel);
+    if (btn) btn.hidden = hide;
+  });
+}
+
+function showInstallHelp() {
+  const p = installPlatform();
+  let steps = [], note = "";
+  if (p === "ios") {
+    steps = [
+      "用 <b>Safari</b> 打开这个网址（微信 / QQ 里装不了）",
+      "点底部中间的 <b>分享</b> 按钮",
+      "往上滑，选「<b>添加到主屏幕</b>」",
+      "右上角点「添加」"
+    ];
+    note = "装好后从桌面图标打开，就是全屏 App，没有地址栏。";
+  } else if (p === "android") {
+    steps = [
+      "点浏览器右上角的 <b>⋮</b> 菜单",
+      "选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」",
+      "确认「安装」"
+    ];
+    note = "用 Chrome / Edge 打开成功率最高；在微信里要先点右上角「在浏览器打开」。";
+  } else {
+    steps = [
+      "看地址栏右侧有没有 <b>安装</b> 图标（显示器带箭头），点它",
+      "没有就点浏览器右上角 <b>⋮</b> →「<b>安装郑科宿舍社区</b>」",
+      "确认安装，桌面 / 开始菜单就会出现图标"
+    ];
+    note = "手机装到主屏体验更好；电脑上会装成一个独立窗口。";
+  }
+  openSocial(`
+    <div class="social-head"><h3>安装到桌面</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <ol class="install-steps">${steps.map(s => `<li><span>${s}</span></li>`).join("")}</ol>
+    <p class="install-note">${note}</p>
+  `);
+}
+
+function setupInstall() {
+  const btns = ["#installBtn", "#entryInstallBtn"]
+    .map(sel => $(sel))
+    .filter(Boolean);
+  if (!btns.length) return;
+  syncInstallBtn();
+
+  window.addEventListener("beforeinstallprompt", e => {
+    e.preventDefault();
+    deferredInstall = e;
+    syncInstallBtn();
+  });
+  window.addEventListener("appinstalled", () => {
+    installDone = true;
+    deferredInstall = null;
+    syncInstallBtn();
+  });
+
+  const requestInstall = async () => {
+    if (isStandaloneApp() || installDone) { syncInstallBtn(); return; }
+    if (deferredInstall) {
+      try {
+        deferredInstall.prompt();
+        const choice = await deferredInstall.userChoice;
+        if (choice && choice.outcome === "accepted") installDone = true;
+      } catch (err) {}
+      deferredInstall = null;
+      syncInstallBtn();
+      return;
+    }
+    showInstallHelp();
+  };
+
+  btns.forEach(btn => btn.addEventListener("click", requestInstall));
+
+  try {
+    const mq = window.matchMedia("(display-mode: standalone)");
+    if (mq.addEventListener) mq.addEventListener("change", syncInstallBtn);
+    else if (mq.addListener) mq.addListener(syncInstallBtn);
+  } catch (err) {}
+}
+
 function setupCommunity() {
   try { postLikedIds = new Set(JSON.parse(localStorage.getItem(POST_LIKES) || "[]")); } catch (err) {}
   try { postMineIds = new Set(JSON.parse(localStorage.getItem(POST_MINE) || "[]")); } catch (err) {}
@@ -5967,6 +6112,7 @@ setupAdmin();
 setupCommunity();
 setupPhotosRoute();
 setupUser();
+setupInstall();
 
 /* PWA：注册 Service Worker（GitHub Pages 是 https，file:// 打开时自动跳过） */
 if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
