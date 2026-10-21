@@ -1437,14 +1437,6 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
 }
 .entry-install:hover{background:rgba(255,154,90,.16); border-color:var(--accent)}
 .entry-install[hidden]{display:none}
-.entry-apk{
-  display:block; text-align:center; margin-top:10px; padding:10px 14px; border-radius:12px;
-  font-size:12.5px; font-weight:600; color:var(--muted); text-decoration:none;
-  border:1px solid var(--line); background:var(--surface);
-  transition:color .2s, border-color .2s, background .2s;
-}
-.entry-apk:hover{color:var(--accent); border-color:var(--accent); background:var(--surface-2)}
-.entry-apk[hidden]{display:none}
 /* 入口页还没关掉时，点“安装到桌面”弹出的说明层要盖在入口页上面 */
 .entry-screen ~ .auth-pop{z-index:300}
 @media (max-width:480px){
@@ -1523,7 +1515,6 @@ html[data-entry="1"], html[data-entry="1"] body{overflow:hidden}
     <button class="entry-install" id="entryInstallBtn" type="button" hidden>
       <span aria-hidden="true">⤓</span> 安装到桌面，下次直接打开
     </button>
-    <a class="entry-apk" id="entryApk" href="zkdorm.apk" download hidden>安卓手机：直接下载安装包（.apk）</a>
   </div>
 </div>
 
@@ -5358,18 +5349,65 @@ function syncInstallBtn() {
   });
 }
 
+/* 安卓：直接下载 APK 安装包 */
+function downloadApk() {
+  try {
+    const a = document.createElement("a");
+    a.href = "zkdorm.apk";
+    a.download = "zkdorm.apk";
+    a.style.display = "none";
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(() => { try { a.remove(); } catch (err) {} }, 1500);
+  } catch (err) {}
+  showApkHelp();
+}
+
+function showApkHelp() {
+  openSocial(`
+    <div class="social-head"><h3>下载安卓安装包</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
+    <ol class="install-steps">
+      <li><span>安装包正在下载（约 29 KB，很快），留意浏览器的下载提示</span></li>
+      <li><span>下完点「<b>打开</b>」，或去浏览器菜单的「<b>下载内容</b>」里点 <b>zkdorm.apk</b></span></li>
+      <li><span>提示「禁止安装未知应用」时：点<b>设置</b> → 允许这个浏览器安装 → 返回点「<b>安装</b>」</span></li>
+      <li><span>桌面出现「<b>宿舍社区</b>」图标，以后点它就能直接进</span></li>
+    </ol>
+    <p class="install-note">微信 / QQ 里下载会被拦截，请先用浏览器打开本页；装好后 App 里不需要再联网下载任何东西。</p>
+    <button type="button" class="install-copy" id="apkRetryBtn">没开始下载？点这里重试</button>
+  `);
+
+  const retry = $("#apkRetryBtn");
+  if (retry) retry.addEventListener("click", () => {
+    try {
+      const a = document.createElement("a");
+      a.href = "zkdorm.apk";
+      a.download = "zkdorm.apk";
+      a.style.display = "none";
+      document.body.appendChild(a);
+      a.click();
+      setTimeout(() => { try { a.remove(); } catch (err) {} }, 1500);
+    } catch (err) {}
+    retry.textContent = "已重新开始下载…";
+  });
+}
+
 function setupInstall() {
   const btns = ["#installBtn", "#entryInstallBtn"]
     .map(sel => $(sel))
     .filter(Boolean);
   if (!btns.length) return;
-  syncInstallBtn();
 
-  const apkLink = $("#entryApk");
-  if (apkLink) {
-    // 安卓浏览器里给一个直接下载安装包的入口；已经装在 App 里就不用显示
-    apkLink.hidden = !/Android/i.test(navigator.userAgent || "") || isAppShell();
+  const isAndroid = /Android/i.test(navigator.userAgent || "") && !isAppShell();
+  if (isAndroid) {
+    // 安卓上直接把按钮变成“下载安装包”
+    btns.forEach(btn => {
+      btn.innerHTML = '<span aria-hidden="true">⬇</span><span>下载安卓安装包</span>';
+      btn.title = "下载安卓安装包（.apk）";
+      btn.setAttribute("aria-label", "下载安卓安装包");
+    });
   }
+
+  syncInstallBtn();
 
   window.addEventListener("beforeinstallprompt", e => {
     e.preventDefault();
@@ -5384,6 +5422,10 @@ function setupInstall() {
 
   const requestInstall = async () => {
     if (isStandaloneApp() || installDone) { syncInstallBtn(); return; }
+
+    // 安卓：直接下载 APK（每次点击时判断，避免 UA 变化后按钮失效）
+    if (installEnv().os === "android" && !isAppShell()) { downloadApk(); return; }
+
     if (deferredInstall) {
       try {
         deferredInstall.prompt();

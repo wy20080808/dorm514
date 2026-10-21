@@ -1,6 +1,6 @@
 /* 郑科宿舍社区 · Service Worker
    改完 index.html 并上传后，把下面的 VERSION 数字 +1，手机上的缓存才会更新。 */
-const VERSION = "zkdorm-v5";
+const VERSION = "zkdorm-v6";
 
 const ASSETS = [
   "./",
