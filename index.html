@@ -177,6 +177,13 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
   background:rgba(255,154,90,.16); color:var(--accent); border:1px solid rgba(255,154,90,.4);
 }
 .install-note{font-size:12px; color:var(--faint); line-height:1.7; margin:0; padding:10px 12px; border-radius:12px; background:var(--surface); border:1px solid var(--line)}
+.install-copy{
+  width:100%; margin-top:10px; padding:11px 14px; border-radius:12px; cursor:pointer;
+  border:1px solid rgba(255,154,90,.55); background:rgba(255,154,90,.12);
+  color:var(--accent); font:inherit; font-size:13px; font-weight:700;
+  transition:background .2s, border-color .2s;
+}
+.install-copy:hover{background:rgba(255,154,90,.22); border-color:var(--accent)}
 @media(max-width:560px){ .install-btn{padding:7px 10px} .install-btn .ib-long{display:none} }
 .icon-btn{
   display:grid; place-items:center; width:38px; height:38px; border-radius:12px; cursor:pointer;
@@ -5208,40 +5215,87 @@ function isStandaloneApp() {
   return false;
 }
 
-function installPlatform() {
+function installEnv() {
   const ua = navigator.userAgent || "";
-  if (/iPad|iPhone|iPod/.test(ua)) return "ios";
-  if (navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1) return "ios";
-  if (/Android/i.test(ua)) return "android";
-  return "desktop";
+  const touchMac = navigator.platform === "MacIntel" && navigator.maxTouchPoints > 1;
+  let os = "desktop";
+  if (/iPad|iPhone|iPod/.test(ua) || touchMac) os = "ios";
+  else if (/Android|HarmonyOS/i.test(ua)) os = "android";
+
+  let browser = "other";
+  if (/MicroMessenger/i.test(ua)) browser = "wechat";
+  else if (/QQ\//i.test(ua)) browser = "qq";
+  else if (/Weibo|AlipayClient|DingTalk|Lark|feishu|baiduboxapp/i.test(ua)) browser = "otherApp";
+  else if (/UCBrowser|Quark|MiuiBrowser|HuaweiBrowser|VivoBrowser|HeyTapBrowser|baidubrowser|SogouMobileBrowser|LieBao|MQQBrowser/i.test(ua)) browser = "other";
+  else if (/EdgA|EdgiOS|Edg\//i.test(ua)) browser = "edge";
+  else if (/CriOS|Chrome\/|Chromium/i.test(ua)) browser = "chrome";
+  else if (/FxiOS|Firefox\//i.test(ua)) browser = "firefox";
+  else if (/Safari\//.test(ua)) browser = "safari";
+
+  const inApp = /MicroMessenger|QQ\/|Weibo|AlipayClient|DingTalk|Lark|feishu|baiduboxapp/i.test(ua);
+  return { os, browser, inApp };
 }
 
-function syncInstallBtn() {
-  const hide = installDone || isStandaloneApp();   // 已安装 / 已是桌面 App 就不显示
-  ["#installBtn", "#entryInstallBtn"].forEach(sel => {
-    const btn = $(sel);
-    if (btn) btn.hidden = hide;
-  });
+function installPlatform() {
+  return installEnv().os;
 }
 
 function showInstallHelp() {
-  const p = installPlatform();
-  let steps = [], note = "";
-  if (p === "ios") {
-    steps = [
-      "用 <b>Safari</b> 打开这个网址（微信 / QQ 里装不了）",
-      "点底部中间的 <b>分享</b> 按钮",
-      "往上滑，选「<b>添加到主屏幕</b>」",
-      "右上角点「添加」"
-    ];
-    note = "装好后从桌面图标打开，就是全屏 App，没有地址栏。";
-  } else if (p === "android") {
-    steps = [
-      "点浏览器右上角的 <b>⋮</b> 菜单",
-      "选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」",
-      "确认「安装」"
-    ];
-    note = "用 Chrome / Edge 打开成功率最高；在微信里要先点右上角「在浏览器打开」。";
+  const env = installEnv();
+  let steps = [], note = "", needCopy = env.inApp;
+
+  if (env.os === "ios") {
+    if (env.inApp) {
+      steps = [
+        "点右上角 <b>⋯</b>（或「⋯」里的更多），选「<b>在浏览器打开</b>」",
+        "浏览器打开后，确认地址栏是 <b>Safari</b>（不是微信内置的）",
+        "点底部中间的 <b>分享</b>（方框带向上箭头）",
+        "往上滑，选「<b>添加到主屏幕</b>」，右上角点「添加」"
+      ];
+      note = "iPhone 上只有 Safari 能装到桌面，Chrome / 微信 / QQ 都不行。";
+    } else if (env.browser !== "safari") {
+      steps = [
+        "复制这个网址，改用 <b>Safari</b> 打开（iPhone 只有 Safari 能装）",
+        "点底部中间的 <b>分享</b> 按钮",
+        "往上滑，选「<b>添加到主屏幕</b>」",
+        "右上角点「添加」"
+      ];
+      note = "装好后从桌面图标打开，就是全屏 App，没有地址栏。";
+      needCopy = true;
+    } else {
+      steps = [
+        "点底部中间的 <b>分享</b> 按钮（方框带向上箭头）",
+        "在弹出的菜单里往上滑，找到「<b>添加到主屏幕</b>」",
+        "右上角点「<b>添加</b>」",
+        "回到桌面，就有「宿舍社区」图标了"
+      ];
+      note = "必须用 Safari；微信、QQ、Chrome 里都没有这个选项。";
+    }
+  } else if (env.os === "android") {
+    if (env.inApp) {
+      steps = [
+        "点右上角 <b>⋯</b> 或 <b>⋮</b>，选「<b>在浏览器打开</b>」",
+        "用 <b>Chrome</b> 打开后，点右上角 <b>⋮</b> 菜单",
+        "选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」",
+        "确认「安装」"
+      ];
+      note = "微信 / QQ 内置浏览器不支持安装，必须先跳到 Chrome。";
+    } else if (env.browser === "chrome" || env.browser === "edge") {
+      steps = [
+        "点浏览器右上角的 <b>⋮</b> 菜单",
+        "选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」",
+        "确认「安装」"
+      ];
+      note = "装完桌面会出现「宿舍社区」；如果菜单里没有这一项，用 Chrome 再打开一次这个网址。";
+    } else {
+      steps = [
+        "复制这个网址，改用 <b>Chrome</b> 打开（成功率高）",
+        "点右上角 <b>⋮</b> 菜单",
+        "选「<b>安装应用</b>」或「<b>添加到主屏幕</b>」"
+      ];
+      note = "部分国产浏览器只会建快捷方式，不会真正装成 App。";
+      needCopy = true;
+    }
   } else {
     steps = [
       "看地址栏右侧有没有 <b>安装</b> 图标（显示器带箭头），点它",
@@ -5250,11 +5304,45 @@ function showInstallHelp() {
     ];
     note = "手机装到主屏体验更好；电脑上会装成一个独立窗口。";
   }
+
   openSocial(`
     <div class="social-head"><h3>安装到桌面</h3><button type="button" class="icon-btn" data-sclose aria-label="关闭">✕</button></div>
     <ol class="install-steps">${steps.map(s => `<li><span>${s}</span></li>`).join("")}</ol>
     <p class="install-note">${note}</p>
+    ${needCopy ? `<button type="button" class="install-copy" id="installCopyBtn">复制网址</button>` : ""}
   `);
+
+  const copyBtn = $("#installCopyBtn");
+  if (copyBtn) copyBtn.addEventListener("click", async () => {
+    const url = location.origin + location.pathname;
+    let ok = false;
+    try {
+      await navigator.clipboard.writeText(url);
+      ok = true;
+    } catch (err) {
+      try {
+        const ta = document.createElement("textarea");
+        ta.value = url;
+        ta.setAttribute("readonly", "");
+        ta.style.position = "fixed";
+        ta.style.opacity = "0";
+        document.body.appendChild(ta);
+        ta.select();
+        ok = document.execCommand("copy");
+        document.body.removeChild(ta);
+      } catch (err2) { ok = false; }
+    }
+    copyBtn.textContent = ok ? "已复制，去浏览器粘贴打开 ✓" : "复制失败，请长按地址栏复制";
+    if (ok) setTimeout(() => { copyBtn.textContent = "复制网址"; }, 3000);
+  });
+}
+
+function syncInstallBtn() {
+  const hide = installDone || isStandaloneApp();   // 已安装 / 已是桌面 App 就不显示
+  ["#installBtn", "#entryInstallBtn"].forEach(sel => {
+    const btn = $(sel);
+    if (btn) btn.hidden = hide;
+  });
 }
 
 function setupInstall() {
