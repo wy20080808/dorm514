@@ -2,9 +2,16 @@
 <html lang="zh-CN" data-theme="dark">
 <head>
 <meta charset="utf-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>郑科宿舍社区 · 从一间 514 开始</title>
 <meta name="description" content="郑科宿舍社区：从 514 的五个人开始，记录宿舍日常、照片和故事。">
+<link rel="manifest" href="manifest.json">
+<meta name="theme-color" content="#0b0d14">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="宿舍社区">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
 <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 64 64'%3E%3Crect width='64' height='64' rx='16' fill='%23ff9a5a'/%3E%3Ctext x='32' y='43' font-size='26' font-family='Arial' font-weight='bold' text-anchor='middle' fill='%23140d09'%3E514%3C/text%3E%3C/svg%3E">
 <style>
 /* ============ 主题变量 ============ */
@@ -119,6 +126,12 @@ body.cursor-hot .cursor-glow{width:560px; height:560px}
 body.cursor-hot .cursor-glow{width:560px; height:560px}
 
 /* ============ 导航 ============ */
+/* 安装成 App（全屏）后，避开 iPhone 刘海和底部横条 */
+@media (display-mode: standalone){
+  .nav{padding-top:calc(18px + env(safe-area-inset-top))}
+  .footer-inner{padding-bottom:calc(24px + env(safe-area-inset-bottom))}
+  .admin-panel{padding-top:calc(24px + env(safe-area-inset-top))}
+}
 .nav{
   position:sticky; top:0; z-index:50;
   display:flex; align-items:center; gap:28px;
@@ -3085,7 +3098,7 @@ const RemoteDaily = {
     const path = `${Date.now()}-${Math.random().toString(36).slice(2, 8)}.jpg`;
     const up = await fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
       method: "POST",
-      headers: this.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+      headers: storageHeaders({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
       body: blob
     });
     if (!up.ok) throw new Error("上传图片失败 " + up.status);
@@ -3119,11 +3132,18 @@ const RemoteDaily = {
     if (i > -1) {
       const path = src.slice(i + marker.length);
       fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
-        method: "DELETE", headers: this.headers()
+        method: "DELETE", headers: storageHeaders()
       }).catch(() => {});
     }
   }
 };
+
+/* Storage 接口现在要求必须带 Authorization 头：
+   已登录用用户令牌，未登录就退化成 anon key（等价于匿名访问）。 */
+function storageHeaders(extra) {
+  const token = (authSession && authSession.access_token) ? authSession.access_token : DAILY_REMOTE.key;
+  return RemoteDaily.headers(Object.assign({ Authorization: "Bearer " + token }, extra || {}));
+}
 
 const DailyStore = {
   remote() { return RemoteDaily.on(); },
@@ -3441,7 +3461,7 @@ const Auth = {
     const put = async path => {
       const res = await fetch(`${this.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
         method: "POST",
-        headers: this.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+        headers: storageHeaders({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
         body: blob
       });
       if (res.ok) return;
@@ -4682,7 +4702,7 @@ async function publishPost() {
       const path = `posts/${Date.now()}-${Math.random().toString(36).slice(2, 7)}.jpg`;
       const up = await fetch(`${RemoteDaily.base()}/storage/v1/object/${DAILY_REMOTE.bucket}/${path}`, {
         method: "POST",
-        headers: RemoteDaily.headers({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
+        headers: storageHeaders({ "Content-Type": "image/jpeg", "x-upsert": "true" }),
         body: blob
       });
       if (!up.ok) throw new Error("图片上传失败 " + up.status);
@@ -5947,6 +5967,13 @@ setupAdmin();
 setupCommunity();
 setupPhotosRoute();
 setupUser();
+
+/* PWA：注册 Service Worker（GitHub Pages 是 https，file:// 打开时自动跳过） */
+if ("serviceWorker" in navigator && location.protocol.startsWith("http")) {
+  window.addEventListener("load", () => {
+    navigator.serviceWorker.register("./sw.js").catch(() => {});
+  });
+}
 </script>
 </body>
 </html>
